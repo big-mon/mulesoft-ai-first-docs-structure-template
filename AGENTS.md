@@ -102,8 +102,8 @@ RAMLと実装が矛盾している場合は、勝手に解決せず、矛盾と�
 | API ID | `{domain}-api-v{version}` | `sample-customer-api-v1` |
 | API Folder | `{domain}-api` | `sample-customer-api` |
 | Operation ID | `{apiId}.{resource}.{action}` | `sample-customer-api-v1.customer.getById` |
-| Operation Folder | kebab-case | `customer-get-by-id` |
-| Operation RAML | kebab-case | `customer-get-by-id.raml` |
+| Operation Folder | `{method}-{resource}-{action}` のkebab-case | `get-customer-by-id` |
+| Operation RAML | Operation Folderと同名 | `get-customer-by-id.raml` |
 | Flow | kebab-case + `-flow` | `get-customer-by-id-flow` |
 | DataWeave | Operationベース | `customer-get-by-id-response.dwl` |
 | MUnit | Operation + シナリオ | `customer-get-by-id-success-test` |

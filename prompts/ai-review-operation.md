@@ -10,6 +10,7 @@ appId: {appId}, apiId: {apiId}, apiFolder: {apiFolder}, operationId: {operationI
 
 以下を確認してください。
 - Operation資産が applications/{appId}/apis/{apiFolder}/operations/{operationFolder}/ 配下にまとまっていること。
+- operationFolderがHTTP methodを含む命名になっていること。
 - Methodとpathが applications/{appId}/design-index.yaml とRAMLで一致していること。
 - Request body、Response body、Header、Status codeが明確であること。
 - RAMLのエラー応答とError Handler設計が整合していること。

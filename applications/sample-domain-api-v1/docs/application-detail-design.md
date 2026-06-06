@@ -50,7 +50,7 @@
 | 項目 | 値 |
 |---|---|
 | Method / Path | `GET /customers/{customerId}` |
-| RAML | `apis/sample-customer-api/operations/customer-get-by-id/customer-get-by-id.raml` |
+| RAML | `apis/sample-customer-api/operations/get-customer-by-id/get-customer-by-id.raml` |
 | Flow | `get-customer-by-id-flow` |
 | Request Headers | `client_id`, `client_secret` |
 | Response Type | `Customer` |
