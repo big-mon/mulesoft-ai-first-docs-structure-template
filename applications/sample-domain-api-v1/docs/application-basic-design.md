@@ -6,19 +6,19 @@
 
 | 項目 | 値 |
 |---|---|
-| Application ID | `sample-domain-api` |
-| Mule Application | `sample-domain-api` |
-| Artifact | `sample-domain-api.jar` |
+| Application ID | `sample-domain-api-v1` |
+| Mule Application | `sample-domain-api-v1` |
+| Artifact | `sample-domain-api-v1.jar` |
 | Deployment Unit | jar |
-| Repository | `sample-domain-api` |
+| Repository | `sample-domain-api-v1` |
 | Runtime | Mule 4.x |
 
 ## 2. 含まれるAPI
 
 | API ID | API名 | Version | Layer | Root RAML | Base Path | API Manager |
 |---|---|---|---|---|---|---|
-| `sample-customer-api-v1` | Sample Customer API | v1 | Experience | `apis/sample-customer-api-v1/raml/v1/sample-customer-api.raml` | `/api/v1` | Managed |
-| `sample-address-api-v1` | Sample Address API | v1 | Process | `apis/sample-address-api-v1/raml/v1/sample-address-api.raml` | `/api/v1` | Managed |
+| `sample-customer-api-v1` | Sample Customer API | v1 | Experience | `apis/sample-customer-api/raml/sample-customer-api.raml` | `/api/v1` | Managed |
+| `sample-address-api-v1` | Sample Address API | v1 | Process | `apis/sample-address-api/raml/sample-address-api.raml` | `/api/v1` | Managed |
 
 `Base Path` はRAMLの `baseUri` のパス部分を表します。Operationのパスは別に定義し、RAML上のリソースパスを重複して含めないでください。
 
@@ -48,9 +48,9 @@
 
 | Operation ID | Method | Path | Request Type | Response Type | RAML Fragment |
 |---|---|---|---|---|---|
-| `sample-customer-api-v1.customer.getById` | GET | `/customers/{customerId}` | - | `Customer` | `apis/sample-customer-api-v1/operations/customer-get-by-id/customer-get-by-id.raml` |
-| `sample-customer-api-v1.customer.search` | POST | `/customers/search` | `CustomerSearchRequest` | `CustomerSearchResponse` | `apis/sample-customer-api-v1/operations/customer-search/customer-search.raml` |
-| `sample-address-api-v1.address.getByCustomerId` | GET | `/customers/{customerId}/addresses` | - | `AddressList` | `apis/sample-address-api-v1/operations/address-get-by-customer-id/address-get-by-customer-id.raml` |
+| `sample-customer-api-v1.customer.getById` | GET | `/customers/{customerId}` | - | `Customer` | `apis/sample-customer-api/operations/customer-get-by-id/customer-get-by-id.raml` |
+| `sample-customer-api-v1.customer.search` | POST | `/customers/search` | `CustomerSearchRequest` | `CustomerSearchResponse` | `apis/sample-customer-api/operations/customer-search/customer-search.raml` |
+| `sample-address-api-v1.address.getByCustomerId` | GET | `/customers/{customerId}/addresses` | - | `AddressList` | `apis/sample-address-api/operations/address-get-by-customer-id/address-get-by-customer-id.raml` |
 
 ## 5. シーケンス概要
 

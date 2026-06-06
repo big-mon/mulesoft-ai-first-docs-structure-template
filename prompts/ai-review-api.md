@@ -3,13 +3,13 @@
 1つのAPIをレビューするためのプロンプトです。
 
 ```text
-appId: {appId}, apiId: {apiId} のAPIをレビューしてください。
+appId: {appId}, apiId: {apiId}, apiFolder: {apiFolder} のAPIをレビューしてください。
 
 最初にルートの design-index.yaml と applications/{appId}/design-index.yaml を読んでください。
 その後、対象APIのroot RAML、すべてのOperation RAML fragment、基本設計書と詳細設計書の関連セクションを読んでください。
 
 以下を確認してください。
-- API資産が applications/{appId}/apis/{apiId}/ 配下にまとまっていること。
+- API資産が applications/{appId}/apis/{apiFolder}/ 配下にまとまっていること。
 - root RAMLが applications/{appId}/design-index.yaml に定義されたすべてのOperationを含んでいること。
 - RAML内のOperation IDが applications/{appId}/design-index.yaml と一致していること。
 - Request typeとResponse typeが正しく定義・参照されていること。

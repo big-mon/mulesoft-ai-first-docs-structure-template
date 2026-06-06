@@ -7,18 +7,20 @@ repository:
 
 structure:
   applicationPathPattern: applications/{appId}
-  apiPathPattern: applications/{appId}/apis/{apiId}
-  operationPathPattern: applications/{appId}/apis/{apiId}/operations/{operationFolder}
+  apiPathPattern: applications/{appId}/apis/{apiFolder}
+  operationPathPattern: applications/{appId}/apis/{apiFolder}/operations/{operationFolder}
   appDesignIndexFile: applications/{appId}/design-index.yaml
 
 applications:
-  - appId: sample-domain-api
+  - appId: sample-domain-api-v1
     appName: サンプルドメインAPIアプリケーション
-    artifactName: sample-domain-api.jar
+    artifactName: sample-domain-api-v1.jar
     deploymentUnit: jar
-    root: applications/sample-domain-api
-    designIndex: applications/sample-domain-api/design-index.yaml
-    pom: applications/sample-domain-api/pom.xml
+    root: applications/sample-domain-api-v1
+    designIndex: applications/sample-domain-api-v1/design-index.yaml
+    pom: applications/sample-domain-api-v1/pom.xml
     apis:
-      - sample-customer-api-v1
-      - sample-address-api-v1
+      - apiId: sample-customer-api-v1
+        apiFolder: sample-customer-api
+      - apiId: sample-address-api-v1
+        apiFolder: sample-address-api

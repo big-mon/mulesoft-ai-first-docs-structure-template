@@ -1,11 +1,11 @@
 schemaVersion: "1.0"
 
 application:
-  appId: sample-domain-api
+  appId: sample-domain-api-v1
   appName: サンプルドメインAPIアプリケーション
-  artifactName: sample-domain-api.jar
+  artifactName: sample-domain-api-v1.jar
   deploymentUnit: jar
-  repository: sample-domain-api
+  repository: sample-domain-api-v1
   muleRuntime: "4.x"
   ownerTeam: integration-team
 
@@ -21,11 +21,12 @@ common:
 
 apis:
   - apiId: sample-customer-api-v1
+    apiFolder: sample-customer-api
     apiName: サンプル顧客API
     version: v1
     apiLayer: Experience
     description: 顧客情報の参照・検索を提供するサンプルAPI。
-    rootRaml: apis/sample-customer-api-v1/raml/v1/sample-customer-api.raml
+    rootRaml: apis/sample-customer-api/raml/sample-customer-api.raml
     basePath: /api/v1
     entryFlow: sample-customer-api-main-flow
     apiKitConfig: sample-customer-api-config
@@ -50,7 +51,7 @@ apis:
         path: /customers/{customerId}
         summary: 顧客IDを指定して顧客情報を取得する。
         operationFolder: customer-get-by-id
-        raml: apis/sample-customer-api-v1/operations/customer-get-by-id/customer-get-by-id.raml
+        raml: apis/sample-customer-api/operations/customer-get-by-id/customer-get-by-id.raml
         flow: get-customer-by-id-flow
         requestType: null
         responseType: Customer
@@ -72,7 +73,7 @@ apis:
         path: /customers/search
         summary: 条件を指定して顧客情報を検索する。
         operationFolder: customer-search
-        raml: apis/sample-customer-api-v1/operations/customer-search/customer-search.raml
+        raml: apis/sample-customer-api/operations/customer-search/customer-search.raml
         flow: search-customers-flow
         requestType: CustomerSearchRequest
         responseType: CustomerSearchResponse
@@ -90,11 +91,12 @@ apis:
           detailDesignStatus: not_started
 
   - apiId: sample-address-api-v1
+    apiFolder: sample-address-api
     apiName: サンプル住所API
     version: v1
     apiLayer: Process
     description: 顧客住所情報の参照を提供するサンプルAPI。
-    rootRaml: apis/sample-address-api-v1/raml/v1/sample-address-api.raml
+    rootRaml: apis/sample-address-api/raml/sample-address-api.raml
     basePath: /api/v1
     entryFlow: sample-address-api-main-flow
     apiKitConfig: sample-address-api-config
@@ -118,7 +120,7 @@ apis:
         path: /customers/{customerId}/addresses
         summary: 顧客IDを指定して住所一覧を取得する。
         operationFolder: address-get-by-customer-id
-        raml: apis/sample-address-api-v1/operations/address-get-by-customer-id/address-get-by-customer-id.raml
+        raml: apis/sample-address-api/operations/address-get-by-customer-id/address-get-by-customer-id.raml
         flow: get-address-by-customer-id-flow
         requestType: null
         responseType: AddressList

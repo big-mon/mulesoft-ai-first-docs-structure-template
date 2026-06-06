@@ -12,11 +12,10 @@ applications/{appId}/
       traits/
       examples/
   apis/
-    {apiId}/
+    {apiFolder}/
       raml/
-        v1/
-          {api-id}.raml
-          types/
+        {api-root-name}.raml
+        types/
       operations/
         {operationFolder}/
           {operation}.raml
@@ -26,6 +25,7 @@ applications/{appId}/
 ## ルール
 
 - root RAMLはAPI契約の入口を表します。
+- APIフォルダは `sample-address-api` のようにバージョンを含めず、API契約上のバージョンはroot RAMLの `version` と `baseUri`、およびアプリケーションフォルダで表します。
 - Operation RAML fragmentはmethod単位の契約を表します。
 - 共通のエラー定義やヘッダー定義は `common/raml/` 配下に配置します。
 - API固有のドメインtypeは、原則として各APIディレクトリ配下に配置します。

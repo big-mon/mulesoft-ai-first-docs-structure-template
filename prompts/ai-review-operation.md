@@ -3,13 +3,13 @@
 1つのOperationをレビューするためのプロンプトです。
 
 ```text
-appId: {appId}, apiId: {apiId}, operationId: {operationId} をレビューしてください。
+appId: {appId}, apiId: {apiId}, apiFolder: {apiFolder}, operationId: {operationId} をレビューしてください。
 
 最初にルートの design-index.yaml と applications/{appId}/design-index.yaml を読んでください。
 その後、対象OperationのRAML fragment、関連するRAML type / example、詳細設計書の該当Operationセクションを読んでください。
 
 以下を確認してください。
-- Operation資産が applications/{appId}/apis/{apiId}/operations/{operationFolder}/ 配下にまとまっていること。
+- Operation資産が applications/{appId}/apis/{apiFolder}/operations/{operationFolder}/ 配下にまとまっていること。
 - Methodとpathが applications/{appId}/design-index.yaml とRAMLで一致していること。
 - Request body、Response body、Header、Status codeが明確であること。
 - RAMLのエラー応答とError Handler設計が整合していること。

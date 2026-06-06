@@ -18,9 +18,9 @@ Repository
 | 階層 | 物理パス | 意味 | 主な責務 |
 |---|---|---|---|
 | Repository | `design-index.yaml` | 複数Muleアプリケーションを束ねる単位 | Application一覧、アプリケーションルートへの導線 |
-| Application | `applications/{appId}/` | Muleアプリ / jar / デプロイ単位 | アプリ設計、共通Flow、共通設定、外部接続、Mule実装 |
-| API | `applications/{appId}/apis/{apiId}/` | RAML root / API Manager / APIkit Router単位 | API契約、APIポリシー、利用者、base path |
-| Operation | `applications/{appId}/apis/{apiId}/operations/{operationFolder}/` | HTTP method + path / RAML fragment / Mule Flow単位 | 入出力、Flow設計、マッピング、エラー処理、MUnit |
+| Application | `applications/{appId}/` | Muleアプリ / jar / デプロイ単位。`appId` は `sample-domain-api-v1` のようにバージョンを含める | アプリ設計、共通Flow、共通設定、外部接続、Mule実装 |
+| API | `applications/{appId}/apis/{apiFolder}/` | RAML root / API Manager / APIkit Router単位。`apiFolder` は `sample-address-api` のようにバージョンを重複させない | API契約、APIポリシー、利用者、base path |
+| Operation | `applications/{appId}/apis/{apiFolder}/operations/{operationFolder}/` | HTTP method + path / RAML fragment / Mule Flow単位 | 入出力、Flow設計、マッピング、エラー処理、MUnit |
 
 ## リポジトリ構成
 
@@ -30,17 +30,17 @@ Repository
 ├─ AGENTS.md
 ├─ prompts/
 └─ applications/
-   └─ sample-domain-api/
+   └─ sample-domain-api-v1/
       ├─ design-index.yaml
       ├─ pom.xml
       ├─ docs/
       ├─ common/
       │  └─ raml/
       ├─ apis/
-      │  ├─ sample-customer-api-v1/
+      │  ├─ sample-customer-api/
       │  │  ├─ raml/
       │  │  └─ operations/
-      │  └─ sample-address-api-v1/
+      │  └─ sample-address-api/
       │     ├─ raml/
       │     └─ operations/
       └─ src/
@@ -55,8 +55,8 @@ Repository
 | `applications/{appId}/docs/application-basic-design.md` | アプリケーション基本設計のベースライン |
 | `applications/{appId}/docs/application-detail-design.md` | Mule実装の入力となる詳細設計 |
 | `applications/{appId}/common/raml/` | アプリ内で共有するRAML type、trait、example |
-| `applications/{appId}/apis/{apiId}/raml/` | API root RAMLとAPI固有type |
-| `applications/{appId}/apis/{apiId}/operations/{operationFolder}/` | Operation RAML fragmentとOperation固有example |
+| `applications/{appId}/apis/{apiFolder}/raml/` | API root RAMLとAPI固有type |
+| `applications/{appId}/apis/{apiFolder}/operations/{operationFolder}/` | Operation RAML fragmentとOperation固有example |
 | `applications/{appId}/src/main/mule/` | Mule XML実装 |
 | `applications/{appId}/src/main/resources/dwl/` | DataWeave実装 |
 | `applications/{appId}/src/test/munit/` | MUnitテスト |
@@ -112,9 +112,9 @@ full API path = api.basePath + operation.path
 ## 使い始め方
 
 1. このテンプレートリポジトリをコピーします。
-2. 新しいMuleアプリケーションごとに `applications/{appId}/` を作成します。
+2. 新しいMuleアプリケーションごとに `applications/{appId}/` を作成します。アプリケーションをバージョン単位で管理する場合は、`sample-domain-api-v1` のようにアプリケーションフォルダへバージョンを含めます。
 3. ルートの `design-index.yaml` にApplicationを追加します。
-4. `applications/{appId}/design-index.yaml` にAPIとOperationを定義します。
-5. API契約は `applications/{appId}/apis/{apiId}/raml/` と `applications/{appId}/apis/{apiId}/operations/` に配置します。
+4. `applications/{appId}/design-index.yaml` にAPIとOperationを定義します。API IDは `sample-address-api-v1` のように契約識別子として保持し、APIフォルダは `sample-address-api` のようにバージョンなしで定義します。
+5. API契約は `applications/{appId}/apis/{apiFolder}/raml/` と `applications/{appId}/apis/{apiFolder}/operations/` に配置します。
 6. 基本設計と詳細設計は `applications/{appId}/docs/` に記載します。
 7. AI支援レビューを行う場合は `prompts/` 配下のプロンプトを利用します。

@@ -11,11 +11,11 @@ annotationTypes:
 types:
   Address: !include types/Address.raml
   AddressList: !include types/AddressList.raml
-  ErrorResponse: !include ../../../../common/raml/types/ErrorResponse.raml
+  ErrorResponse: !include ../../../common/raml/types/ErrorResponse.raml
 
 traits:
-  correlation-id: !include ../../../../common/raml/traits/correlation-id.raml
-  common-errors: !include ../../../../common/raml/traits/common-errors.raml
+  correlation-id: !include ../../../common/raml/traits/correlation-id.raml
+  common-errors: !include ../../../common/raml/traits/common-errors.raml
 
 /customers:
   /{customerId}:
@@ -25,4 +25,4 @@ traits:
         required: true
         example: C000001
     /addresses:
-      get: !include ../../operations/address-get-by-customer-id/address-get-by-customer-id.raml
+      get: !include ../operations/address-get-by-customer-id/address-get-by-customer-id.raml
