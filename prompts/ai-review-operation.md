@@ -1,19 +1,20 @@
-# AI Review Prompt: Operation Level
+# AIレビュー用プロンプト: Operation単位
 
-Use this prompt to review one Operation.
+1つのOperationをレビューするためのプロンプトです。
 
 ```text
-Review operationId: {operationId}.
+operationId: {operationId} をレビューしてください。
 
-Read design-index.yaml first, then read the Operation RAML fragment, related RAML types/examples, and the corresponding Operation detail section.
+最初に design-index.yaml を読んでください。
+その後、対象OperationのRAML fragment、関連するRAML type / example、詳細設計書の該当Operationセクションを読んでください。
 
-Check whether:
-- Method and path are consistent between design-index.yaml and RAML.
-- Request body, response body, headers, and status codes are clear.
-- Error responses in RAML and Error Handler design are consistent.
-- Flow diagram and Processor details are sufficient for implementation.
-- DataWeave mapping is defined where transformation is required.
-- MUnit scenarios cover normal and major error cases.
+以下を確認してください。
+- Methodとpathが design-index.yaml とRAMLで一致していること。
+- Request body、Response body、Header、Status codeが明確であること。
+- RAMLのエラー応答とError Handler設計が整合していること。
+- Flow図とProcessor明細が実装入力として十分であること。
+- 変換が必要な場合、DataWeaveマッピングが定義されていること。
+- MUnitシナリオが正常系と主要異常系をカバーしていること。
 
-Do not modify files. Report issues and suggested fixes.
+ファイルは変更しないでください。指摘事項と修正案を報告してください。
 ```

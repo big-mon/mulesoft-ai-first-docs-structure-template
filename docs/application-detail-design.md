@@ -1,36 +1,36 @@
-# Application Detail Design
+# アプリケーション詳細設計
 
-This document is the implementation input for one Mule application.
+このドキュメントは、1つのMuleアプリケーションに対する実装入力です。
 
-## 1. Application Detail
+## 1. アプリケーション詳細
 
-| Item | Value |
+| 項目 | 値 |
 |---|---|
 | Mule Application | `sample-domain-api` |
 | Artifact | `sample-domain-api.jar` |
 | Runtime | Mule 4.x |
 | Java | To be defined |
-| APIkit | Used |
+| APIkit | 使用する |
 
-## 2. Common Flow Design
+## 2. 共通Flow設計
 
-| Flow / Subflow | Responsibility | Notes |
+| Flow / Subflow | 責務 | 備考 |
 |---|---|---|
-| `common-correlation-id-subflow` | Resolve or generate correlation ID | Used by all API entry flows |
-| `common-error-response-subflow` | Build common error response | Uses `ErrorResponse` model |
-| `common-logging-subflow` | Standard logging | Do not log sensitive values |
+| `common-correlation-id-subflow` | Correlation IDを解決または生成する | すべてのAPI entry flowで使用する |
+| `common-error-response-subflow` | 共通エラーレスポンスを生成する | `ErrorResponse` モデルを使用する |
+| `common-logging-subflow` | 標準ログを出力する | 機密情報をログ出力しない |
 
-## 3. Common Connector Settings
+## 3. 共通Connector設定
 
-| Config Name | Type | Purpose | Properties |
+| Config Name | 種別 | 目的 | Properties |
 |---|---|---|---|
-| `sample-http-request-config` | HTTP Request | Downstream system call | `downstream.host`, `downstream.port`, `downstream.basePath` |
+| `sample-http-request-config` | HTTP Request | 接続先システム呼び出し | `downstream.host`, `downstream.port`, `downstream.basePath` |
 
-## 4. API Detail Design
+## 4. API別詳細設計
 
 ### 4.1 Sample Customer API v1
 
-| Item | Value |
+| 項目 | 値 |
 |---|---|
 | API ID | `sample-customer-api-v1` |
 | Root RAML | `raml/sample-customer-api/v1/sample-customer-api.raml` |
@@ -38,41 +38,41 @@ This document is the implementation input for one Mule application.
 | APIkit Config | `sample-customer-api-config` |
 | Autodiscovery Flow Ref | `sample-customer-api-main-flow` |
 
-#### 4.1.1 Operation - Flow Mapping
+#### 4.1.1 Operation - Flow対応表
 
 | Operation ID | Flow | DataWeave | MUnit |
 |---|---|---|---|
 | `sample-customer-api-v1.customer.getById` | `get-customer-by-id-flow` | `customer-get-by-id-response.dwl` | `customer-get-by-id-success-test`, `customer-get-by-id-validation-error-test`, `customer-get-by-id-not-found-test`, `customer-get-by-id-timeout-test` |
 | `sample-customer-api-v1.customer.search` | `search-customers-flow` | `customer-search-request.dwl`, `customer-search-response.dwl` | `customer-search-success-test`, `customer-search-validation-error-test`, `customer-search-system-error-test` |
 
-#### 4.1.2 Operation Detail: `sample-customer-api-v1.customer.getById`
+#### 4.1.2 Operation詳細: `sample-customer-api-v1.customer.getById`
 
-| Item | Value |
+| 項目 | 値 |
 |---|---|
 | Method / Path | `GET /customers/{customerId}` |
 | RAML | `raml/sample-customer-api/v1/resources/customer-get-by-id.raml` |
 | Flow | `get-customer-by-id-flow` |
 | Response Type | `Customer` |
 
-##### Flow Diagram
+##### Flow図
 
 ```text
 APIkit Router
-  -> validate customerId
-  -> call downstream customer service
-  -> transform downstream response to Customer
-  -> return 200 response
+  -> customerIdを検証する
+  -> 接続先の顧客サービスを呼び出す
+  -> 接続先レスポンスをCustomerへ変換する
+  -> 200レスポンスを返却する
 ```
 
-##### Processor Details
+##### Processor明細
 
-| No | Processor | Purpose | Input | Output | Error |
+| No | Processor | 目的 | 入力 | 出力 | Error |
 |---:|---|---|---|---|---|
-| 1 | Logger | Start log | headers, path params | - | - |
-| 2 | Validation | Validate `customerId` | `attributes.uriParams.customerId` | - | `VALIDATION:*` |
-| 3 | HTTP Request | Call customer system | customerId | downstream response | `HTTP:*` |
-| 4 | Transform Message | Build API response | downstream response | `Customer` | `EXPRESSION` |
-| 5 | Logger | End log | status, elapsed time | - | - |
+| 1 | Logger | 開始ログを出力する | headers, path params | - | - |
+| 2 | Validation | `customerId` を検証する | `attributes.uriParams.customerId` | - | `VALIDATION:*` |
+| 3 | HTTP Request | 顧客システムを呼び出す | customerId | 接続先レスポンス | `HTTP:*` |
+| 4 | Transform Message | APIレスポンスを生成する | 接続先レスポンス | `Customer` | `EXPRESSION` |
+| 5 | Logger | 終了ログを出力する | status, elapsed time | - | - |
 
 ##### Error Handling
 
@@ -83,22 +83,22 @@ APIkit Router
 | `HTTP:TIMEOUT` | On Error Propagate | 504 | `GATEWAY_TIMEOUT` |
 | `ANY` | On Error Propagate | 500 | `INTERNAL_ERROR` |
 
-##### MUnit Scenarios
+##### MUnitシナリオ
 
-| Test | Purpose | Mock | Assert |
+| Test | 目的 | Mock | Assert |
 |---|---|---|---|
-| `customer-get-by-id-success-test` | Normal response | HTTP Request | status 200 and `Customer` payload |
-| `customer-get-by-id-validation-error-test` | Invalid customer ID | none | status 400 |
-| `customer-get-by-id-not-found-test` | Downstream not found | HTTP Request | status 404 |
-| `customer-get-by-id-timeout-test` | Downstream timeout | HTTP Request | status 504 and `GATEWAY_TIMEOUT` error response |
+| `customer-get-by-id-success-test` | 正常応答 | HTTP Request | status 200 と `Customer` payload |
+| `customer-get-by-id-validation-error-test` | customer ID不正 | なし | status 400 |
+| `customer-get-by-id-not-found-test` | 接続先で対象なし | HTTP Request | status 404 |
+| `customer-get-by-id-timeout-test` | 接続先タイムアウト | HTTP Request | status 504 と `GATEWAY_TIMEOUT` エラーレスポンス |
 
-#### 4.1.3 Operation Detail: `sample-customer-api-v1.customer.search`
+#### 4.1.3 Operation詳細: `sample-customer-api-v1.customer.search`
 
-Use the same structure as 4.1.2.
+4.1.2 と同じ構成で記載します。
 
 ### 4.2 Sample Address API v1
 
-| Item | Value |
+| 項目 | 値 |
 |---|---|
 | API ID | `sample-address-api-v1` |
 | Root RAML | `raml/sample-address-api/v1/sample-address-api.raml` |
@@ -106,34 +106,34 @@ Use the same structure as 4.1.2.
 | APIkit Config | `sample-address-api-config` |
 | Autodiscovery Flow Ref | `sample-address-api-main-flow` |
 
-#### 4.2.1 Operation - Flow Mapping
+#### 4.2.1 Operation - Flow対応表
 
 | Operation ID | Flow | DataWeave | MUnit |
 |---|---|---|---|
 | `sample-address-api-v1.address.getByCustomerId` | `get-address-by-customer-id-flow` | `address-get-by-customer-id-response.dwl` | `address-get-by-customer-id-success-test`, `address-get-by-customer-id-not-found-test` |
 
-## 5. Connector and Properties
+## 5. Connector・Properties
 
-| Property | Example | Notes |
+| Property | 例 | 備考 |
 |---|---|---|
-| `api.sampleCustomer.instanceId` | `${api.sampleCustomer.instanceId}` | API Manager instance ID per environment |
-| `api.sampleAddress.instanceId` | `${api.sampleAddress.instanceId}` | API Manager instance ID per environment |
-| `downstream.host` | `${downstream.host}` | External system host |
+| `api.sampleCustomer.instanceId` | `${api.sampleCustomer.instanceId}` | 環境ごとのAPI Manager instance ID |
+| `api.sampleAddress.instanceId` | `${api.sampleAddress.instanceId}` | 環境ごとのAPI Manager instance ID |
+| `downstream.host` | `${downstream.host}` | 外部システムのhost |
 
-## 6. DataWeave and Mapping Detail
+## 6. DataWeave・マッピング詳細
 
-| Operation ID | DWL | Input | Output | Notes |
+| Operation ID | DWL | 入力 | 出力 | 備考 |
 |---|---|---|---|---|
-| `sample-customer-api-v1.customer.getById` | `customer-get-by-id-response.dwl` | Downstream customer response | `Customer` | Map downstream fields to API type |
-| `sample-customer-api-v1.customer.search` | `customer-search-request.dwl` | API search request | Downstream search request | Normalize search conditions |
-| `sample-customer-api-v1.customer.search` | `customer-search-response.dwl` | Downstream search response | `CustomerSearchResponse` | Map list results |
-| `sample-address-api-v1.address.getByCustomerId` | `address-get-by-customer-id-response.dwl` | Downstream address response | `AddressList` | Map list results |
+| `sample-customer-api-v1.customer.getById` | `customer-get-by-id-response.dwl` | 接続先の顧客レスポンス | `Customer` | 接続先項目をAPI typeへマッピングする |
+| `sample-customer-api-v1.customer.search` | `customer-search-request.dwl` | API検索リクエスト | 接続先検索リクエスト | 検索条件を正規化する |
+| `sample-customer-api-v1.customer.search` | `customer-search-response.dwl` | 接続先検索レスポンス | `CustomerSearchResponse` | 一覧結果をマッピングする |
+| `sample-address-api-v1.address.getByCustomerId` | `address-get-by-customer-id-response.dwl` | 接続先住所レスポンス | `AddressList` | 一覧結果をマッピングする |
 
-## 7. MUnit Test Design
+## 7. MUnitテスト設計
 
-Define normal and major error scenarios per Operation.
+Operation単位で、正常系と主要異常系のシナリオを定義します。
 
-| Operation ID | Required Scenarios |
+| Operation ID | 必須シナリオ |
 |---|---|
 | `sample-customer-api-v1.customer.getById` | success, validation error, not found, timeout |
 | `sample-customer-api-v1.customer.search` | success, validation error, system error |

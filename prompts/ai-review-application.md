@@ -1,18 +1,18 @@
-# AI Review Prompt: Application Level
+# AIレビュー用プロンプト: Application単位
 
-Use this prompt to review the whole Mule application design.
+Muleアプリケーション全体の設計をレビューするためのプロンプトです。
 
 ```text
-Read README.md, AGENTS.md, and design-index.yaml first.
-Then review all APIs and Operations defined under apis[].
+最初に README.md、AGENTS.md、design-index.yaml を読んでください。
+その後、apis[] 配下に定義されているすべてのAPIとOperationをレビューしてください。
 
-Check whether:
-- Every API has a root RAML file.
-- Every Operation has an Operation RAML fragment.
-- Every Operation has a unique operationId.
-- RAML, basic design, detail design, Flow, DataWeave, and MUnit references are traceable.
-- API Manager and Autodiscovery settings are defined per API where required.
-- No Operation exists only in one artifact without corresponding index entry.
+以下を確認してください。
+- すべてのAPIにroot RAMLファイルが存在すること。
+- すべてのOperationにOperation RAML fragmentが存在すること。
+- すべてのOperationが一意のoperationIdを持つこと。
+- RAML、基本設計、詳細設計、Flow、DataWeave、MUnitの参照関係を追跡できること。
+- API ManagerとAutodiscoveryの設定が、必要なAPIごとに定義されていること。
+- どれか1つの成果物にしか存在しないOperationがないこと。
 
-Report inconsistencies by Operation ID.
+不整合はOperation ID単位で報告してください。
 ```

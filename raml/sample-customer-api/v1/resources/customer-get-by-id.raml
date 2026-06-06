@@ -1,13 +1,13 @@
 #%RAML 1.0 Method
 (operationId): sample-customer-api-v1.customer.getById
-displayName: Get customer by ID
-description: Get a customer by customer ID.
+displayName: 顧客取得
+description: 顧客IDを指定して顧客情報を取得します。
 is:
   - correlation-id
   - common-errors
 responses:
   200:
-    description: Customer was found.
+    description: 顧客情報が見つかりました。
     body:
       application/json:
         type: Customer

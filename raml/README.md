@@ -1,8 +1,8 @@
-# RAML Structure
+# RAML構成
 
-RAML is the source of truth for API request and response contracts.
+RAMLは、APIのrequest / response契約の正本です。
 
-Each API has a root RAML file. Each Operation is defined as a RAML method fragment and included from the root RAML.
+各APIはroot RAMLファイルを持ちます。各OperationはRAML method fragmentとして定義し、root RAMLから `!include` で参照します。
 
 ```text
 raml/
@@ -19,10 +19,10 @@ raml/
       examples/
 ```
 
-## Rules
+## ルール
 
-- Root RAML represents the API contract entry point.
-- Operation RAML fragments represent method-level contracts.
-- Common error and header definitions live under `raml/common/`.
-- API-specific domain types should usually remain under each API directory.
-- Do not duplicate contract details in design documents when RAML is the source of truth.
+- root RAMLはAPI契約の入口を表します。
+- Operation RAML fragmentはmethod単位の契約を表します。
+- 共通のエラー定義やヘッダー定義は `raml/common/` 配下に配置します。
+- API固有のドメインtypeは、原則として各APIディレクトリ配下に配置します。
+- RAMLを正本とする契約情報は、設計書側に重複記載しないでください。
