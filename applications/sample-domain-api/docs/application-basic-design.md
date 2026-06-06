@@ -17,8 +17,8 @@
 
 | API ID | API名 | Version | Layer | Root RAML | Base Path | API Manager |
 |---|---|---|---|---|---|---|
-| `sample-customer-api-v1` | Sample Customer API | v1 | Experience | `raml/sample-customer-api/v1/sample-customer-api.raml` | `/api/v1` | Managed |
-| `sample-address-api-v1` | Sample Address API | v1 | Process | `raml/sample-address-api/v1/sample-address-api.raml` | `/api/v1` | Managed |
+| `sample-customer-api-v1` | Sample Customer API | v1 | Experience | `apis/sample-customer-api-v1/raml/v1/sample-customer-api.raml` | `/api/v1` | Managed |
+| `sample-address-api-v1` | Sample Address API | v1 | Process | `apis/sample-address-api-v1/raml/v1/sample-address-api.raml` | `/api/v1` | Managed |
 
 `Base Path` はRAMLの `baseUri` のパス部分を表します。Operationのパスは別に定義し、RAML上のリソースパスを重複して含めないでください。
 
@@ -48,9 +48,9 @@
 
 | Operation ID | Method | Path | Request Type | Response Type | RAML Fragment |
 |---|---|---|---|---|---|
-| `sample-customer-api-v1.customer.getById` | GET | `/customers/{customerId}` | - | `Customer` | `raml/sample-customer-api/v1/resources/customer-get-by-id.raml` |
-| `sample-customer-api-v1.customer.search` | POST | `/customers/search` | `CustomerSearchRequest` | `CustomerSearchResponse` | `raml/sample-customer-api/v1/resources/customer-search.raml` |
-| `sample-address-api-v1.address.getByCustomerId` | GET | `/customers/{customerId}/addresses` | - | `AddressList` | `raml/sample-address-api/v1/resources/address-get-by-customer-id.raml` |
+| `sample-customer-api-v1.customer.getById` | GET | `/customers/{customerId}` | - | `Customer` | `apis/sample-customer-api-v1/operations/customer-get-by-id/customer-get-by-id.raml` |
+| `sample-customer-api-v1.customer.search` | POST | `/customers/search` | `CustomerSearchRequest` | `CustomerSearchResponse` | `apis/sample-customer-api-v1/operations/customer-search/customer-search.raml` |
+| `sample-address-api-v1.address.getByCustomerId` | GET | `/customers/{customerId}/addresses` | - | `AddressList` | `apis/sample-address-api-v1/operations/address-get-by-customer-id/address-get-by-customer-id.raml` |
 
 ## 5. シーケンス概要
 

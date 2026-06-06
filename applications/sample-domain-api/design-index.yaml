@@ -1,0 +1,134 @@
+schemaVersion: "1.0"
+
+application:
+  appId: sample-domain-api
+  appName: サンプルドメインAPIアプリケーション
+  artifactName: sample-domain-api.jar
+  deploymentUnit: jar
+  repository: sample-domain-api
+  muleRuntime: "4.x"
+  ownerTeam: integration-team
+
+documents:
+  basicDesign: docs/application-basic-design.md
+  detailDesign: docs/application-detail-design.md
+
+common:
+  errorModel: common/raml/types/ErrorResponse.raml
+  commonTraits:
+    - common/raml/traits/correlation-id.raml
+    - common/raml/traits/common-errors.raml
+
+apis:
+  - apiId: sample-customer-api-v1
+    apiName: サンプル顧客API
+    version: v1
+    apiLayer: Experience
+    description: 顧客情報の参照・検索を提供するサンプルAPI。
+    rootRaml: apis/sample-customer-api-v1/raml/v1/sample-customer-api.raml
+    basePath: /api/v1
+    entryFlow: sample-customer-api-main-flow
+    apiKitConfig: sample-customer-api-config
+    lifecycle:
+      requirementStatus: draft
+      basicDesignStatus: draft
+      detailDesignStatus: not_started
+    autodiscovery:
+      enabled: true
+      apiIdProperty: api.sampleCustomer.instanceId
+      flowRef: sample-customer-api-main-flow
+    apiManager:
+      managed: true
+      policies:
+        - client-id-enforcement
+        - rate-limiting
+      consumers:
+        - sample-web-frontend
+    operations:
+      - operationId: sample-customer-api-v1.customer.getById
+        method: GET
+        path: /customers/{customerId}
+        summary: 顧客IDを指定して顧客情報を取得する。
+        operationFolder: customer-get-by-id
+        raml: apis/sample-customer-api-v1/operations/customer-get-by-id/customer-get-by-id.raml
+        flow: get-customer-by-id-flow
+        requestType: null
+        responseType: Customer
+        errorModel: ErrorResponse
+        dataweave:
+          response: src/main/resources/dwl/customer-get-by-id-response.dwl
+        munit:
+          - customer-get-by-id-success-test
+          - customer-get-by-id-validation-error-test
+          - customer-get-by-id-not-found-test
+          - customer-get-by-id-timeout-test
+        lifecycle:
+          requirementStatus: draft
+          basicDesignStatus: draft
+          detailDesignStatus: not_started
+
+      - operationId: sample-customer-api-v1.customer.search
+        method: POST
+        path: /customers/search
+        summary: 条件を指定して顧客情報を検索する。
+        operationFolder: customer-search
+        raml: apis/sample-customer-api-v1/operations/customer-search/customer-search.raml
+        flow: search-customers-flow
+        requestType: CustomerSearchRequest
+        responseType: CustomerSearchResponse
+        errorModel: ErrorResponse
+        dataweave:
+          request: src/main/resources/dwl/customer-search-request.dwl
+          response: src/main/resources/dwl/customer-search-response.dwl
+        munit:
+          - customer-search-success-test
+          - customer-search-validation-error-test
+          - customer-search-system-error-test
+        lifecycle:
+          requirementStatus: draft
+          basicDesignStatus: draft
+          detailDesignStatus: not_started
+
+  - apiId: sample-address-api-v1
+    apiName: サンプル住所API
+    version: v1
+    apiLayer: Process
+    description: 顧客住所情報の参照を提供するサンプルAPI。
+    rootRaml: apis/sample-address-api-v1/raml/v1/sample-address-api.raml
+    basePath: /api/v1
+    entryFlow: sample-address-api-main-flow
+    apiKitConfig: sample-address-api-config
+    lifecycle:
+      requirementStatus: draft
+      basicDesignStatus: draft
+      detailDesignStatus: not_started
+    autodiscovery:
+      enabled: true
+      apiIdProperty: api.sampleAddress.instanceId
+      flowRef: sample-address-api-main-flow
+    apiManager:
+      managed: true
+      policies:
+        - client-id-enforcement
+      consumers:
+        - sample-web-frontend
+    operations:
+      - operationId: sample-address-api-v1.address.getByCustomerId
+        method: GET
+        path: /customers/{customerId}/addresses
+        summary: 顧客IDを指定して住所一覧を取得する。
+        operationFolder: address-get-by-customer-id
+        raml: apis/sample-address-api-v1/operations/address-get-by-customer-id/address-get-by-customer-id.raml
+        flow: get-address-by-customer-id-flow
+        requestType: null
+        responseType: AddressList
+        errorModel: ErrorResponse
+        dataweave:
+          response: src/main/resources/dwl/address-get-by-customer-id-response.dwl
+        munit:
+          - address-get-by-customer-id-success-test
+          - address-get-by-customer-id-not-found-test
+        lifecycle:
+          requirementStatus: draft
+          basicDesignStatus: draft
+          detailDesignStatus: not_started

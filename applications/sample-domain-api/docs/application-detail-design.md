@@ -33,7 +33,7 @@
 | 項目 | 値 |
 |---|---|
 | API ID | `sample-customer-api-v1` |
-| Root RAML | `raml/sample-customer-api/v1/sample-customer-api.raml` |
+| Root RAML | `apis/sample-customer-api-v1/raml/v1/sample-customer-api.raml` |
 | Entry Flow | `sample-customer-api-main-flow` |
 | APIkit Config | `sample-customer-api-config` |
 | Autodiscovery Flow Ref | `sample-customer-api-main-flow` |
@@ -50,7 +50,7 @@
 | 項目 | 値 |
 |---|---|
 | Method / Path | `GET /customers/{customerId}` |
-| RAML | `raml/sample-customer-api/v1/resources/customer-get-by-id.raml` |
+| RAML | `apis/sample-customer-api-v1/operations/customer-get-by-id/customer-get-by-id.raml` |
 | Flow | `get-customer-by-id-flow` |
 | Response Type | `Customer` |
 
@@ -101,7 +101,7 @@ APIkit Router
 | 項目 | 値 |
 |---|---|
 | API ID | `sample-address-api-v1` |
-| Root RAML | `raml/sample-address-api/v1/sample-address-api.raml` |
+| Root RAML | `apis/sample-address-api-v1/raml/v1/sample-address-api.raml` |
 | Entry Flow | `sample-address-api-main-flow` |
 | APIkit Config | `sample-address-api-config` |
 | Autodiscovery Flow Ref | `sample-address-api-main-flow` |
