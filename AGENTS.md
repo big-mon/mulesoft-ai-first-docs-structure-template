@@ -67,7 +67,7 @@ applications/{appId}/
 - アプリケーション内の複数APIで再利用するRAML type、trait、exampleは `applications/{appId}/raml/common/` 配下に置いてください。
 - API固有のRAML root、Operation fragment、type、Operation固有exampleは `applications/{appId}/raml/{apiFolder}/{version}/` 配下に置いてください。
 - Operation RAML fragmentは `resources/` 配下に置き、`get_customer-get-by-id.raml` のようにHTTP methodとOperation名を `_` で区切ってください。
-- Operation別のProcessor表、詳細シーケンス図、Flow詳細、DataWeave詳細、MUnit観点は `applications/{appId}/operations/{apiId}/{method}_{operationName}/operation-detail-design.md` に置いてください。
+- Operation別のProcessor表、詳細シーケンス図、Flow詳細、DataWeave項目マッピング、Connector呼び出し詳細、MUnitテストケース詳細は `applications/{appId}/operations/{apiId}/{method}_{operationName}/operation-detail-design.md` に置いてください。
 - アプリケーション間で資産を混在させないでください。
 
 ## 正本ルール
@@ -152,7 +152,8 @@ RAMLと実装が矛盾している場合は、勝手に解決せず、矛盾と�
 - 基本設計と詳細設計には、対象アプリケーションの `design-index.yaml` の `apis[]` に存在するAPIのみ記載してください。
 - 構造例として有用なAPIであっても、`design-index.yaml` に未登録であれば設計書本文には追加しないでください。
 - `application-detail-design.md` はアプリケーション共通設計、APIkit Router、Operation - Flow対応表、Error Handler、DataWeave / Connector / MUnitの一覧性を優先してください。
-- Operation別の詳細シーケンス図、Processor表、Flow詳細、DataWeave詳細、Connector呼び出し詳細、MUnit観点はOperation詳細設計ファイルに記載してください。
+- Operation別の詳細シーケンス図、Processor表、Flow詳細、DataWeave項目マッピング、Connector呼び出し詳細、MUnitテストケース詳細はOperation詳細設計ファイルに記載してください。
+- 詳細設計フェーズ完了時点では、Operation詳細設計にDataWeaveのsource-to-target項目マッピング、Connectorのmethod/path/header/body/timeout/error mapping、MUnitの入力/mock/assertを含めてください。
 - `application-detail-design.md` からOperation詳細設計ファイルへのリンクを置き、Operation詳細を1ファイルへ集約しないでください。
 - 基本設計のOperation一覧は、Operation ID、Method、Path、概要、RAML Fragmentの一覧性を優先し、Request Type、Response Type、Header詳細を重複記載しないでください。
 - 基本設計のOperation別概要は、型名ではなく「顧客ID」「検索条件」「顧客情報」「検索結果」のような業務概念で入力と出力を表してください。
@@ -186,8 +187,9 @@ RAMLと実装が矛盾している場合は、勝手に解決せず、矛盾と�
 - `application-detail-design.md` からOperation詳細設計ファイルへ導線があること
 - Operation詳細設計でFlow、詳細シーケンス、Processor表が定義されていること
 - エラー応答がRAMLと整合していること
-- 変換が必要な場合、Mapping / DataWeaveが定義されていること
-- MUnitシナリオが正常系と主要異常系をカバーしていること
+- 変換が必要な場合、DataWeaveのsource-to-target項目マッピングが定義されていること
+- Connector呼び出し詳細でmethod、path、header、body、timeout、error mappingが定義されていること
+- MUnitテストケース詳細で正常系と主要異常系の入力、mock、assertが定義されていること
 
 ## 禁止事項
 

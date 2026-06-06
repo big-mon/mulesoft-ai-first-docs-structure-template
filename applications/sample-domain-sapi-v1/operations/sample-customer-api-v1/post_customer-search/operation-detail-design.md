@@ -60,18 +60,69 @@ sequenceDiagram
 | 6 | Transform Message | APIレスポンスを生成する | downstream response | `CustomerSearchResponse` | `EXPRESSION` |
 | 7 | Logger | 終了ログを出力する | status, elapsed time | log event | - |
 
-## 5. DataWeave詳細
+## 5. DataWeave項目マッピング
 
 | DWL | 入力 | 出力 | 目的 |
 |---|---|---|---|
 | `src/main/resources/dwl/customer-search-request.dwl` | `CustomerSearchRequest` | downstream search request | 検索条件を正規化する |
 | `src/main/resources/dwl/customer-search-response.dwl` | downstream search response | `CustomerSearchResponse` | 一覧結果をマッピングする |
 
+### 5.1 Request mapping
+
+| Downstream field | Source | 変換規則 | Null / default | 備考 |
+|---|---|---|---|---|
+| `nameLike` | `payload.customerName` | 前後空白を除去して設定する | nullの場合は項目を省略する | 部分一致検索条件 |
+| `statusCode` | `payload.status` | `ACTIVE` -> `01`, `INACTIVE` -> `02` | nullの場合は項目を省略する | Customer Systemのステータスコード |
+| `limit` | `payload.limit` | integerとして設定する | nullの場合は `20` | RAML上の最大値は100 |
+
+### 5.2 Downstream response model
+
+| Field | Type | Required | 備考 |
+|---|---|---:|---|
+| `total` | integer | true | 検索結果の総件数 |
+| `items[].id` | string | true | Customer System上の顧客ID |
+| `items[].fullName` | string | true | 顧客氏名 |
+| `items[].statusCode` | string | true | `01`: 有効、`02`: 無効、その他: 不明 |
+| `items[].dateOfBirth` | string | false | `yyyy-MM-dd` 形式 |
+
+### 5.3 Response mapping
+
+| Target field | Source | 変換規則 | Null / default | 備考 |
+|---|---|---|---|---|
+| `totalCount` | `payload.total` | integerとして設定する | 必須。nullの場合は `0` | RAML `CustomerSearchResponse.totalCount` |
+| `customers` | `payload.items` | 配列として設定する | nullの場合は空配列 | RAML `CustomerSearchResponse.customers` |
+| `customers[].customerId` | `payload.items[].id` | 文字列として設定する | 必須。nullの場合は `EXPRESSION` error | RAML `Customer.customerId` |
+| `customers[].customerName` | `payload.items[].fullName` | 文字列として設定する | 必須。nullの場合は `EXPRESSION` error | RAML `Customer.customerName` |
+| `customers[].status` | `payload.items[].statusCode` | `01` -> `ACTIVE`, `02` -> `INACTIVE`, その他 -> `UNKNOWN` | `UNKNOWN` | RAML `Customer.status` |
+| `customers[].birthDate` | `payload.items[].dateOfBirth` | `date-only` として設定する | nullの場合は項目を省略する | RAML `Customer.birthDate?` |
+
 ## 6. Connector呼び出し詳細
 
-| Connector | Config | 入力 | 出力 | Error |
-|---|---|---|---|---|
-| HTTP Request | `sample-http-request-config` | downstream search request | downstream response | `HTTP:TIMEOUT`, `HTTP:CONNECTIVITY`, `HTTP:*` |
+| 項目 | 値 |
+|---|---|
+| Connector | HTTP Request |
+| Config | `sample-http-request-config` |
+| Downstream system | Customer System |
+| Method | POST |
+| Path | `/customers/search` |
+| Full URL | `https://${downstream.host}:${downstream.port}${downstream.basePath}/customers/search` |
+| Response timeout | `${downstream.responseTimeoutMillis}` |
+| Retry | なし |
+| Request body | downstream search request |
+| Response body | downstream search response |
+
+| 種別 | 名前 | 値 / 変換規則 | 備考 |
+|---|---|---|---|
+| Header | `X-Correlation-ID` | `vars.correlationId` | 接続先追跡用 |
+| Header | `Content-Type` | `application/json` | JSON request |
+| Body | - | `customer-search-request.dwl` の出力 | Customer System向け検索条件 |
+
+| Downstream status / error | Mule error | API response | 備考 |
+|---|---|---|---|
+| 200 | - | 200 `CustomerSearchResponse` | 正常応答 |
+| timeout | `HTTP:TIMEOUT` | 504 `GATEWAY_TIMEOUT` | `downstream.responseTimeoutMillis` 超過 |
+| connectivity error | `HTTP:CONNECTIVITY` | 503 `SERVICE_UNAVAILABLE` | 接続先利用不可 |
+| other `HTTP:*` | `HTTP:*` | 500 `INTERNAL_ERROR` | 想定外の接続先エラー |
 
 ## 7. Error処理
 
@@ -82,10 +133,10 @@ sequenceDiagram
 | `HTTP:CONNECTIVITY` | 503 | `SERVICE_UNAVAILABLE` | 接続先サービス利用不可 |
 | `ANY` | 500 | `INTERNAL_ERROR` | 接続先または内部エラー |
 
-## 8. MUnit観点
+## 8. MUnitテストケース詳細
 
-| Test | 目的 | Mock | Assert |
+| Test | 入力 | Mock | Assert |
 |---|---|---|---|
-| `customer-search-success-test` | 正常応答 | HTTP Request | status 200 と `CustomerSearchResponse` payload |
-| `customer-search-validation-error-test` | request body不正 | なし | status 400 と `BAD_REQUEST` |
-| `customer-search-system-error-test` | 接続先または内部エラー | HTTP Request | status 500 または 503 の `ErrorResponse` |
+| `customer-search-success-test` | `POST /api/v1/customers/search`、payload `{ "customerName": "サンプル", "status": "ACTIVE", "limit": 20 }` | HTTP Request returns 200 with `{ "total": 1, "items": [{ "id": "C000001", "fullName": "サンプル太郎", "statusCode": "01", "dateOfBirth": "1990-01-01" }] }` | HTTP status 200。payload.totalCount=`1`。payload.customers[0].customerId=`C000001`、status=`ACTIVE`。HTTP Request body has `nameLike=サンプル`, `statusCode=01`, `limit=20` |
+| `customer-search-validation-error-test` | `POST /api/v1/customers/search`、payload `{ "status": "INVALID" }` | なし | HTTP status 400。payload.code=`BAD_REQUEST`。HTTP Requestが呼ばれない |
+| `customer-search-system-error-test` | `POST /api/v1/customers/search`、valid payload | HTTP Request raises `HTTP:CONNECTIVITY` or `HTTP:*` | `HTTP:CONNECTIVITY` の場合はstatus 503、その他の内部エラーはstatus 500。payloadは `ErrorResponse` |

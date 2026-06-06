@@ -17,7 +17,7 @@ appId: {appId}, apiId: {apiId}, apiFolder: {apiFolder} のAPIをレビューし�
 - 共通エラー応答が一貫して適用されていること。
 - API ManagerのPolicy、利用者、Autodiscovery flowRefが定義されていること。
 - 詳細設計にすべてのOperationのOperation-to-Flow対応が定義されていること。
-- すべてのOperationに operation-detail-design.md が存在し、詳細シーケンス図とProcessor表が定義されていること。
+- すべてのOperationに operation-detail-design.md が存在し、詳細シーケンス図、Processor表、DataWeave項目マッピング、Connector呼び出し詳細、MUnitテストケース詳細が定義されていること。
 
 指摘事項はOperation ID単位で整理して報告してください。
 ```

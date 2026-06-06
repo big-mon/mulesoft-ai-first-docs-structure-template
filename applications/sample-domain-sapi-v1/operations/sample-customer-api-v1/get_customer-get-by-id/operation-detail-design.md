@@ -59,17 +59,58 @@ sequenceDiagram
 | 6 | Transform Message | APIレスポンスを生成する | downstream response | `Customer` | `EXPRESSION` |
 | 7 | Logger | 終了ログを出力する | status, elapsed time | log event | - |
 
-## 5. DataWeave詳細
+## 5. DataWeave項目マッピング
 
 | DWL | 入力 | 出力 | 目的 |
 |---|---|---|---|
 | `src/main/resources/dwl/customer-get-by-id-response.dwl` | downstream customer response | `Customer` | 接続先項目をAPI typeへマッピングする |
 
+### 5.1 Downstream response model
+
+| Field | Type | Required | 備考 |
+|---|---|---:|---|
+| `id` | string | true | Customer System上の顧客ID |
+| `fullName` | string | true | 顧客氏名 |
+| `statusCode` | string | true | `01`: 有効、`02`: 無効、その他: 不明 |
+| `dateOfBirth` | string | false | `yyyy-MM-dd` 形式 |
+
+### 5.2 Response mapping
+
+| Target field | Source | 変換規則 | Null / default | 備考 |
+|---|---|---|---|---|
+| `customerId` | `payload.id` | 文字列として設定する | 必須。nullの場合は `EXPRESSION` error | RAML `Customer.customerId` |
+| `customerName` | `payload.fullName` | 文字列として設定する | 必須。nullの場合は `EXPRESSION` error | RAML `Customer.customerName` |
+| `status` | `payload.statusCode` | `01` -> `ACTIVE`, `02` -> `INACTIVE`, その他 -> `UNKNOWN` | `UNKNOWN` | RAML `Customer.status` |
+| `birthDate` | `payload.dateOfBirth` | `date-only` として設定する | nullの場合は項目を省略する | RAML `Customer.birthDate?` |
+
 ## 6. Connector呼び出し詳細
 
-| Connector | Config | 入力 | 出力 | Error |
-|---|---|---|---|---|
-| HTTP Request | `sample-http-request-config` | customerId | downstream response | `HTTP:NOT_FOUND`, `HTTP:TIMEOUT`, `HTTP:CONNECTIVITY`, `HTTP:*` |
+| 項目 | 値 |
+|---|---|
+| Connector | HTTP Request |
+| Config | `sample-http-request-config` |
+| Downstream system | Customer System |
+| Method | GET |
+| Path | `/customers/{customerId}` |
+| Full URL | `https://${downstream.host}:${downstream.port}${downstream.basePath}/customers/{customerId}` |
+| Response timeout | `${downstream.responseTimeoutMillis}` |
+| Retry | なし |
+| Request body | なし |
+| Response body | downstream customer response |
+
+| 種別 | 名前 | 値 / 変換規則 | 備考 |
+|---|---|---|---|
+| URI parameter | `customerId` | `attributes.uriParams.customerId` | API requestのpath parameter |
+| Header | `X-Correlation-ID` | `vars.correlationId` | 接続先追跡用 |
+| Header | `client_id`, `client_secret` | 転送しない | API Manager policy用のため接続先へ渡さない |
+
+| Downstream status / error | Mule error | API response | 備考 |
+|---|---|---|---|
+| 200 | - | 200 `Customer` | 正常応答 |
+| 404 | `HTTP:NOT_FOUND` | 404 `RESOURCE_NOT_FOUND` | 対象顧客なし |
+| timeout | `HTTP:TIMEOUT` | 504 `GATEWAY_TIMEOUT` | `downstream.responseTimeoutMillis` 超過 |
+| connectivity error | `HTTP:CONNECTIVITY` | 503 `SERVICE_UNAVAILABLE` | 接続先利用不可 |
+| other `HTTP:*` | `HTTP:*` | 500 `INTERNAL_ERROR` | 想定外の接続先エラー |
 
 ## 7. Error処理
 
@@ -81,11 +122,11 @@ sequenceDiagram
 | `HTTP:CONNECTIVITY` | 503 | `SERVICE_UNAVAILABLE` | 接続先サービス利用不可 |
 | `ANY` | 500 | `INTERNAL_ERROR` | 想定外の内部エラー |
 
-## 8. MUnit観点
+## 8. MUnitテストケース詳細
 
-| Test | 目的 | Mock | Assert |
+| Test | 入力 | Mock | Assert |
 |---|---|---|---|
-| `customer-get-by-id-success-test` | 正常応答 | HTTP Request | status 200 と `Customer` payload |
-| `customer-get-by-id-validation-error-test` | customer IDまたは必須header不正 | なし | status 400 と `BAD_REQUEST` |
-| `customer-get-by-id-not-found-test` | 接続先で対象なし | HTTP Request | status 404 と `RESOURCE_NOT_FOUND` |
-| `customer-get-by-id-timeout-test` | 接続先タイムアウト | HTTP Request | status 504 と `GATEWAY_TIMEOUT` |
+| `customer-get-by-id-success-test` | `GET /api/v1/customers/C000001`、valid `client_id`、valid `client_secret` | HTTP Request returns 200 with `{ "id": "C000001", "fullName": "サンプル太郎", "statusCode": "01", "dateOfBirth": "1990-01-01" }` | HTTP status 200。payload.customerId=`C000001`、customerName=`サンプル太郎`、status=`ACTIVE`、birthDate=`1990-01-01`。HTTP Requestが1回呼ばれる |
+| `customer-get-by-id-validation-error-test` | `GET /api/v1/customers/C000001`、invalid or missing `client_id` / `client_secret` | なし | HTTP status 400。payload.code=`BAD_REQUEST`。HTTP Requestが呼ばれない |
+| `customer-get-by-id-not-found-test` | `GET /api/v1/customers/C999999`、valid headers | HTTP Request raises `HTTP:NOT_FOUND` | HTTP status 404。payload.code=`RESOURCE_NOT_FOUND` |
+| `customer-get-by-id-timeout-test` | `GET /api/v1/customers/C000001`、valid headers | HTTP Request raises `HTTP:TIMEOUT` | HTTP status 504。payload.code=`GATEWAY_TIMEOUT` |

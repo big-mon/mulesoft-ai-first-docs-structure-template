@@ -14,7 +14,7 @@ Muleアプリケーション全体の設計をレビューするためのプロ�
 - すべてのOperation RAML fragmentが対象APIの resources/{operationRaml} として存在すること。
 - すべてのOperationに operations/{apiId}/{method}_{operationName}/operation-detail-design.md が存在すること。
 - すべてのOperationが一意のoperationIdを持つこと。
-- RAML、基本設計、詳細設計、Flow、DataWeave、MUnitの参照関係を追跡できること。
+- RAML、基本設計、詳細設計、Flow、DataWeave項目マッピング、Connector呼び出し詳細、MUnitテストケース詳細の参照関係を追跡できること。
 - API ManagerとAutodiscoveryの設定が、必要なAPIごとに定義されていること。
 - どれか1つの成果物にしか存在しないOperationがないこと。
 

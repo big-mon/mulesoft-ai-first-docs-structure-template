@@ -67,7 +67,7 @@ Repository
 | `applications/{appId}/design-index.yaml` | Application / API / Operation / RAML / Flow / DataWeave / MUnit の対応関係 |
 | `applications/{appId}/application-basic-design.md` | アプリケーション基本設計のベースライン |
 | `applications/{appId}/application-detail-design.md` | アプリケーション共通の詳細設計とOperation詳細設計への導線 |
-| `applications/{appId}/operations/{apiId}/{method}_{operationName}/operation-detail-design.md` | Operation別のFlow、Processor、詳細シーケンス、DataWeave、MUnit観点 |
+| `applications/{appId}/operations/{apiId}/{method}_{operationName}/operation-detail-design.md` | Operation別のFlow、Processor、詳細シーケンス、DataWeave項目マッピング、Connector呼び出し詳細、MUnitテストケース詳細 |
 | `applications/{appId}/raml/common/` | アプリケーション内の複数APIで共有するRAML type、trait、example |
 | `applications/{appId}/raml/{apiFolder}/{version}/` | API root RAML、Operation fragment、API固有type、Operation固有example |
 | `applications/{appId}/src/main/mule/` | Mule XML実装 |
@@ -129,7 +129,7 @@ full API path = api.basePath + operation.path
 |---|---|---|
 | 要件定義 | ルート `design-index.yaml`, `applications/{appId}/design-index.yaml` | Application、API、Operation候補を整理する |
 | 基本設計 | `applications/{appId}/application-basic-design.md`, `applications/{appId}/raml/**`, `applications/{appId}/design-index.yaml` | API契約、責務、API管理、シーケンス、エラー方針を定義する |
-| 詳細設計 | `applications/{appId}/application-detail-design.md`, `applications/{appId}/operations/**/operation-detail-design.md`, `applications/{appId}/design-index.yaml` | 共通Flow、Connector、Error Handlerと、Operation別のProcessor、詳細シーケンス、DataWeave、MUnit観点を定義する |
+| 詳細設計 | `applications/{appId}/application-detail-design.md`, `applications/{appId}/operations/**/operation-detail-design.md`, `applications/{appId}/design-index.yaml` | 共通Flow、Connector、Error Handlerと、Operation別のProcessor、詳細シーケンス、DataWeave項目マッピング、Connector呼び出し詳細、MUnitテストケース詳細を定義する |
 | 実装 | `applications/{appId}/src/main/mule/**`, `applications/{appId}/src/main/resources/dwl/**`, `applications/{appId}/src/test/munit/**` | Muleアプリとテストを実装する |
 | 変更管理 | 影響するRAML、設計書、index、実装、テスト | Operation ID単位で影響を追跡する |
 

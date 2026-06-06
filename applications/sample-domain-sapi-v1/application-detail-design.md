@@ -2,7 +2,7 @@
 
 このドキュメントは、1つのMuleアプリケーションに対する共通詳細設計と、Operation別詳細設計への導線です。
 
-Operation別の詳細シーケンス図、Processor表、Flow詳細、DataWeave詳細、MUnit観点は `operations/{apiId}/{method}_{operationName}/operation-detail-design.md` に記載します。
+Operation別の詳細シーケンス図、Processor表、Flow詳細、DataWeave項目マッピング、Connector呼び出し詳細、MUnitテストケース詳細は `operations/{apiId}/{method}_{operationName}/operation-detail-design.md` に記載します。
 
 ## 1. アプリケーション詳細
 
@@ -63,8 +63,8 @@ Operation別の詳細シーケンス図、Processor表、Flow詳細、DataWeave�
 
 | Operation ID | Detail Design | 主な記載内容 |
 |---|---|---|
-| `sample-customer-api-v1.customer.getById` | `operations/sample-customer-api-v1/get_customer-get-by-id/operation-detail-design.md` | 詳細シーケンス、Flow詳細、Processor表、DataWeave、Connector呼び出し、Error処理、MUnit観点 |
-| `sample-customer-api-v1.customer.search` | `operations/sample-customer-api-v1/post_customer-search/operation-detail-design.md` | 詳細シーケンス、Flow詳細、Processor表、DataWeave、Connector呼び出し、Error処理、MUnit観点 |
+| `sample-customer-api-v1.customer.getById` | `operations/sample-customer-api-v1/get_customer-get-by-id/operation-detail-design.md` | 詳細シーケンス、Flow詳細、Processor表、DataWeave項目マッピング、Connector呼び出し詳細、Error処理、MUnitテストケース詳細 |
+| `sample-customer-api-v1.customer.search` | `operations/sample-customer-api-v1/post_customer-search/operation-detail-design.md` | 詳細シーケンス、Flow詳細、Processor表、DataWeave項目マッピング、Connector呼び出し詳細、Error処理、MUnitテストケース詳細 |
 
 ## 5. Error Handler詳細
 
@@ -106,6 +106,7 @@ Operation別の詳細シーケンス図、Processor表、Flow詳細、DataWeave�
 | `downstream.host` | `${downstream.host}` | Customer System host |
 | `downstream.port` | `${downstream.port}` | Customer System port |
 | `downstream.basePath` | `${downstream.basePath}` | Customer System base path |
+| `downstream.responseTimeoutMillis` | `${downstream.responseTimeoutMillis}` | Customer System response timeout |
 
 ## 7. MUnitテスト設計
 

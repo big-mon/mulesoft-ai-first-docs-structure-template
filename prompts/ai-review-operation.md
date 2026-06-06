@@ -17,8 +17,9 @@ appId: {appId}, apiId: {apiId}, apiFolder: {apiFolder}, version: {version}, oper
 - Request body、Response body、Header、Status codeが明確であること。
 - RAMLのエラー応答とError Handler設計が整合していること。
 - Operation詳細設計の詳細シーケンス図とProcessor表が実装入力として十分であること。
-- 変換が必要な場合、DataWeaveマッピングが定義されていること。
-- MUnitシナリオが正常系と主要異常系をカバーしていること。
+- 変換が必要な場合、DataWeaveのsource-to-target項目マッピングが定義されていること。
+- Connector呼び出し詳細でmethod、path、header、body、timeout、error mappingが定義されていること。
+- MUnitテストケース詳細で正常系と主要異常系の入力、mock、assertが定義されていること。
 
 ファイルは変更しないでください。指摘事項と修正案を報告してください。
 ```

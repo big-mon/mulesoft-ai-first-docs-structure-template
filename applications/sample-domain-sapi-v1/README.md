@@ -10,7 +10,7 @@
 2. `application-basic-design.md` でアプリケーション責務、API基本設計、Operation概要を確認します。
 3. `design-index.yaml` に記載されたroot RAMLとOperation RAML fragmentを確認します。
 4. `application-detail-design.md` でAPIkit Router、共通Flow、共通Connector、Error Handler、DataWeave、MUnitの一覧を確認します。
-5. `operations/{apiId}/{method}_{operationName}/operation-detail-design.md` でOperation別の詳細シーケンス、Processor表、Flow詳細、DataWeave、MUnit観点を確認します。
+5. `operations/{apiId}/{method}_{operationName}/operation-detail-design.md` でOperation別の詳細シーケンス、Processor表、Flow詳細、DataWeave項目マッピング、Connector呼び出し詳細、MUnitテストケース詳細を確認します。
 6. 実装が存在する場合は `src/` 配下のMule XML、DataWeave、MUnitを確認します。
 
 ## ディレクトリ
