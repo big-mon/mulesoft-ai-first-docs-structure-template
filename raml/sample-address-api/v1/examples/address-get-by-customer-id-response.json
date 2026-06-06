@@ -1,0 +1,13 @@
+{
+  "customerId": "C000001",
+  "addresses": [
+    {
+      "addressId": "A000001",
+      "postalCode": "100-0001",
+      "prefecture": "Tokyo",
+      "city": "Chiyoda-ku",
+      "addressLine1": "1-1-1",
+      "addressLine2": "Sample Building"
+    }
+  ]
+}

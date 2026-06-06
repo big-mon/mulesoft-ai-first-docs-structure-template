@@ -1,0 +1,14 @@
+#%RAML 1.0 Method
+(operationId): sample-customer-api-v1.customer.getById
+displayName: Get customer by ID
+description: Get a customer by customer ID.
+is:
+  - correlation-id
+  - common-errors
+responses:
+  200:
+    description: Customer was found.
+    body:
+      application/json:
+        type: Customer
+        example: !include ../examples/customer-get-by-id-response.json

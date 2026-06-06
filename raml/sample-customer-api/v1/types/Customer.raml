@@ -1,0 +1,20 @@
+#%RAML 1.0 DataType
+type: object
+additionalProperties: false
+properties:
+  customerId:
+    type: string
+    required: true
+    example: C000001
+  customerName:
+    type: string
+    required: true
+    example: Sample Taro
+  status:
+    type: string
+    required: true
+    enum: [ACTIVE, INACTIVE, UNKNOWN]
+    example: ACTIVE
+  birthDate?:
+    type: date-only
+    example: 1990-01-01

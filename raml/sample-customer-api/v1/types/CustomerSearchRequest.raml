@@ -1,0 +1,16 @@
+#%RAML 1.0 DataType
+type: object
+additionalProperties: false
+properties:
+  customerName?:
+    type: string
+    example: Sample
+  status?:
+    type: string
+    enum: [ACTIVE, INACTIVE]
+    example: ACTIVE
+  limit?:
+    type: integer
+    minimum: 1
+    maximum: 100
+    default: 20

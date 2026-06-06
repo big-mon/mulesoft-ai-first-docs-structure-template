@@ -1,0 +1,31 @@
+#%RAML 1.0
+title: Sample Customer API
+version: v1
+baseUri: https://api.example.com/api/v1
+mediaType: application/json
+
+annotationTypes:
+  operationId:
+    type: string
+
+types:
+  Customer: !include types/Customer.raml
+  CustomerSearchRequest: !include types/CustomerSearchRequest.raml
+  CustomerSearchResponse: !include types/CustomerSearchResponse.raml
+  ErrorResponse: !include ../../common/types/ErrorResponse.raml
+
+traits:
+  correlation-id: !include ../../common/traits/correlation-id.raml
+  common-errors: !include ../../common/traits/common-errors.raml
+
+/customers:
+  /{customerId}:
+    uriParameters:
+      customerId:
+        type: string
+        required: true
+        example: C000001
+    get: !include resources/customer-get-by-id.raml
+
+  /search:
+    post: !include resources/customer-search.raml

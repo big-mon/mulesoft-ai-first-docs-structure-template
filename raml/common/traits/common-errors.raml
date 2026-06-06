@@ -1,0 +1,32 @@
+#%RAML 1.0 Trait
+responses:
+  400:
+    description: Invalid request.
+    body:
+      application/json:
+        type: ErrorResponse
+        example: !include ../examples/error-response.json
+  404:
+    description: Resource not found.
+    body:
+      application/json:
+        type: ErrorResponse
+        example: !include ../examples/error-response.json
+  500:
+    description: Internal server error.
+    body:
+      application/json:
+        type: ErrorResponse
+        example: !include ../examples/error-response.json
+  503:
+    description: Downstream service unavailable.
+    body:
+      application/json:
+        type: ErrorResponse
+        example: !include ../examples/error-response.json
+  504:
+    description: Downstream timeout.
+    body:
+      application/json:
+        type: ErrorResponse
+        example: !include ../examples/error-response.json

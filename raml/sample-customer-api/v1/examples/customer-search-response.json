@@ -1,0 +1,11 @@
+{
+  "totalCount": 1,
+  "customers": [
+    {
+      "customerId": "C000001",
+      "customerName": "Sample Taro",
+      "status": "ACTIVE",
+      "birthDate": "1990-01-01"
+    }
+  ]
+}
