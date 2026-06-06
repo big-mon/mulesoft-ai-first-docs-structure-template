@@ -52,6 +52,7 @@
 | Method / Path | `GET /customers/{customerId}` |
 | RAML | `apis/sample-customer-api/operations/customer-get-by-id/customer-get-by-id.raml` |
 | Flow | `get-customer-by-id-flow` |
+| Request Headers | `client_id`, `client_secret` |
 | Response Type | `Customer` |
 
 ##### Flow図
@@ -69,10 +70,11 @@ APIkit Router
 | No | Processor | 目的 | 入力 | 出力 | Error |
 |---:|---|---|---|---|---|
 | 1 | Logger | 開始ログを出力する | headers, path params | - | - |
-| 2 | Validation | `customerId` を検証する | `attributes.uriParams.customerId` | - | `VALIDATION:*` |
-| 3 | HTTP Request | 顧客システムを呼び出す | customerId | 接続先レスポンス | `HTTP:*` |
-| 4 | Transform Message | APIレスポンスを生成する | 接続先レスポンス | `Customer` | `EXPRESSION` |
-| 5 | Logger | 終了ログを出力する | status, elapsed time | - | - |
+| 2 | Validation | 必須request headerを検証する | `attributes.headers.client_id`, `attributes.headers.client_secret` | - | `VALIDATION:*` |
+| 3 | Validation | `customerId` を検証する | `attributes.uriParams.customerId` | - | `VALIDATION:*` |
+| 4 | HTTP Request | 顧客システムを呼び出す | customerId | 接続先レスポンス | `HTTP:*` |
+| 5 | Transform Message | APIレスポンスを生成する | 接続先レスポンス | `Customer` | `EXPRESSION` |
+| 6 | Logger | 終了ログを出力する | status, elapsed time | - | - |
 
 ##### Error Handling
 

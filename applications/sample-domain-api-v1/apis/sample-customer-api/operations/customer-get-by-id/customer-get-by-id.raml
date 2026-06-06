@@ -4,10 +4,22 @@ displayName: 顧客取得
 description: |
   顧客IDを指定して顧客情報を取得します。
   Request bodyは使用しません。
+  client_id and client_secret headers are required by Client ID enforcement.
   customerId path parameterはroot RAMLのresourceで定義します。
 is:
   - correlation-id
   - common-errors
+headers:
+  client_id:
+    type: string
+    required: true
+    description: API ManagerのClient ID enforcementで検証するClient IDです。
+    example: sample-client-id
+  client_secret:
+    type: string
+    required: true
+    description: API ManagerのClient ID enforcementで検証するClient Secretです。
+    example: sample-client-secret
 responses:
   200:
     description: 顧客情報が見つかりました。

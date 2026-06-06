@@ -35,10 +35,10 @@
 
 ## 4. Operation一覧
 
-| Operation ID | Method | Path | Request Type | Response Type | RAML Fragment |
-|---|---|---|---|---|---|
-| `sample-customer-api-v1.customer.getById` | GET | `/customers/{customerId}` | - | `Customer` | `apis/sample-customer-api/operations/customer-get-by-id/customer-get-by-id.raml` |
-| `sample-customer-api-v1.customer.search` | POST | `/customers/search` | `CustomerSearchRequest` | `CustomerSearchResponse` | `apis/sample-customer-api/operations/customer-search/customer-search.raml` |
+| Operation ID | Method | Path | Request Headers | Request Type | Response Type | RAML Fragment |
+|---|---|---|---|---|---|---|
+| `sample-customer-api-v1.customer.getById` | GET | `/customers/{customerId}` | `client_id`, `client_secret` | - | `Customer` | `apis/sample-customer-api/operations/customer-get-by-id/customer-get-by-id.raml` |
+| `sample-customer-api-v1.customer.search` | POST | `/customers/search` | - | `CustomerSearchRequest` | `CustomerSearchResponse` | `apis/sample-customer-api/operations/customer-search/customer-search.raml` |
 
 ## 5. シーケンス概要
 

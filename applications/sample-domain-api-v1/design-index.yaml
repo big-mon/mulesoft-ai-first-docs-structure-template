@@ -54,6 +54,13 @@ apis:
         raml: apis/sample-customer-api/operations/customer-get-by-id/customer-get-by-id.raml
         flow: get-customer-by-id-flow
         requestType: null
+        requestHeaders:
+          - name: client_id
+            required: true
+            source: Client ID enforcement
+          - name: client_secret
+            required: true
+            source: Client ID enforcement
         responseType: Customer
         errorModel: ErrorResponse
         dataweave:
