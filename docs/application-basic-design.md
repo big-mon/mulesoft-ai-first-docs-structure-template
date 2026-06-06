@@ -17,8 +17,10 @@ This document is the basic design baseline for one Mule application.
 
 | API ID | API Name | Version | Layer | Root RAML | Base Path | API Manager |
 |---|---|---|---|---|---|---|
-| `sample-customer-api-v1` | Sample Customer API | v1 | Experience | `raml/sample-customer-api/v1/sample-customer-api.raml` | `/api/v1/customers` | Managed |
-| `sample-address-api-v1` | Sample Address API | v1 | Process | `raml/sample-address-api/v1/sample-address-api.raml` | `/api/v1/addresses` | Managed |
+| `sample-customer-api-v1` | Sample Customer API | v1 | Experience | `raml/sample-customer-api/v1/sample-customer-api.raml` | `/api/v1` | Managed |
+| `sample-address-api-v1` | Sample Address API | v1 | Process | `raml/sample-address-api/v1/sample-address-api.raml` | `/api/v1` | Managed |
+
+`Base Path` represents the path component of the RAML `baseUri`. Operation paths are defined separately and must not duplicate the RAML resource path.
 
 ## 3. API Basic Design
 
