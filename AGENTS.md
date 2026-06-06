@@ -102,6 +102,46 @@ Operation RAML fragmentを変更する場合は、あわせて次のファイル
 
 RAMLと実装が矛盾している場合は、勝手に解決せず、矛盾として報告してください。
 
+## 設計書構成ルール
+
+`application-basic-design.md` は、次の章構成を標準とします。
+
+```text
+1. アプリケーション概要
+   1.1 アプリケーション責務
+   1.2 jar / repo / deployment単位
+   1.3 外部接続先一覧
+   1.4 共通処理方針
+2. API一覧
+3. API別基本設計
+4. Operation別概要
+5. シーケンス概要
+6. データモデル・マッピング概要
+7. エラー定義
+8. API管理設計
+9. 設計トレーサビリティ
+```
+
+`application-detail-design.md` は、次の章構成を標準とします。
+
+```text
+1. アプリケーション詳細
+2. 共通Flow設計
+3. 共通Connector設定
+4. API別詳細設計
+   4.x.1 APIkit Router / entry flow
+   4.x.2 Operation - Flow対応表
+   4.x.3 Operation別Flow詳細
+5. Error Handler詳細
+6. DataWeave・Connector・設定一覧
+7. MUnitテスト設計
+```
+
+- 基本設計と詳細設計には、対象アプリケーションの `design-index.yaml` の `apis[]` に存在するAPIのみ記載してください。
+- 構造例として有用なAPIであっても、`design-index.yaml` に未登録であれば設計書本文には追加しないでください。
+- XAPI / PAPI / SAPI の判定は `appId` とアプリケーションフォルダ名に含まれる `xapi`、`papi`、`sapi` で行います。
+- API一覧やAPI別設計に `Layer` 列、`apiLayer`、`Experience`、`Process`、`System` などの重複情報を追加しないでください。
+
 ## 命名規約
 
 | 資産 | 命名ルール | 例 |
