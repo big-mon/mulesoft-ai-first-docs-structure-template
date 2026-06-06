@@ -1,4 +1,4 @@
-# MuleSoft AI-first Docs Structure Template
+# MuleSoft AI-first設計ドキュメント構造テンプレート
 
 このリポジトリは、MuleSoftアプリケーションの設計資産を、人間とAIエージェントの双方が読みやすい形で管理するためのテンプレートです。
 
