@@ -1,22 +1,22 @@
 # AGENTS.md
 
-This repository is designed for both human developers and AI agents.
+このリポジトリは、人間の開発者とAIエージェントの双方が利用することを前提にしています。
 
-AI agents must use this file as the working guide for reading, reviewing, and modifying this repository.
+AIエージェントは、このファイルを作業ガイドとして読み、設計理解、レビュー、変更作業を行ってください。
 
-## Required Reading Order
+## 必須の読み順
 
-Before making or reviewing changes, read the following files in order:
+変更またはレビューを行う前に、次の順番でファイルを確認してください。
 
 1. `README.md`
 2. `design-index.yaml`
 3. `docs/application-basic-design.md`
-4. Relevant RAML root file
-5. Relevant Operation RAML fragment
+4. 関連するRAML rootファイル
+5. 関連するOperation RAML fragment
 6. `docs/application-detail-design.md`
-7. Relevant Mule XML, DataWeave, and MUnit files if implementation exists
+7. 実装が存在する場合は、関連するMule XML、DataWeave、MUnitファイル
 
-## Core Hierarchy
+## 基本階層
 
 ```text
 Application
@@ -24,87 +24,87 @@ Application
        └─ Operation
 ```
 
-- Application = Mule app / jar / repository / deployment unit
-- API = RAML root / API Manager unit / APIkit router unit
-- Operation = HTTP Method + Path / RAML fragment / Mule Flow unit
+- Application = Muleアプリ / jar / repository / デプロイ単位
+- API = RAML root / API Manager単位 / APIkit Router単位
+- Operation = HTTP Method + Path / RAML fragment / Mule Flow単位
 
-## Source of Truth
+## 正本ルール
 
-| Topic | Source |
+| トピック | 正本 |
 |---|---|
-| Application, API, Operation list | `design-index.yaml` |
-| API request / response contract | RAML |
-| Basic design | `docs/application-basic-design.md` |
-| Flow and Processor design | `docs/application-detail-design.md` |
-| Mule implementation | `src/main/mule/`, `src/main/resources/dwl/` |
-| Unit test implementation | `src/test/munit/` |
+| Application、API、Operationの一覧 | `design-index.yaml` |
+| APIのrequest / response契約 | RAML |
+| 基本設計 | `docs/application-basic-design.md` |
+| FlowとProcessorの設計 | `docs/application-detail-design.md` |
+| Mule実装 | `src/main/mule/`, `src/main/resources/dwl/` |
+| 単体テスト実装 | `src/test/munit/` |
 
-## Path Composition Rule
+## パス合成ルール
 
-Use this rule when validating paths:
+パスを検証する際は、次のルールを使用してください。
 
 ```text
 full API path = api.basePath + operation.path
 ```
 
-- `api.basePath` must match the path component of the RAML root `baseUri`.
-- `operation.path` must match the RAML resource path for the Operation.
-- Do not duplicate the same resource segment in both `api.basePath` and `operation.path`.
+- `api.basePath` はRAML rootの `baseUri` のパス部分と一致させます。
+- `operation.path` は該当OperationのRAMLリソースパスと一致させます。
+- 同じリソースセグメントを `api.basePath` と `operation.path` の両方に重複して書かないでください。
 
-Example:
+例:
 
-| Field | Value |
+| 項目 | 値 |
 |---|---|
 | RAML `baseUri` | `https://api.example.com/api/v1` |
 | `api.basePath` | `/api/v1` |
 | `operation.path` | `/customers/{customerId}` |
 | Full path | `/api/v1/customers/{customerId}` |
 
-## Change Rules
+## 変更ルール
 
-When changing an Operation RAML fragment, also check:
+Operation RAML fragmentを変更する場合は、あわせて次のファイル・資産を確認してください。
 
 - `design-index.yaml`
-- RAML root file
+- RAML rootファイル
 - `docs/application-basic-design.md`
 - `docs/application-detail-design.md`
-- DataWeave mapping or implementation
-- MUnit test design or implementation
+- DataWeaveのマッピングまたは実装
+- MUnitのテスト設計または実装
 
-Do not change `operationId` unless explicitly requested.
+明示的に指示されていない限り、`operationId` を変更しないでください。
 
-Do not infer new API behavior from implementation alone.
+実装だけを根拠に、新しいAPI仕様や振る舞いを推測しないでください。
 
-If RAML and implementation conflict, report the conflict instead of silently resolving it.
+RAMLと実装が矛盾している場合は、勝手に解決せず、矛盾として報告してください。
 
-## Naming Rules
+## 命名規約
 
-| Asset | Naming Rule | Example |
+| 資産 | 命名ルール | 例 |
 |---|---|---|
 | API ID | `{domain}-api-v{version}` | `sample-customer-api-v1` |
 | Operation ID | `{apiId}.{resource}.{action}` | `sample-customer-api-v1.customer.getById` |
 | Operation RAML | kebab-case | `customer-get-by-id.raml` |
 | Flow | kebab-case + `-flow` | `get-customer-by-id-flow` |
-| DataWeave | operation-based | `customer-get-by-id-response.dwl` |
-| MUnit | operation + scenario | `customer-get-by-id-success-test` |
+| DataWeave | Operationベース | `customer-get-by-id-response.dwl` |
+| MUnit | Operation + シナリオ | `customer-get-by-id-success-test` |
 
-## AI Review Checklist
+## AIレビュー観点
 
-For each Operation, verify:
+各Operationについて、次を確認してください。
 
-- Operation exists in `design-index.yaml`
-- Operation RAML fragment exists
-- RAML root references the Operation fragment
-- `api.basePath + operation.path` matches the RAML contract route
-- Flow is defined in detail design
-- Error responses are consistent with RAML
-- Mapping/DataWeave is defined where needed
-- MUnit scenarios cover normal and major error cases
+- `design-index.yaml` にOperationが存在すること
+- Operation RAML fragmentが存在すること
+- RAML rootからOperation fragmentが参照されていること
+- `api.basePath + operation.path` がRAML契約上のルートと一致すること
+- 詳細設計でFlowが定義されていること
+- エラー応答がRAMLと整合していること
+- 変換が必要な場合、Mapping / DataWeaveが定義されていること
+- MUnitシナリオが正常系と主要異常系をカバーしていること
 
-## Prohibited Actions
+## 禁止事項
 
-- Do not rename Operation IDs without explicit instruction.
-- Do not treat RAML changes as minor edits when they change API contract.
-- Do not resolve contradictions silently; report them.
-- Do not copy sample values into production design without replacing them.
-- Do not add new APIs outside `apis[]` in `design-index.yaml`.
+- 明示的な指示なしにOperation IDを変更しないでください。
+- API契約を変えるRAML変更を軽微な編集として扱わないでください。
+- 矛盾を勝手に解決せず、必ず報告してください。
+- サンプル値を本番設計値としてそのまま流用しないでください。
+- `design-index.yaml` の `apis[]` 以外に新しいAPIを追加しないでください。
