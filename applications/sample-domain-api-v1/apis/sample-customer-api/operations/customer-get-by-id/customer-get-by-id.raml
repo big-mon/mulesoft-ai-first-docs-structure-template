@@ -1,7 +1,10 @@
 #%RAML 1.0 Method
 (operationId): sample-customer-api-v1.customer.getById
 displayName: 顧客取得
-description: 顧客IDを指定して顧客情報を取得します。
+description: |
+  顧客IDを指定して顧客情報を取得します。
+  Request bodyは使用しません。
+  customerId path parameterはroot RAMLのresourceで定義します。
 is:
   - correlation-id
   - common-errors

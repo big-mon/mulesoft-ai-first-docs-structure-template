@@ -1,7 +1,10 @@
 #%RAML 1.0 Method
 (operationId): sample-customer-api-v1.customer.search
 displayName: 顧客検索
-description: 条件を指定して顧客情報を検索します。
+description: |
+  条件を指定して顧客情報を検索します。
+  Request bodyはCustomerSearchRequestです。
+  Request body exampleはexamples/customer-search-request.jsonです。
 is:
   - correlation-id
   - common-errors

@@ -1,7 +1,10 @@
 #%RAML 1.0 Method
 (operationId): sample-address-api-v1.address.getByCustomerId
 displayName: 顧客住所一覧取得
-description: 顧客IDを指定して住所一覧を取得します。
+description: |
+  顧客IDを指定して住所一覧を取得します。
+  Request bodyは使用しません。
+  customerId path parameterはroot RAMLのresourceで定義します。
 is:
   - correlation-id
   - common-errors
