@@ -61,11 +61,24 @@ sequenceDiagram
 
 ## 5. DataWeave項目マッピング
 
-| DWL | 入力 | 出力 | 目的 |
-|---|---|---|---|
-| `src/main/resources/dwl/customer-get-by-id-response.dwl` | downstream customer response | `Customer` | 接続先項目をAPI typeへマッピングする |
+この章では、最初にOperationで使用するDWLを一覧化し、その後にDWLごとの入力ソース、接続先モデル、APIレスポンスへの項目マッピングを記載します。
 
-### 5.1 Downstream response model
+### 5.1 DWL一覧
+
+| DWL | 種別 | 主な入力ソース | 出力 | 目的 |
+|---|---|---|---|---|
+| `src/main/resources/dwl/customer-get-by-id-response.dwl` | response mapping | Customer System customer response | `Customer` | 接続先項目をAPI typeへマッピングする |
+
+### 5.2 `customer-get-by-id-response.dwl`
+
+#### 5.2.1 入力ソース
+
+| Source ID | Source | 取得元 | 概要 |
+|---|---|---|---|
+| `customerSystemResponse` | `payload` | Customer System `GET /customers/{customerId}` response | 顧客情報の接続先レスポンス |
+| `correlationId` | `vars.correlationId` | `common-correlation-id-subflow` | エラー処理やログ追跡で使用する相関ID |
+
+#### 5.2.2 接続先レスポンスモデル
 
 | Field | Type | Required | 備考 |
 |---|---|---:|---|
@@ -74,14 +87,14 @@ sequenceDiagram
 | `statusCode` | string | true | `01`: 有効、`02`: 無効、その他: 不明 |
 | `dateOfBirth` | string | false | `yyyy-MM-dd` 形式 |
 
-### 5.2 Response mapping
+#### 5.2.3 APIレスポンスマッピング
 
 | Target field | Source | 変換規則 | Null / default | 備考 |
 |---|---|---|---|---|
-| `customerId` | `payload.id` | 文字列として設定する | 必須。nullの場合は `EXPRESSION` error | RAML `Customer.customerId` |
-| `customerName` | `payload.fullName` | 文字列として設定する | 必須。nullの場合は `EXPRESSION` error | RAML `Customer.customerName` |
-| `status` | `payload.statusCode` | `01` -> `ACTIVE`, `02` -> `INACTIVE`, その他 -> `UNKNOWN` | `UNKNOWN` | RAML `Customer.status` |
-| `birthDate` | `payload.dateOfBirth` | `date-only` として設定する | nullの場合は項目を省略する | RAML `Customer.birthDate?` |
+| `customerId` | `customerSystemResponse.id` | 文字列として設定する | 必須。nullの場合は `EXPRESSION` error | RAML `Customer.customerId` |
+| `customerName` | `customerSystemResponse.fullName` | 文字列として設定する | 必須。nullの場合は `EXPRESSION` error | RAML `Customer.customerName` |
+| `status` | `customerSystemResponse.statusCode` | `01` -> `ACTIVE`, `02` -> `INACTIVE`, その他 -> `UNKNOWN` | `UNKNOWN` | RAML `Customer.status` |
+| `birthDate` | `customerSystemResponse.dateOfBirth` | `date-only` として設定する | nullの場合は項目を省略する | RAML `Customer.birthDate?` |
 
 ## 6. Connector呼び出し詳細
 

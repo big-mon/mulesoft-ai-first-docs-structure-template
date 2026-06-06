@@ -154,6 +154,7 @@ RAMLと実装が矛盾している場合は、勝手に解決せず、矛盾と�
 - `application-detail-design.md` はアプリケーション共通設計、APIkit Router、Operation - Flow対応表、Error Handler、DataWeave / Connector / MUnitの一覧性を優先してください。
 - Operation別の詳細シーケンス図、Processor表、Flow詳細、DataWeave項目マッピング、Connector呼び出し詳細、MUnitテストケース詳細はOperation詳細設計ファイルに記載してください。
 - 詳細設計フェーズ完了時点では、Operation詳細設計にDataWeaveのsource-to-target項目マッピング、Connectorのmethod/path/header/body/timeout/error mapping、MUnitの入力/mock/assertを含めてください。
+- Operation詳細設計の `DataWeave項目マッピング` では、直下にDWL一覧を置き、その後にDWLごとの詳細を記載してください。DWL詳細には入力ソース、出力、source-to-target項目マッピングを含め、複数システムや複数APIから値を取得する場合もDWL単位で追跡できるようにしてください。
 - `application-detail-design.md` からOperation詳細設計ファイルへのリンクを置き、Operation詳細を1ファイルへ集約しないでください。
 - 基本設計のOperation一覧は、Operation ID、Method、Path、概要、RAML Fragmentの一覧性を優先し、Request Type、Response Type、Header詳細を重複記載しないでください。
 - 基本設計のOperation別概要は、型名ではなく「顧客ID」「検索条件」「顧客情報」「検索結果」のような業務概念で入力と出力を表してください。

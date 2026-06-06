@@ -62,20 +62,41 @@ sequenceDiagram
 
 ## 5. DataWeave項目マッピング
 
-| DWL | 入力 | 出力 | 目的 |
-|---|---|---|---|
-| `src/main/resources/dwl/customer-search-request.dwl` | `CustomerSearchRequest` | downstream search request | 検索条件を正規化する |
-| `src/main/resources/dwl/customer-search-response.dwl` | downstream search response | `CustomerSearchResponse` | 一覧結果をマッピングする |
+この章では、最初にOperationで使用するDWLを一覧化し、その後にDWLごとの入力ソース、接続先リクエスト、接続先レスポンス、APIレスポンスへの項目マッピングを記載します。
 
-### 5.1 Request mapping
+### 5.1 DWL一覧
+
+| DWL | 種別 | 主な入力ソース | 出力 | 目的 |
+|---|---|---|---|---|
+| `src/main/resources/dwl/customer-search-request.dwl` | request mapping | API request `CustomerSearchRequest` | downstream search request | 検索条件を接続先向けに正規化する |
+| `src/main/resources/dwl/customer-search-response.dwl` | response mapping | Customer System search response | `CustomerSearchResponse` | 接続先の検索結果をAPI typeへマッピングする |
+
+### 5.2 `customer-search-request.dwl`
+
+#### 5.2.1 入力ソース
+
+| Source ID | Source | 取得元 | 概要 |
+|---|---|---|---|
+| `apiRequest` | `payload` | API request body | RAML `CustomerSearchRequest` |
+| `correlationId` | `vars.correlationId` | `common-correlation-id-subflow` | 接続先headerやログ追跡で使用する相関ID |
+
+#### 5.2.2 接続先リクエストマッピング
 
 | Downstream field | Source | 変換規則 | Null / default | 備考 |
 |---|---|---|---|---|
-| `nameLike` | `payload.customerName` | 前後空白を除去して設定する | nullの場合は項目を省略する | 部分一致検索条件 |
-| `statusCode` | `payload.status` | `ACTIVE` -> `01`, `INACTIVE` -> `02` | nullの場合は項目を省略する | Customer Systemのステータスコード |
-| `limit` | `payload.limit` | integerとして設定する | nullの場合は `20` | RAML上の最大値は100 |
+| `nameLike` | `apiRequest.customerName` | 前後空白を除去して設定する | nullの場合は項目を省略する | 部分一致検索条件 |
+| `statusCode` | `apiRequest.status` | `ACTIVE` -> `01`, `INACTIVE` -> `02` | nullの場合は項目を省略する | Customer Systemのステータスコード |
+| `limit` | `apiRequest.limit` | integerとして設定する | nullの場合は `20` | RAML上の最大値は100 |
 
-### 5.2 Downstream response model
+### 5.3 `customer-search-response.dwl`
+
+#### 5.3.1 入力ソース
+
+| Source ID | Source | 取得元 | 概要 |
+|---|---|---|---|
+| `customerSystemResponse` | `payload` | Customer System `POST /customers/search` response | 顧客検索結果の接続先レスポンス |
+
+#### 5.3.2 接続先レスポンスモデル
 
 | Field | Type | Required | 備考 |
 |---|---|---:|---|
@@ -85,16 +106,16 @@ sequenceDiagram
 | `items[].statusCode` | string | true | `01`: 有効、`02`: 無効、その他: 不明 |
 | `items[].dateOfBirth` | string | false | `yyyy-MM-dd` 形式 |
 
-### 5.3 Response mapping
+#### 5.3.3 APIレスポンスマッピング
 
 | Target field | Source | 変換規則 | Null / default | 備考 |
 |---|---|---|---|---|
-| `totalCount` | `payload.total` | integerとして設定する | 必須。nullの場合は `0` | RAML `CustomerSearchResponse.totalCount` |
-| `customers` | `payload.items` | 配列として設定する | nullの場合は空配列 | RAML `CustomerSearchResponse.customers` |
-| `customers[].customerId` | `payload.items[].id` | 文字列として設定する | 必須。nullの場合は `EXPRESSION` error | RAML `Customer.customerId` |
-| `customers[].customerName` | `payload.items[].fullName` | 文字列として設定する | 必須。nullの場合は `EXPRESSION` error | RAML `Customer.customerName` |
-| `customers[].status` | `payload.items[].statusCode` | `01` -> `ACTIVE`, `02` -> `INACTIVE`, その他 -> `UNKNOWN` | `UNKNOWN` | RAML `Customer.status` |
-| `customers[].birthDate` | `payload.items[].dateOfBirth` | `date-only` として設定する | nullの場合は項目を省略する | RAML `Customer.birthDate?` |
+| `totalCount` | `customerSystemResponse.total` | integerとして設定する | 必須。nullの場合は `0` | RAML `CustomerSearchResponse.totalCount` |
+| `customers` | `customerSystemResponse.items` | 配列として設定する | nullの場合は空配列 | RAML `CustomerSearchResponse.customers` |
+| `customers[].customerId` | `customerSystemResponse.items[].id` | 文字列として設定する | 必須。nullの場合は `EXPRESSION` error | RAML `Customer.customerId` |
+| `customers[].customerName` | `customerSystemResponse.items[].fullName` | 文字列として設定する | 必須。nullの場合は `EXPRESSION` error | RAML `Customer.customerName` |
+| `customers[].status` | `customerSystemResponse.items[].statusCode` | `01` -> `ACTIVE`, `02` -> `INACTIVE`, その他 -> `UNKNOWN` | `UNKNOWN` | RAML `Customer.status` |
+| `customers[].birthDate` | `customerSystemResponse.items[].dateOfBirth` | `date-only` として設定する | nullの場合は項目を省略する | RAML `Customer.birthDate?` |
 
 ## 6. Connector呼び出し詳細
 
