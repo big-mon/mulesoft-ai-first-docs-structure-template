@@ -42,6 +42,13 @@
 | Logging | チーム標準に従う。Operation固有のログ出力ポイントは詳細設計で定義する。 | `application-detail-design.md` |
 | Data masking | 明示的に許可されていない限り、PII項目をログ出力しない。 | `application-detail-design.md` |
 
+#### 共通Request Header
+
+| Header | Required | 入力規則 | 適用方針 |
+|---|---|---|---|
+| `client_id` | true | `^[A-Za-z0-9_-]{16,64}$` | Client ID enforcementを適用するOperationで使用する |
+| `client_secret` | true | 32文字以上 | Client ID enforcementを適用するOperationで使用する |
+
 ## 2. API一覧
 
 ### 2.1 Customer API v1
@@ -65,24 +72,17 @@
 
 #### 3.1.1 Operation一覧
 
-| Operation ID | Method | Path | Request Headers | Request Type | Response Type | RAML Fragment |
-|---|---|---|---|---|---|---|
-| `sample-customer-api-v1.customer.getById` | GET | `/customers/{customerId}` | `client_id`, `client_secret` | - | `Customer` | `raml/sample-customer-api/v1/resources/get_customer-get-by-id.raml` |
-| `sample-customer-api-v1.customer.search` | POST | `/customers/search` | - | `CustomerSearchRequest` | `CustomerSearchResponse` | `raml/sample-customer-api/v1/resources/post_customer-search.raml` |
+| Operation ID | Method | Path | 概要 | RAML Fragment |
+|---|---|---|---|---|
+| `sample-customer-api-v1.customer.getById` | GET | `/customers/{customerId}` | 顧客IDを指定して顧客情報を取得する。 | `raml/sample-customer-api/v1/resources/get_customer-get-by-id.raml` |
+| `sample-customer-api-v1.customer.search` | POST | `/customers/search` | 条件を指定して顧客情報を検索する。 | `raml/sample-customer-api/v1/resources/post_customer-search.raml` |
 
 ## 4. Operation別概要
 
-| Operation ID | 概要 | 入力 | 出力 | 主な共通trait |
+| Operation ID | 概要 | 入力概念 | 出力概念 | 主な共通方針 |
 |---|---|---|---|---|
-| `sample-customer-api-v1.customer.getById` | 顧客IDを指定して顧客情報を取得する。 | path parameter: `customerId`, headers: `client_id`, `client_secret` | `Customer` | `correlation-id`, `client-id-required`, `common-errors` |
-| `sample-customer-api-v1.customer.search` | 条件を指定して顧客情報を検索する。 | body: `CustomerSearchRequest` | `CustomerSearchResponse` | `correlation-id`, `common-errors` |
-
-### 4.1 Request Header定義
-
-| Operation ID | Header | Required | 入力規則 |
-|---|---|---|---|
-| `sample-customer-api-v1.customer.getById` | `client_id` | true | `^[A-Za-z0-9_-]{16,64}$` |
-| `sample-customer-api-v1.customer.getById` | `client_secret` | true | 32文字以上 |
+| `sample-customer-api-v1.customer.getById` | 顧客IDを指定して顧客情報を取得する。 | 顧客ID | 顧客情報 | Correlation ID、Client ID enforcement、共通エラー |
+| `sample-customer-api-v1.customer.search` | 条件を指定して顧客情報を検索する。 | 検索条件 | 検索結果 | Correlation ID、共通エラー |
 
 ## 5. シーケンス概要
 
@@ -90,8 +90,8 @@ Operation単位で、正常系と主要な異常系の処理順序を記載し�
 
 | Operation ID | 正常系概要 |
 |---|---|
-| `sample-customer-api-v1.customer.getById` | 入力チェック -> 顧客システム呼び出し -> `Customer` へレスポンス変換 -> APIレスポンス返却 |
-| `sample-customer-api-v1.customer.search` | 入力チェック -> 検索条件の正規化 -> 顧客システム呼び出し -> `CustomerSearchResponse` へレスポンス変換 -> APIレスポンス返却 |
+| `sample-customer-api-v1.customer.getById` | 入力チェック -> 顧客システム呼び出し -> 顧客情報へレスポンス変換 -> APIレスポンス返却 |
+| `sample-customer-api-v1.customer.search` | 入力チェック -> 検索条件の正規化 -> 顧客システム呼び出し -> 検索結果へレスポンス変換 -> APIレスポンス返却 |
 
 ## 6. データモデル・マッピング概要
 

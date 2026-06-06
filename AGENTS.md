@@ -143,6 +143,10 @@ RAMLと実装が矛盾している場合は、勝手に解決せず、矛盾と�
 
 - 基本設計と詳細設計には、対象アプリケーションの `design-index.yaml` の `apis[]` に存在するAPIのみ記載してください。
 - 構造例として有用なAPIであっても、`design-index.yaml` に未登録であれば設計書本文には追加しないでください。
+- 基本設計のOperation一覧は、Operation ID、Method、Path、概要、RAML Fragmentの一覧性を優先し、Request Type、Response Type、Header詳細を重複記載しないでください。
+- 基本設計のOperation別概要は、型名ではなく「顧客ID」「検索条件」「顧客情報」「検索結果」のような業務概念で入力と出力を表してください。
+- 基本設計で共通request headerを扱う場合は、Operation個別定義ではなく `1.4 共通処理方針` に配置してください。
+- RAML type名は `6. データモデル・マッピング概要` に集約し、request / response契約の詳細はRAMLを正本としてください。
 - XAPI / PAPI / SAPI の判定は `appId` とアプリケーションフォルダ名に含まれる `xapi`、`papi`、`sapi` で行います。
 - API一覧やAPI別設計に `Layer` 列、`apiLayer`、`Experience`、`Process`、`System` などの重複情報を追加しないでください。
 
