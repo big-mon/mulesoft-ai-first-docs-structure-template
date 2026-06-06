@@ -9,7 +9,7 @@
 1. ルートの `../design-index.yaml` で対象Applicationを特定します。
 2. 対象Applicationの `applications/{appId}/README.md` を読みます。
 3. 対象Applicationの `applications/{appId}/design-index.yaml` を読みます。
-4. 対象Applicationのdesign indexに従って、基本設計、RAML、詳細設計、実装資産を確認します。
+4. 対象Applicationのdesign indexに従って、基本設計、RAML、アプリケーション詳細設計、Operation詳細設計、実装資産を確認します。
 
 ## ルール
 

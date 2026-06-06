@@ -13,6 +13,7 @@ application:
 documents:
   basicDesign: application-basic-design.md
   detailDesign: application-detail-design.md
+  operationDetailDesignPattern: operations/{apiId}/{method}_{operationName}/operation-detail-design.md
 
 common:
   errorModel: raml/common/types/ErrorResponse.raml
@@ -39,7 +40,7 @@ apis:
     lifecycle:
       requirementStatus: draft
       basicDesignStatus: draft
-      detailDesignStatus: not_started
+      detailDesignStatus: draft
     autodiscovery:
       enabled: true
       apiIdProperty: api.sampleCustomer.instanceId
@@ -58,6 +59,7 @@ apis:
         summary: 顧客IDを指定して顧客情報を取得する。
         operationRaml: get_customer-get-by-id.raml
         raml: raml/sample-customer-api/v1/resources/get_customer-get-by-id.raml
+        detailDesign: operations/sample-customer-api-v1/get_customer-get-by-id/operation-detail-design.md
         flow: get-customer-by-id-flow
         requestType: null
         requestHeaders:
@@ -83,7 +85,7 @@ apis:
         lifecycle:
           requirementStatus: draft
           basicDesignStatus: draft
-          detailDesignStatus: not_started
+          detailDesignStatus: draft
 
       - operationId: sample-customer-api-v1.customer.search
         method: POST
@@ -91,6 +93,7 @@ apis:
         summary: 条件を指定して顧客情報を検索する。
         operationRaml: post_customer-search.raml
         raml: raml/sample-customer-api/v1/resources/post_customer-search.raml
+        detailDesign: operations/sample-customer-api-v1/post_customer-search/operation-detail-design.md
         flow: search-customers-flow
         requestType: CustomerSearchRequest
         responseType: CustomerSearchResponse
@@ -105,4 +108,4 @@ apis:
         lifecycle:
           requirementStatus: draft
           basicDesignStatus: draft
-          detailDesignStatus: not_started
+          detailDesignStatus: draft

@@ -126,5 +126,5 @@ RAML typeをAPI契約の正本とします。詳細な項目マッピングは�
 |---|---|---|---|
 | Application一覧 | ルート `design-index.yaml` | `applications/sample-domain-sapi-v1/design-index.yaml` | `applications/sample-domain-sapi-v1/pom.xml` |
 | API一覧 | `applications/sample-domain-sapi-v1/design-index.yaml` | `raml/sample-customer-api/v1/sample-customer-api.raml` | `sample-customer-api-main-flow` |
-| `sample-customer-api-v1.customer.getById` | `raml/sample-customer-api/v1/resources/get_customer-get-by-id.raml` | `application-detail-design.md` | `get-customer-by-id-flow`, `customer-get-by-id-response.dwl`, `customer-get-by-id-*` MUnit |
-| `sample-customer-api-v1.customer.search` | `raml/sample-customer-api/v1/resources/post_customer-search.raml` | `application-detail-design.md` | `search-customers-flow`, `customer-search-request.dwl`, `customer-search-response.dwl`, `customer-search-*` MUnit |
+| `sample-customer-api-v1.customer.getById` | `raml/sample-customer-api/v1/resources/get_customer-get-by-id.raml` | `application-detail-design.md`, `operations/sample-customer-api-v1/get_customer-get-by-id/operation-detail-design.md` | `get-customer-by-id-flow`, `customer-get-by-id-response.dwl`, `customer-get-by-id-*` MUnit |
+| `sample-customer-api-v1.customer.search` | `raml/sample-customer-api/v1/resources/post_customer-search.raml` | `application-detail-design.md`, `operations/sample-customer-api-v1/post_customer-search/operation-detail-design.md` | `search-customers-flow`, `customer-search-request.dwl`, `customer-search-response.dwl`, `customer-search-*` MUnit |

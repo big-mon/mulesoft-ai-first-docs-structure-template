@@ -20,7 +20,7 @@ Repository
 | Repository | `design-index.yaml` | 複数Muleアプリケーションを束ねる単位 | Application一覧、アプリケーションルートへの導線 |
 | Application | `applications/{appId}/` | Muleアプリ / jar / デプロイ単位。`appId` は `sample-domain-sapi-v1` のようにバージョンを含める | アプリ設計、共通Flow、共通設定、外部接続、Mule実装 |
 | API | `applications/{appId}/raml/{apiFolder}/{version}/` | RAML root / API Manager / APIkit Router単位。`apiFolder` は `sample-customer-api` のようにバージョンを重複させない | API契約、APIポリシー、利用者、base path |
-| Operation | `applications/{appId}/raml/{apiFolder}/{version}/resources/{operationRaml}` | HTTP method + path / RAML method fragment / Mule Flow単位。`operationRaml` は `get_customer-get-by-id.raml` のようにHTTP methodとOperation名を `_` で区切る | 入出力、Flow設計、マッピング、エラー処理、MUnit |
+| Operation | `applications/{appId}/raml/{apiFolder}/{version}/resources/{operationRaml}`<br>`applications/{appId}/operations/{apiId}/{method}_{operationName}/operation-detail-design.md` | HTTP method + path / RAML method fragment / Mule Flow単位。`operationRaml` とOperation詳細設計フォルダは `get_customer-get-by-id` のようにHTTP methodとOperation名を `_` で区切る | API契約、Flow設計、Processor、詳細シーケンス、マッピング、エラー処理、MUnit |
 
 ## リポジトリ構成
 
@@ -37,6 +37,12 @@ Repository
       ├─ application-basic-design.md
       ├─ application-detail-design.md
       ├─ pom.xml
+      ├─ operations/
+      │  └─ sample-customer-api-v1/
+      │     ├─ get_customer-get-by-id/
+      │     │  └─ operation-detail-design.md
+      │     └─ post_customer-search/
+      │        └─ operation-detail-design.md
       ├─ raml/
       │  ├─ common/
       │  │  ├─ types/
@@ -60,7 +66,8 @@ Repository
 | `applications/{appId}/README.md` | 対象Application内の探索案内。仕様の正本ではない |
 | `applications/{appId}/design-index.yaml` | Application / API / Operation / RAML / Flow / DataWeave / MUnit の対応関係 |
 | `applications/{appId}/application-basic-design.md` | アプリケーション基本設計のベースライン |
-| `applications/{appId}/application-detail-design.md` | Mule実装の入力となる詳細設計 |
+| `applications/{appId}/application-detail-design.md` | アプリケーション共通の詳細設計とOperation詳細設計への導線 |
+| `applications/{appId}/operations/{apiId}/{method}_{operationName}/operation-detail-design.md` | Operation別のFlow、Processor、詳細シーケンス、DataWeave、MUnit観点 |
 | `applications/{appId}/raml/common/` | アプリケーション内の複数APIで共有するRAML type、trait、example |
 | `applications/{appId}/raml/{apiFolder}/{version}/` | API root RAML、Operation fragment、API固有type、Operation固有example |
 | `applications/{appId}/src/main/mule/` | Mule XML実装 |
@@ -80,7 +87,8 @@ Repository
 8. 関連するAPI root RAML
 9. 関連するOperation RAML fragment
 10. `applications/{appId}/application-detail-design.md`
-11. 実装が存在する場合は `applications/{appId}/src/` 配下のMule XML、DataWeave、MUnit
+11. 関連するOperation詳細設計
+12. 実装が存在する場合は `applications/{appId}/src/` 配下のMule XML、DataWeave、MUnit
 
 ## 正本ルール
 
@@ -90,7 +98,8 @@ Repository
 | Application / API / Operation の対応関係 | `applications/{appId}/design-index.yaml` |
 | APIのrequest/response契約 | RAML |
 | 基本設計上の判断 | `applications/{appId}/application-basic-design.md` |
-| Flow / Processor / Error Handler設計 | `applications/{appId}/application-detail-design.md` |
+| アプリケーション共通のFlow / Connector / Error Handler設計 | `applications/{appId}/application-detail-design.md` |
+| Operation別のFlow / Processor / DataWeave / MUnit設計 | `applications/{appId}/operations/{apiId}/{method}_{operationName}/operation-detail-design.md` |
 | Mule実装 | `applications/{appId}/src/main/mule/` |
 | DataWeave実装 | `applications/{appId}/src/main/resources/dwl/` |
 | 単体テスト実装 | `applications/{appId}/src/test/munit/` |
@@ -120,7 +129,7 @@ full API path = api.basePath + operation.path
 |---|---|---|
 | 要件定義 | ルート `design-index.yaml`, `applications/{appId}/design-index.yaml` | Application、API、Operation候補を整理する |
 | 基本設計 | `applications/{appId}/application-basic-design.md`, `applications/{appId}/raml/**`, `applications/{appId}/design-index.yaml` | API契約、責務、API管理、シーケンス、エラー方針を定義する |
-| 詳細設計 | `applications/{appId}/application-detail-design.md`, `applications/{appId}/design-index.yaml` | Mule Flow、Processor、Connector、DataWeave、Error Handler、MUnit観点を定義する |
+| 詳細設計 | `applications/{appId}/application-detail-design.md`, `applications/{appId}/operations/**/operation-detail-design.md`, `applications/{appId}/design-index.yaml` | 共通Flow、Connector、Error Handlerと、Operation別のProcessor、詳細シーケンス、DataWeave、MUnit観点を定義する |
 | 実装 | `applications/{appId}/src/main/mule/**`, `applications/{appId}/src/main/resources/dwl/**`, `applications/{appId}/src/test/munit/**` | Muleアプリとテストを実装する |
 | 変更管理 | 影響するRAML、設計書、index、実装、テスト | Operation ID単位で影響を追跡する |
 
@@ -131,5 +140,6 @@ full API path = api.basePath + operation.path
 3. ルートの `design-index.yaml` にApplicationを追加します。
 4. `applications/{appId}/design-index.yaml` にAPIとOperationを定義します。API IDは `sample-customer-api-v1` のように契約識別子として保持し、APIフォルダは `sample-customer-api` のようにバージョンなしで定義します。
 5. API契約は `applications/{appId}/raml/{apiFolder}/{version}/` に配置します。
-6. 基本設計と詳細設計は `applications/{appId}/` 直下に記載します。
-7. AI支援レビューを行う場合は `prompts/` 配下のプロンプトを利用します。
+6. 基本設計は `applications/{appId}/application-basic-design.md` に記載します。
+7. アプリケーション共通の詳細設計は `applications/{appId}/application-detail-design.md` に記載し、Operation別詳細は `applications/{appId}/operations/{apiId}/{method}_{operationName}/operation-detail-design.md` に記載します。
+8. AI支援レビューを行う場合は `prompts/` 配下のプロンプトを利用します。

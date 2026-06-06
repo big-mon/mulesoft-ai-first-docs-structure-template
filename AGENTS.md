@@ -17,7 +17,8 @@ AIエージェントは、このファイルを作業ガイドとして読み、
 7. 関連するRAML rootファイル
 8. 関連するOperation RAML fragment
 9. `applications/{appId}/application-detail-design.md`
-10. 実装が存在する場合は、対象アプリケーション配下のMule XML、DataWeave、MUnitファイル
+10. 関連するOperation詳細設計ファイル
+11. 実装が存在する場合は、対象アプリケーション配下のMule XML、DataWeave、MUnitファイル
 
 ## 基本階層
 
@@ -41,6 +42,10 @@ applications/{appId}/
   design-index.yaml
   application-basic-design.md
   application-detail-design.md
+  operations/
+    {apiId}/
+      {method}_{operationName}/
+        operation-detail-design.md
   raml/
     common/
       types/
@@ -62,6 +67,7 @@ applications/{appId}/
 - アプリケーション内の複数APIで再利用するRAML type、trait、exampleは `applications/{appId}/raml/common/` 配下に置いてください。
 - API固有のRAML root、Operation fragment、type、Operation固有exampleは `applications/{appId}/raml/{apiFolder}/{version}/` 配下に置いてください。
 - Operation RAML fragmentは `resources/` 配下に置き、`get_customer-get-by-id.raml` のようにHTTP methodとOperation名を `_` で区切ってください。
+- Operation別のProcessor表、詳細シーケンス図、Flow詳細、DataWeave詳細、MUnit観点は `applications/{appId}/operations/{apiId}/{method}_{operationName}/operation-detail-design.md` に置いてください。
 - アプリケーション間で資産を混在させないでください。
 
 ## 正本ルール
@@ -72,7 +78,8 @@ applications/{appId}/
 | Application、API、Operationの一覧 | `applications/{appId}/design-index.yaml` |
 | APIのrequest / response契約 | RAML |
 | 基本設計 | `applications/{appId}/application-basic-design.md` |
-| FlowとProcessorの設計 | `applications/{appId}/application-detail-design.md` |
+| アプリケーション共通のFlow / Connector / Error Handler設計 | `applications/{appId}/application-detail-design.md` |
+| Operation別のFlow / Processor / DataWeave / MUnit設計 | `applications/{appId}/operations/{apiId}/{method}_{operationName}/operation-detail-design.md` |
 | Mule実装 | `applications/{appId}/src/main/mule/`, `applications/{appId}/src/main/resources/dwl/` |
 | 単体テスト実装 | `applications/{appId}/src/test/munit/` |
 
@@ -97,6 +104,7 @@ Operation RAML fragmentを変更する場合は、あわせて次のファイル
 - RAML rootファイル
 - `applications/{appId}/application-basic-design.md`
 - `applications/{appId}/application-detail-design.md`
+- 対象Operationの `applications/{appId}/operations/{apiId}/{method}_{operationName}/operation-detail-design.md`
 - DataWeaveのマッピングまたは実装
 - MUnitのテスト設計または実装
 
@@ -135,7 +143,7 @@ RAMLと実装が矛盾している場合は、勝手に解決せず、矛盾と�
 4. API別詳細設計
    4.x.1 APIkit Router / entry flow
    4.x.2 Operation - Flow対応表
-   4.x.3 Operation別Flow詳細
+   4.x.3 Operation別詳細設計
 5. Error Handler詳細
 6. DataWeave・Connector・設定一覧
 7. MUnitテスト設計
@@ -143,6 +151,9 @@ RAMLと実装が矛盾している場合は、勝手に解決せず、矛盾と�
 
 - 基本設計と詳細設計には、対象アプリケーションの `design-index.yaml` の `apis[]` に存在するAPIのみ記載してください。
 - 構造例として有用なAPIであっても、`design-index.yaml` に未登録であれば設計書本文には追加しないでください。
+- `application-detail-design.md` はアプリケーション共通設計、APIkit Router、Operation - Flow対応表、Error Handler、DataWeave / Connector / MUnitの一覧性を優先してください。
+- Operation別の詳細シーケンス図、Processor表、Flow詳細、DataWeave詳細、Connector呼び出し詳細、MUnit観点はOperation詳細設計ファイルに記載してください。
+- `application-detail-design.md` からOperation詳細設計ファイルへのリンクを置き、Operation詳細を1ファイルへ集約しないでください。
 - 基本設計のOperation一覧は、Operation ID、Method、Path、概要、RAML Fragmentの一覧性を優先し、Request Type、Response Type、Header詳細を重複記載しないでください。
 - 基本設計のOperation別概要は、型名ではなく「顧客ID」「検索条件」「顧客情報」「検索結果」のような業務概念で入力と出力を表してください。
 - 基本設計で共通request headerを扱う場合は、Operation個別定義ではなく `1.4 共通処理方針` に配置してください。
@@ -158,6 +169,7 @@ RAMLと実装が矛盾している場合は、勝手に解決せず、矛盾と�
 | API Folder | `{domain}-api` | `sample-customer-api` |
 | Operation ID | `{apiId}.{resource}.{action}` | `sample-customer-api-v1.customer.getById` |
 | Operation RAML | `{method}_{operation-name}.raml` | `get_customer-get-by-id.raml` |
+| Operation Detail Design | `{method}_{operation-name}/operation-detail-design.md` | `get_customer-get-by-id/operation-detail-design.md` |
 | Flow | kebab-case + `-flow` | `get-customer-by-id-flow` |
 | DataWeave | Operationベース | `customer-get-by-id-response.dwl` |
 | MUnit | Operation + シナリオ | `customer-get-by-id-success-test` |
@@ -171,7 +183,8 @@ RAMLと実装が矛盾している場合は、勝手に解決せず、矛盾と�
 - RAML rootからOperation fragmentが参照されていること
 - 複数APIで再利用されるRAML部品が `raml/common/` にあり、API固有部品と混在していないこと
 - `api.basePath + operation.path` がRAML契約上のルートと一致すること
-- 詳細設計でFlowが定義されていること
+- `application-detail-design.md` からOperation詳細設計ファイルへ導線があること
+- Operation詳細設計でFlow、詳細シーケンス、Processor表が定義されていること
 - エラー応答がRAMLと整合していること
 - 変換が必要な場合、Mapping / DataWeaveが定義されていること
 - MUnitシナリオが正常系と主要異常系をカバーしていること

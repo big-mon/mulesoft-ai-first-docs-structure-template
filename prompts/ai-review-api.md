@@ -6,7 +6,7 @@
 appId: {appId}, apiId: {apiId}, apiFolder: {apiFolder} のAPIをレビューしてください。
 
 最初にルートの design-index.yaml と applications/{appId}/design-index.yaml を読んでください。
-その後、対象APIのroot RAML、すべてのOperation RAML fragment、基本設計書と詳細設計書の関連セクションを読んでください。
+その後、対象APIのroot RAML、すべてのOperation RAML fragment、基本設計書、application-detail-design.md、すべてのOperation詳細設計を読んでください。
 
 以下を確認してください。
 - API資産が applications/{appId}/raml/{apiFolder}/{version}/ 配下にまとまっていること。
@@ -17,6 +17,7 @@ appId: {appId}, apiId: {apiId}, apiFolder: {apiFolder} のAPIをレビューし�
 - 共通エラー応答が一貫して適用されていること。
 - API ManagerのPolicy、利用者、Autodiscovery flowRefが定義されていること。
 - 詳細設計にすべてのOperationのOperation-to-Flow対応が定義されていること。
+- すべてのOperationに operation-detail-design.md が存在し、詳細シーケンス図とProcessor表が定義されていること。
 
 指摘事項はOperation ID単位で整理して報告してください。
 ```

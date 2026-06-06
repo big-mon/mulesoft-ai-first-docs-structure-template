@@ -1,6 +1,8 @@
 # アプリケーション詳細設計
 
-このドキュメントは、1つのMuleアプリケーションに対する実装入力です。
+このドキュメントは、1つのMuleアプリケーションに対する共通詳細設計と、Operation別詳細設計への導線です。
+
+Operation別の詳細シーケンス図、Processor表、Flow詳細、DataWeave詳細、MUnit観点は `operations/{apiId}/{method}_{operationName}/operation-detail-design.md` に記載します。
 
 ## 1. アプリケーション詳細
 
@@ -13,6 +15,7 @@
 | APIkit | 使用する |
 | Design Index | `design-index.yaml` |
 | Basic Design | `application-basic-design.md` |
+| Operation Detail Design | `operations/{apiId}/{method}_{operationName}/operation-detail-design.md` |
 
 ## 2. 共通Flow設計
 
@@ -51,52 +54,17 @@
 
 #### 4.1.2 Operation - Flow対応表
 
-| Operation ID | Method / Path | Flow | DataWeave | MUnit |
-|---|---|---|---|---|
-| `sample-customer-api-v1.customer.getById` | `GET /customers/{customerId}` | `get-customer-by-id-flow` | `customer-get-by-id-response.dwl` | `customer-get-by-id-success-test`, `customer-get-by-id-validation-error-test`, `customer-get-by-id-not-found-test`, `customer-get-by-id-timeout-test` |
-| `sample-customer-api-v1.customer.search` | `POST /customers/search` | `search-customers-flow` | `customer-search-request.dwl`, `customer-search-response.dwl` | `customer-search-success-test`, `customer-search-validation-error-test`, `customer-search-system-error-test` |
+| Operation ID | Method / Path | Flow | DataWeave | MUnit | Operation Detail |
+|---|---|---|---|---|---|
+| `sample-customer-api-v1.customer.getById` | `GET /customers/{customerId}` | `get-customer-by-id-flow` | `customer-get-by-id-response.dwl` | `customer-get-by-id-success-test`, `customer-get-by-id-validation-error-test`, `customer-get-by-id-not-found-test`, `customer-get-by-id-timeout-test` | `operations/sample-customer-api-v1/get_customer-get-by-id/operation-detail-design.md` |
+| `sample-customer-api-v1.customer.search` | `POST /customers/search` | `search-customers-flow` | `customer-search-request.dwl`, `customer-search-response.dwl` | `customer-search-success-test`, `customer-search-validation-error-test`, `customer-search-system-error-test` | `operations/sample-customer-api-v1/post_customer-search/operation-detail-design.md` |
 
-#### 4.1.3 Operation別Flow詳細
+#### 4.1.3 Operation別詳細設計
 
-##### 4.1.3.1 `sample-customer-api-v1.customer.getById`
-
-| 項目 | 値 |
-|---|---|
-| Method / Path | `GET /customers/{customerId}` |
-| RAML | `raml/sample-customer-api/v1/resources/get_customer-get-by-id.raml` |
-| Flow | `get-customer-by-id-flow` |
-| Request Headers | `client_id`, `client_secret` |
-| Response Type | `Customer` |
-
-| No | Processor | 目的 | 入力 | 出力 | Error |
-|---:|---|---|---|---|---|
-| 1 | Flow Reference | Correlation IDを解決する | headers | `vars.correlationId` | - |
-| 2 | Logger | 開始ログを出力する | operationId, headers, path params | log event | - |
-| 3 | Validation | 必須request headerを検証する | `attributes.headers.client_id`, `attributes.headers.client_secret` | - | `VALIDATION:*` |
-| 4 | Validation | `customerId` を検証する | `attributes.uriParams.customerId` | - | `VALIDATION:*` |
-| 5 | HTTP Request | Customer Systemから顧客情報を取得する | customerId | downstream response | `HTTP:*` |
-| 6 | Transform Message | APIレスポンスを生成する | downstream response | `Customer` | `EXPRESSION` |
-| 7 | Logger | 終了ログを出力する | status, elapsed time | log event | - |
-
-##### 4.1.3.2 `sample-customer-api-v1.customer.search`
-
-| 項目 | 値 |
-|---|---|
-| Method / Path | `POST /customers/search` |
-| RAML | `raml/sample-customer-api/v1/resources/post_customer-search.raml` |
-| Flow | `search-customers-flow` |
-| Request Type | `CustomerSearchRequest` |
-| Response Type | `CustomerSearchResponse` |
-
-| No | Processor | 目的 | 入力 | 出力 | Error |
-|---:|---|---|---|---|---|
-| 1 | Flow Reference | Correlation IDを解決する | headers | `vars.correlationId` | - |
-| 2 | Logger | 開始ログを出力する | operationId, body | log event | - |
-| 3 | Validation | request bodyを検証する | payload | - | `VALIDATION:*` |
-| 4 | Transform Message | Customer System向け検索条件を生成する | `CustomerSearchRequest` | downstream search request | `EXPRESSION` |
-| 5 | HTTP Request | Customer Systemで顧客を検索する | downstream search request | downstream response | `HTTP:*` |
-| 6 | Transform Message | APIレスポンスを生成する | downstream response | `CustomerSearchResponse` | `EXPRESSION` |
-| 7 | Logger | 終了ログを出力する | status, elapsed time | log event | - |
+| Operation ID | Detail Design | 主な記載内容 |
+|---|---|---|
+| `sample-customer-api-v1.customer.getById` | `operations/sample-customer-api-v1/get_customer-get-by-id/operation-detail-design.md` | 詳細シーケンス、Flow詳細、Processor表、DataWeave、Connector呼び出し、Error処理、MUnit観点 |
+| `sample-customer-api-v1.customer.search` | `operations/sample-customer-api-v1/post_customer-search/operation-detail-design.md` | 詳細シーケンス、Flow詳細、Processor表、DataWeave、Connector呼び出し、Error処理、MUnit観点 |
 
 ## 5. Error Handler詳細
 
@@ -141,12 +109,7 @@
 
 ## 7. MUnitテスト設計
 
-| Operation ID | Test | 目的 | Mock | Assert |
-|---|---|---|---|---|
-| `sample-customer-api-v1.customer.getById` | `customer-get-by-id-success-test` | 正常応答 | HTTP Request | status 200 と `Customer` payload |
-| `sample-customer-api-v1.customer.getById` | `customer-get-by-id-validation-error-test` | customer IDまたは必須header不正 | なし | status 400 と `BAD_REQUEST` |
-| `sample-customer-api-v1.customer.getById` | `customer-get-by-id-not-found-test` | 接続先で対象なし | HTTP Request | status 404 と `RESOURCE_NOT_FOUND` |
-| `sample-customer-api-v1.customer.getById` | `customer-get-by-id-timeout-test` | 接続先タイムアウト | HTTP Request | status 504 と `GATEWAY_TIMEOUT` |
-| `sample-customer-api-v1.customer.search` | `customer-search-success-test` | 正常応答 | HTTP Request | status 200 と `CustomerSearchResponse` payload |
-| `sample-customer-api-v1.customer.search` | `customer-search-validation-error-test` | request body不正 | なし | status 400 と `BAD_REQUEST` |
-| `sample-customer-api-v1.customer.search` | `customer-search-system-error-test` | 接続先または内部エラー | HTTP Request | status 500 または 503 の `ErrorResponse` |
+| Operation ID | 主なシナリオ | Operation Detail |
+|---|---|---|
+| `sample-customer-api-v1.customer.getById` | 正常応答、入力値不正、対象なし、接続先タイムアウト | `operations/sample-customer-api-v1/get_customer-get-by-id/operation-detail-design.md` |
+| `sample-customer-api-v1.customer.search` | 正常応答、request body不正、接続先または内部エラー | `operations/sample-customer-api-v1/post_customer-search/operation-detail-design.md` |

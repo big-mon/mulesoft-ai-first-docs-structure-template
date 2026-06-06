@@ -10,6 +10,7 @@ structure:
   commonRamlPathPattern: applications/{appId}/raml/common
   apiPathPattern: applications/{appId}/raml/{apiFolder}/{version}
   operationPathPattern: applications/{appId}/raml/{apiFolder}/{version}/resources/{operationRaml}
+  operationDetailDesignPathPattern: applications/{appId}/operations/{apiId}/{method}_{operationName}/operation-detail-design.md
   appDesignIndexFile: applications/{appId}/design-index.yaml
 
 applications:
