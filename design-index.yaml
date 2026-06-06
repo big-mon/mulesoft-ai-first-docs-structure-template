@@ -26,7 +26,7 @@ apis:
     apiLayer: Experience
     description: Sample API for customer reference and search.
     rootRaml: raml/sample-customer-api/v1/sample-customer-api.raml
-    basePath: /api/v1/customers
+    basePath: /api/v1
     entryFlow: sample-customer-api-main-flow
     apiKitConfig: sample-customer-api-config
     lifecycle:
@@ -92,7 +92,7 @@ apis:
     apiLayer: Process
     description: Sample API for customer address reference.
     rootRaml: raml/sample-address-api/v1/sample-address-api.raml
-    basePath: /api/v1/addresses
+    basePath: /api/v1
     entryFlow: sample-address-api-main-flow
     apiKitConfig: sample-address-api-config
     lifecycle:
