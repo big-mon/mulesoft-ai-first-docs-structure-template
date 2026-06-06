@@ -1,31 +1,31 @@
 #%RAML 1.0 Trait
 responses:
   400:
-    description: Invalid request.
+    description: リクエストが不正です。
     body:
       application/json:
         type: ErrorResponse
         example: !include ../examples/error-response.json
   404:
-    description: Resource not found.
+    description: 指定されたリソースが見つかりません。
     body:
       application/json:
         type: ErrorResponse
         example: !include ../examples/error-response.json
   500:
-    description: Internal server error.
+    description: 内部サーバーエラーです。
     body:
       application/json:
         type: ErrorResponse
         example: !include ../examples/error-response.json
   503:
-    description: Downstream service unavailable.
+    description: 接続先サービスが利用できません。
     body:
       application/json:
         type: ErrorResponse
         example: !include ../examples/error-response.json
   504:
-    description: Downstream timeout.
+    description: 接続先サービスがタイムアウトしました。
     body:
       application/json:
         type: ErrorResponse
