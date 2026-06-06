@@ -39,6 +39,27 @@ Application
 | Mule implementation | `src/main/mule/`, `src/main/resources/dwl/` |
 | Unit test implementation | `src/test/munit/` |
 
+## Path Composition Rule
+
+Use this rule when validating paths:
+
+```text
+full API path = api.basePath + operation.path
+```
+
+- `api.basePath` must match the path component of the RAML root `baseUri`.
+- `operation.path` must match the RAML resource path for the Operation.
+- Do not duplicate the same resource segment in both `api.basePath` and `operation.path`.
+
+Example:
+
+| Field | Value |
+|---|---|
+| RAML `baseUri` | `https://api.example.com/api/v1` |
+| `api.basePath` | `/api/v1` |
+| `operation.path` | `/customers/{customerId}` |
+| Full path | `/api/v1/customers/{customerId}` |
+
 ## Change Rules
 
 When changing an Operation RAML fragment, also check:
@@ -74,6 +95,7 @@ For each Operation, verify:
 - Operation exists in `design-index.yaml`
 - Operation RAML fragment exists
 - RAML root references the Operation fragment
+- `api.basePath + operation.path` matches the RAML contract route
 - Flow is defined in detail design
 - Error responses are consistent with RAML
 - Mapping/DataWeave is defined where needed
