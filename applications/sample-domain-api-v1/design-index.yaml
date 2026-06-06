@@ -50,8 +50,8 @@ apis:
         method: GET
         path: /customers/{customerId}
         summary: 顧客IDを指定して顧客情報を取得する。
-        operationFolder: get-customer-by-id
-        raml: apis/sample-customer-api/operations/get-customer-by-id/get-customer-by-id.raml
+        operationFolder: get_customer-get-by-id
+        raml: apis/sample-customer-api/operations/get_customer-get-by-id/get_customer-get-by-id.raml
         flow: get-customer-by-id-flow
         requestType: null
         requestHeaders:
@@ -83,8 +83,8 @@ apis:
         method: POST
         path: /customers/search
         summary: 条件を指定して顧客情報を検索する。
-        operationFolder: post-customer-search
-        raml: apis/sample-customer-api/operations/post-customer-search/post-customer-search.raml
+        operationFolder: post_customer-search
+        raml: apis/sample-customer-api/operations/post_customer-search/post_customer-search.raml
         flow: search-customers-flow
         requestType: CustomerSearchRequest
         responseType: CustomerSearchResponse

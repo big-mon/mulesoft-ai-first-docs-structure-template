@@ -27,7 +27,7 @@ applications/{appId}/
 - root RAMLはAPI契約の入口を表します。
 - APIフォルダは `sample-customer-api` のようにバージョンを含めず、API契約上のバージョンはroot RAMLの `version` と `baseUri`、およびアプリケーションフォルダで表します。
 - Operation RAML fragmentはmethod単位の契約を表します。
-- Operationフォルダは `get-customer-by-id` や `post-customer-search` のようにHTTP methodを先頭に含めます。
+- Operationフォルダは `get_customer-get-by-id` や `post_customer-search` のようにHTTP methodとOperation名を `_` で区切ります。
 - Request bodyを持つOperationは、Operation RAML fragment内の `body` にtypeとexampleを必ず記載します。
 - 共通のエラー定義やヘッダー定義は `common/raml/` 配下に配置します。
 - API固有のドメインtypeは、原則として各APIディレクトリ配下に配置します。

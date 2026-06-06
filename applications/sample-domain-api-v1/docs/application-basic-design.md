@@ -37,8 +37,8 @@
 
 | Operation ID | Method | Path | Request Headers | Request Type | Response Type | RAML Fragment |
 |---|---|---|---|---|---|---|
-| `sample-customer-api-v1.customer.getById` | GET | `/customers/{customerId}` | `client_id`, `client_secret` | - | `Customer` | `apis/sample-customer-api/operations/get-customer-by-id/get-customer-by-id.raml` |
-| `sample-customer-api-v1.customer.search` | POST | `/customers/search` | - | `CustomerSearchRequest` | `CustomerSearchResponse` | `apis/sample-customer-api/operations/post-customer-search/post-customer-search.raml` |
+| `sample-customer-api-v1.customer.getById` | GET | `/customers/{customerId}` | `client_id`, `client_secret` | - | `Customer` | `apis/sample-customer-api/operations/get_customer-get-by-id/get_customer-get-by-id.raml` |
+| `sample-customer-api-v1.customer.search` | POST | `/customers/search` | - | `CustomerSearchRequest` | `CustomerSearchResponse` | `apis/sample-customer-api/operations/post_customer-search/post_customer-search.raml` |
 
 ### 4.1 Request Header定義
 

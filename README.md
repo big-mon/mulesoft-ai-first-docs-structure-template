@@ -20,7 +20,7 @@ Repository
 | Repository | `design-index.yaml` | 複数Muleアプリケーションを束ねる単位 | Application一覧、アプリケーションルートへの導線 |
 | Application | `applications/{appId}/` | Muleアプリ / jar / デプロイ単位。`appId` は `sample-domain-api-v1` のようにバージョンを含める | アプリ設計、共通Flow、共通設定、外部接続、Mule実装 |
 | API | `applications/{appId}/apis/{apiFolder}/` | RAML root / API Manager / APIkit Router単位。`apiFolder` は `sample-customer-api` のようにバージョンを重複させない | API契約、APIポリシー、利用者、base path |
-| Operation | `applications/{appId}/apis/{apiFolder}/operations/{operationFolder}/` | HTTP method + path / RAML fragment / Mule Flow単位。`operationFolder` は `get-customer-by-id` のようにHTTP methodを含める | 入出力、Flow設計、マッピング、エラー処理、MUnit |
+| Operation | `applications/{appId}/apis/{apiFolder}/operations/{operationFolder}/` | HTTP method + path / RAML fragment / Mule Flow単位。`operationFolder` は `get_customer-get-by-id` のようにHTTP methodとOperation名を `_` で区切る | 入出力、Flow設計、マッピング、エラー処理、MUnit |
 
 ## リポジトリ構成
 
