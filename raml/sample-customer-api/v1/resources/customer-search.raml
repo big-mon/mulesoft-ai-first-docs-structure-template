@@ -1,0 +1,18 @@
+#%RAML 1.0 Method
+(operationId): sample-customer-api-v1.customer.search
+displayName: Search customers
+description: Search customers by conditions.
+is:
+  - correlation-id
+  - common-errors
+body:
+  application/json:
+    type: CustomerSearchRequest
+    example: !include ../examples/customer-search-request.json
+responses:
+  200:
+    description: Search completed.
+    body:
+      application/json:
+        type: CustomerSearchResponse
+        example: !include ../examples/customer-search-response.json

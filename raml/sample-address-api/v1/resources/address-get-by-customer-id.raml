@@ -1,0 +1,14 @@
+#%RAML 1.0 Method
+(operationId): sample-address-api-v1.address.getByCustomerId
+displayName: Get addresses by customer ID
+description: Get address list by customer ID.
+is:
+  - correlation-id
+  - common-errors
+responses:
+  200:
+    description: Address list was found.
+    body:
+      application/json:
+        type: AddressList
+        example: !include ../examples/address-get-by-customer-id-response.json

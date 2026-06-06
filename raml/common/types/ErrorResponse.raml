@@ -1,0 +1,20 @@
+#%RAML 1.0 DataType
+type: object
+additionalProperties: false
+properties:
+  code:
+    type: string
+    required: true
+    example: BAD_REQUEST
+  message:
+    type: string
+    required: true
+    example: Invalid request.
+  correlationId:
+    type: string
+    required: false
+    example: 7f0c2b5a-6b5d-4d5f-9b35-8f7b4a5c1a10
+  details?:
+    type: array
+    items:
+      type: string
