@@ -30,7 +30,9 @@ Repository
 ├─ AGENTS.md
 ├─ prompts/
 └─ applications/
+   ├─ README.md
    └─ sample-domain-sapi-v1/
+      ├─ README.md
       ├─ design-index.yaml
       ├─ application-basic-design.md
       ├─ application-detail-design.md
@@ -54,6 +56,8 @@ Repository
 | `README.md` | 人間とAIエージェント向けの入口 |
 | `AGENTS.md` | AIエージェント向けの読み順、正本ルール、レビュー観点 |
 | `design-index.yaml` | リポジトリに含まれるApplication一覧 |
+| `applications/README.md` | Applicationディレクトリの探索案内。仕様の正本ではない |
+| `applications/{appId}/README.md` | 対象Application内の探索案内。仕様の正本ではない |
 | `applications/{appId}/design-index.yaml` | Application / API / Operation / RAML / Flow / DataWeave / MUnit の対応関係 |
 | `applications/{appId}/application-basic-design.md` | アプリケーション基本設計のベースライン |
 | `applications/{appId}/application-detail-design.md` | Mule実装の入力となる詳細設計 |
@@ -69,12 +73,14 @@ Repository
 1. `README.md`
 2. `AGENTS.md`
 3. ルートの `design-index.yaml`
-4. 対象アプリケーションの `applications/{appId}/design-index.yaml`
-5. `applications/{appId}/application-basic-design.md`
-6. 関連するAPI root RAML
-7. 関連するOperation RAML fragment
-8. `applications/{appId}/application-detail-design.md`
-9. 実装が存在する場合は `applications/{appId}/src/` 配下のMule XML、DataWeave、MUnit
+4. `applications/README.md`
+5. 対象アプリケーションの `applications/{appId}/README.md`
+6. 対象アプリケーションの `applications/{appId}/design-index.yaml`
+7. `applications/{appId}/application-basic-design.md`
+8. 関連するAPI root RAML
+9. 関連するOperation RAML fragment
+10. `applications/{appId}/application-detail-design.md`
+11. 実装が存在する場合は `applications/{appId}/src/` 配下のMule XML、DataWeave、MUnit
 
 ## 正本ルール
 

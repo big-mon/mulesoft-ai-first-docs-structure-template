@@ -10,12 +10,14 @@ AIエージェントは、このファイルを作業ガイドとして読み、
 
 1. `README.md`
 2. ルートの `design-index.yaml`
-3. 対象アプリケーションの `applications/{appId}/design-index.yaml`
-4. `applications/{appId}/application-basic-design.md`
-5. 関連するRAML rootファイル
-6. 関連するOperation RAML fragment
-7. `applications/{appId}/application-detail-design.md`
-8. 実装が存在する場合は、対象アプリケーション配下のMule XML、DataWeave、MUnitファイル
+3. `applications/README.md`
+4. 対象アプリケーションの `applications/{appId}/README.md`
+5. 対象アプリケーションの `applications/{appId}/design-index.yaml`
+6. `applications/{appId}/application-basic-design.md`
+7. 関連するRAML rootファイル
+8. 関連するOperation RAML fragment
+9. `applications/{appId}/application-detail-design.md`
+10. 実装が存在する場合は、対象アプリケーション配下のMule XML、DataWeave、MUnitファイル
 
 ## 基本階層
 
@@ -35,6 +37,7 @@ Repository
 
 ```text
 applications/{appId}/
+  README.md
   design-index.yaml
   application-basic-design.md
   application-detail-design.md
@@ -53,6 +56,7 @@ applications/{appId}/
 ```
 
 - アプリケーション固有の設計、RAML、Mule実装、テストは必ず `applications/{appId}/` 配下に置いてください。
+- `applications/README.md` と `applications/{appId}/README.md` は探索案内であり、仕様の正本として扱わないでください。
 - アプリケーションをバージョン単位で管理する場合は、`appId` とアプリケーションフォルダに `sample-domain-sapi-v1` のようなバージョンを含めてください。
 - APIフォルダは `sample-customer-api` のようにバージョンを重複させず、API契約上のIDは `apiId` として `sample-customer-api-v1` のように保持してください。
 - アプリケーション内の複数APIで再利用するRAML type、trait、exampleは `applications/{appId}/raml/common/` 配下に置いてください。
