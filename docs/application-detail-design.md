@@ -42,8 +42,8 @@ This document is the implementation input for one Mule application.
 
 | Operation ID | Flow | DataWeave | MUnit |
 |---|---|---|---|
-| `sample-customer-api-v1.customer.getById` | `get-customer-by-id-flow` | `customer-get-by-id-response.dwl` | `customer-get-by-id-success-test` |
-| `sample-customer-api-v1.customer.search` | `search-customers-flow` | `customer-search-request.dwl`, `customer-search-response.dwl` | `customer-search-success-test` |
+| `sample-customer-api-v1.customer.getById` | `get-customer-by-id-flow` | `customer-get-by-id-response.dwl` | `customer-get-by-id-success-test`, `customer-get-by-id-validation-error-test`, `customer-get-by-id-not-found-test`, `customer-get-by-id-timeout-test` |
+| `sample-customer-api-v1.customer.search` | `search-customers-flow` | `customer-search-request.dwl`, `customer-search-response.dwl` | `customer-search-success-test`, `customer-search-validation-error-test`, `customer-search-system-error-test` |
 
 #### 4.1.2 Operation Detail: `sample-customer-api-v1.customer.getById`
 
@@ -90,6 +90,7 @@ APIkit Router
 | `customer-get-by-id-success-test` | Normal response | HTTP Request | status 200 and `Customer` payload |
 | `customer-get-by-id-validation-error-test` | Invalid customer ID | none | status 400 |
 | `customer-get-by-id-not-found-test` | Downstream not found | HTTP Request | status 404 |
+| `customer-get-by-id-timeout-test` | Downstream timeout | HTTP Request | status 504 and `GATEWAY_TIMEOUT` error response |
 
 #### 4.1.3 Operation Detail: `sample-customer-api-v1.customer.search`
 
@@ -109,7 +110,7 @@ Use the same structure as 4.1.2.
 
 | Operation ID | Flow | DataWeave | MUnit |
 |---|---|---|---|
-| `sample-address-api-v1.address.getByCustomerId` | `get-address-by-customer-id-flow` | `address-get-by-customer-id-response.dwl` | `address-get-by-customer-id-success-test` |
+| `sample-address-api-v1.address.getByCustomerId` | `get-address-by-customer-id-flow` | `address-get-by-customer-id-response.dwl` | `address-get-by-customer-id-success-test`, `address-get-by-customer-id-not-found-test` |
 
 ## 5. Connector and Properties
 
