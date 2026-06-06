@@ -59,6 +59,27 @@ Application
 | DataWeave implementation | `src/main/resources/dwl/` |
 | Unit test implementation | `src/test/munit/` |
 
+## Path Composition Rule
+
+`design-index.yaml` uses the following rule for API paths.
+
+```text
+full API path = api.basePath + operation.path
+```
+
+- `api.basePath` must match the path component of the RAML root `baseUri`.
+- `operation.path` must match the RAML resource path for the Operation.
+- Do not duplicate the same resource segment in both `api.basePath` and `operation.path`.
+
+Example:
+
+| Field | Value |
+|---|---|
+| RAML `baseUri` | `https://api.example.com/api/v1` |
+| `api.basePath` | `/api/v1` |
+| `operation.path` | `/customers/{customerId}` |
+| Full path | `/api/v1/customers/{customerId}` |
+
 ## Phase-based Update Rules
 
 | Phase | Main Update Targets | Purpose |
