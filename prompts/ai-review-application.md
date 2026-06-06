@@ -10,7 +10,7 @@ Muleアプリケーション全体の設計をレビューするためのプロ�
 - 対象Applicationの資産が applications/{appId}/ 配下にまとまっていること。
 - すべてのAPIにroot RAMLファイルが存在すること。
 - すべてのOperationにOperation RAML fragmentが存在すること。
-- すべてのOperation RAML fragmentが対象APIの operations/{operationFolder}/ 配下に存在すること。
+- すべてのOperation RAML fragmentが対象APIの resources/{operationRaml} として存在すること。
 - すべてのOperationが一意のoperationIdを持つこと。
 - RAML、基本設計、詳細設計、Flow、DataWeave、MUnitの参照関係を追跡できること。
 - API ManagerとAutodiscoveryの設定が、必要なAPIごとに定義されていること。

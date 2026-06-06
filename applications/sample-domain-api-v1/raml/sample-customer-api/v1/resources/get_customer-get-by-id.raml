@@ -4,7 +4,7 @@ displayName: 顧客取得
 description: |
   顧客IDを指定して顧客情報を取得します。
 is:
-  - correlation-id
+  - common-headers
   - common-errors
 headers:
   client_id:
@@ -25,4 +25,4 @@ responses:
     body:
       application/json:
         type: Customer
-        example: !include examples/customer-get-by-id-response.json
+        example: !include ../examples/customer-get-by-id-response.json

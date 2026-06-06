@@ -4,18 +4,18 @@ displayName: 顧客検索
 description: |
   条件を指定して顧客情報を検索します。
   Request bodyはCustomerSearchRequestです。
-  Request body exampleはexamples/customer-search-request.jsonです。
+  Request body exampleは../examples/customer-search-request.jsonです。
 is:
-  - correlation-id
+  - common-headers
   - common-errors
 body:
   application/json:
     type: CustomerSearchRequest
-    example: !include examples/customer-search-request.json
+    example: !include ../examples/customer-search-request.json
 responses:
   200:
     description: 検索が完了しました。
     body:
       application/json:
         type: CustomerSearchResponse
-        example: !include examples/customer-search-response.json
+        example: !include ../examples/customer-search-response.json

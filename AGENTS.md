@@ -11,10 +11,10 @@ AIエージェントは、このファイルを作業ガイドとして読み、
 1. `README.md`
 2. ルートの `design-index.yaml`
 3. 対象アプリケーションの `applications/{appId}/design-index.yaml`
-4. `applications/{appId}/docs/application-basic-design.md`
+4. `applications/{appId}/application-basic-design.md`
 5. 関連するRAML rootファイル
 6. 関連するOperation RAML fragment
-7. `applications/{appId}/docs/application-detail-design.md`
+7. `applications/{appId}/application-detail-design.md`
 8. 実装が存在する場合は、対象アプリケーション配下のMule XML、DataWeave、MUnitファイル
 
 ## 基本階層
@@ -36,21 +36,24 @@ Repository
 ```text
 applications/{appId}/
   design-index.yaml
-  docs/
-  common/
-  apis/
+  application-basic-design.md
+  application-detail-design.md
+  raml/
     {apiFolder}/
-      raml/
-      operations/
-        {operationFolder}/
+      {version}/
+        {api-root}.raml
+        resources/
+        types/
+        traits/
+        examples/
   src/
 ```
 
 - アプリケーション固有の設計、RAML、Mule実装、テストは必ず `applications/{appId}/` 配下に置いてください。
 - アプリケーションをバージョン単位で管理する場合は、`appId` とアプリケーションフォルダに `sample-domain-api-v1` のようなバージョンを含めてください。
 - APIフォルダは `sample-customer-api` のようにバージョンを重複させず、API契約上のIDは `apiId` として `sample-customer-api-v1` のように保持してください。
-- API固有のRAML rootとtypeは `applications/{appId}/apis/{apiFolder}/raml/` 配下に置いてください。
-- Operation RAML fragmentとOperation固有exampleは `applications/{appId}/apis/{apiFolder}/operations/{operationFolder}/` 配下に置いてください。
+- API固有のRAML root、Operation fragment、type、trait、exampleは `applications/{appId}/raml/{apiFolder}/{version}/` 配下に置いてください。
+- Operation RAML fragmentは `resources/` 配下に置き、`get_customer-get-by-id.raml` のようにHTTP methodとOperation名を `_` で区切ってください。
 - アプリケーション間で資産を混在させないでください。
 
 ## 正本ルール
@@ -60,8 +63,8 @@ applications/{appId}/
 | リポジトリ内のApplication一覧 | ルートの `design-index.yaml` |
 | Application、API、Operationの一覧 | `applications/{appId}/design-index.yaml` |
 | APIのrequest / response契約 | RAML |
-| 基本設計 | `applications/{appId}/docs/application-basic-design.md` |
-| FlowとProcessorの設計 | `applications/{appId}/docs/application-detail-design.md` |
+| 基本設計 | `applications/{appId}/application-basic-design.md` |
+| FlowとProcessorの設計 | `applications/{appId}/application-detail-design.md` |
 | Mule実装 | `applications/{appId}/src/main/mule/`, `applications/{appId}/src/main/resources/dwl/` |
 | 単体テスト実装 | `applications/{appId}/src/test/munit/` |
 
@@ -84,8 +87,8 @@ Operation RAML fragmentを変更する場合は、あわせて次のファイル
 - ルートの `design-index.yaml`
 - 対象アプリケーションの `applications/{appId}/design-index.yaml`
 - RAML rootファイル
-- `applications/{appId}/docs/application-basic-design.md`
-- `applications/{appId}/docs/application-detail-design.md`
+- `applications/{appId}/application-basic-design.md`
+- `applications/{appId}/application-detail-design.md`
 - DataWeaveのマッピングまたは実装
 - MUnitのテスト設計または実装
 
@@ -102,8 +105,7 @@ RAMLと実装が矛盾している場合は、勝手に解決せず、矛盾と�
 | API ID | `{domain}-api-v{version}` | `sample-customer-api-v1` |
 | API Folder | `{domain}-api` | `sample-customer-api` |
 | Operation ID | `{apiId}.{resource}.{action}` | `sample-customer-api-v1.customer.getById` |
-| Operation Folder | `{method}_{operation-name}` | `get_customer-get-by-id` |
-| Operation RAML | Operation Folderと同名 | `get_customer-get-by-id.raml` |
+| Operation RAML | `{method}_{operation-name}.raml` | `get_customer-get-by-id.raml` |
 | Flow | kebab-case + `-flow` | `get-customer-by-id-flow` |
 | DataWeave | Operationベース | `customer-get-by-id-response.dwl` |
 | MUnit | Operation + シナリオ | `customer-get-by-id-success-test` |
@@ -113,7 +115,7 @@ RAMLと実装が矛盾している場合は、勝手に解決せず、矛盾と�
 各Operationについて、次を確認してください。
 
 - 対象アプリケーションの `design-index.yaml` にOperationが存在すること
-- Operation RAML fragmentがOperationフォルダに存在すること
+- Operation RAML fragmentが `resources/{operationRaml}` に存在すること
 - RAML rootからOperation fragmentが参照されていること
 - `api.basePath + operation.path` がRAML契約上のルートと一致すること
 - 詳細設計でFlowが定義されていること

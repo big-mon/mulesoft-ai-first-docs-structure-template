@@ -12,11 +12,11 @@ types:
   Customer: !include types/Customer.raml
   CustomerSearchRequest: !include types/CustomerSearchRequest.raml
   CustomerSearchResponse: !include types/CustomerSearchResponse.raml
-  ErrorResponse: !include ../../../common/raml/types/ErrorResponse.raml
+  ErrorResponse: !include types/ErrorResponse.raml
 
 traits:
-  correlation-id: !include ../../../common/raml/traits/correlation-id.raml
-  common-errors: !include ../../../common/raml/traits/common-errors.raml
+  common-headers: !include traits/common-headers.raml
+  common-errors: !include traits/common-errors.raml
 
 /customers:
   /{customerId}:
@@ -25,7 +25,7 @@ traits:
         type: string
         required: true
         example: C000001
-    get: !include ../operations/get_customer-get-by-id/get_customer-get-by-id.raml
+    get: !include resources/get_customer-get-by-id.raml
 
   /search:
-    post: !include ../operations/post_customer-search/post_customer-search.raml
+    post: !include resources/post_customer-search.raml

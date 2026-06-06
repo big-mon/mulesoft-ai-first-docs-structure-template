@@ -33,7 +33,7 @@
 | 項目 | 値 |
 |---|---|
 | API ID | `sample-customer-api-v1` |
-| Root RAML | `apis/sample-customer-api/raml/sample-customer-api.raml` |
+| Root RAML | `raml/sample-customer-api/v1/sample-customer-api.raml` |
 | Entry Flow | `sample-customer-api-main-flow` |
 | APIkit Config | `sample-customer-api-config` |
 | Autodiscovery Flow Ref | `sample-customer-api-main-flow` |
@@ -50,7 +50,7 @@
 | 項目 | 値 |
 |---|---|
 | Method / Path | `GET /customers/{customerId}` |
-| RAML | `apis/sample-customer-api/operations/get_customer-get-by-id/get_customer-get-by-id.raml` |
+| RAML | `raml/sample-customer-api/v1/resources/get_customer-get-by-id.raml` |
 | Flow | `get-customer-by-id-flow` |
 | Request Headers | `client_id`, `client_secret` |
 | Response Type | `Customer` |

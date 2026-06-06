@@ -9,7 +9,7 @@ appId: {appId}, apiId: {apiId}, apiFolder: {apiFolder} のAPIをレビューし�
 その後、対象APIのroot RAML、すべてのOperation RAML fragment、基本設計書と詳細設計書の関連セクションを読んでください。
 
 以下を確認してください。
-- API資産が applications/{appId}/apis/{apiFolder}/ 配下にまとまっていること。
+- API資産が applications/{appId}/raml/{apiFolder}/{version}/ 配下にまとまっていること。
 - root RAMLが applications/{appId}/design-index.yaml に定義されたすべてのOperationを含んでいること。
 - RAML内のOperation IDが applications/{appId}/design-index.yaml と一致していること。
 - Request typeとResponse typeが正しく定義・参照されていること。

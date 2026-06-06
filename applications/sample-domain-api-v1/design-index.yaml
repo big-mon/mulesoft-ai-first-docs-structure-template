@@ -10,14 +10,14 @@ application:
   ownerTeam: integration-team
 
 documents:
-  basicDesign: docs/application-basic-design.md
-  detailDesign: docs/application-detail-design.md
+  basicDesign: application-basic-design.md
+  detailDesign: application-detail-design.md
 
 common:
-  errorModel: common/raml/types/ErrorResponse.raml
+  errorModel: raml/sample-customer-api/v1/types/ErrorResponse.raml
   commonTraits:
-    - common/raml/traits/correlation-id.raml
-    - common/raml/traits/common-errors.raml
+    - raml/sample-customer-api/v1/traits/common-headers.raml
+    - raml/sample-customer-api/v1/traits/common-errors.raml
 
 apis:
   - apiId: sample-customer-api-v1
@@ -26,7 +26,7 @@ apis:
     version: v1
     apiLayer: Experience
     description: 顧客情報の参照・検索を提供するサンプルAPI。
-    rootRaml: apis/sample-customer-api/raml/sample-customer-api.raml
+    rootRaml: raml/sample-customer-api/v1/sample-customer-api.raml
     basePath: /api/v1
     entryFlow: sample-customer-api-main-flow
     apiKitConfig: sample-customer-api-config
@@ -50,8 +50,8 @@ apis:
         method: GET
         path: /customers/{customerId}
         summary: 顧客IDを指定して顧客情報を取得する。
-        operationFolder: get_customer-get-by-id
-        raml: apis/sample-customer-api/operations/get_customer-get-by-id/get_customer-get-by-id.raml
+        operationRaml: get_customer-get-by-id.raml
+        raml: raml/sample-customer-api/v1/resources/get_customer-get-by-id.raml
         flow: get-customer-by-id-flow
         requestType: null
         requestHeaders:
@@ -83,8 +83,8 @@ apis:
         method: POST
         path: /customers/search
         summary: 条件を指定して顧客情報を検索する。
-        operationFolder: post_customer-search
-        raml: apis/sample-customer-api/operations/post_customer-search/post_customer-search.raml
+        operationRaml: post_customer-search.raml
+        raml: raml/sample-customer-api/v1/resources/post_customer-search.raml
         flow: search-customers-flow
         requestType: CustomerSearchRequest
         responseType: CustomerSearchResponse

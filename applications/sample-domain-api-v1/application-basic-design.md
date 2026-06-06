@@ -17,7 +17,7 @@
 
 | API ID | API名 | Version | Layer | Root RAML | Base Path | API Manager |
 |---|---|---|---|---|---|---|
-| `sample-customer-api-v1` | Sample Customer API | v1 | Experience | `apis/sample-customer-api/raml/sample-customer-api.raml` | `/api/v1` | Managed |
+| `sample-customer-api-v1` | Sample Customer API | v1 | Experience | `raml/sample-customer-api/v1/sample-customer-api.raml` | `/api/v1` | Managed |
 
 `Base Path` はRAMLの `baseUri` のパス部分を表します。Operationのパスは別に定義し、RAML上のリソースパスを重複して含めないでください。
 
@@ -37,8 +37,8 @@
 
 | Operation ID | Method | Path | Request Headers | Request Type | Response Type | RAML Fragment |
 |---|---|---|---|---|---|---|
-| `sample-customer-api-v1.customer.getById` | GET | `/customers/{customerId}` | `client_id`, `client_secret` | - | `Customer` | `apis/sample-customer-api/operations/get_customer-get-by-id/get_customer-get-by-id.raml` |
-| `sample-customer-api-v1.customer.search` | POST | `/customers/search` | - | `CustomerSearchRequest` | `CustomerSearchResponse` | `apis/sample-customer-api/operations/post_customer-search/post_customer-search.raml` |
+| `sample-customer-api-v1.customer.getById` | GET | `/customers/{customerId}` | `client_id`, `client_secret` | - | `Customer` | `raml/sample-customer-api/v1/resources/get_customer-get-by-id.raml` |
+| `sample-customer-api-v1.customer.search` | POST | `/customers/search` | - | `CustomerSearchRequest` | `CustomerSearchResponse` | `raml/sample-customer-api/v1/resources/post_customer-search.raml` |
 
 ### 4.1 Request Header定義
 

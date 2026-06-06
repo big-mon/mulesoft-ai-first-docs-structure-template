@@ -7,8 +7,8 @@ repository:
 
 structure:
   applicationPathPattern: applications/{appId}
-  apiPathPattern: applications/{appId}/apis/{apiFolder}
-  operationPathPattern: applications/{appId}/apis/{apiFolder}/operations/{operationFolder}
+  apiPathPattern: applications/{appId}/raml/{apiFolder}/{version}
+  operationPathPattern: applications/{appId}/raml/{apiFolder}/{version}/resources/{operationRaml}
   appDesignIndexFile: applications/{appId}/design-index.yaml
 
 applications:
@@ -22,3 +22,4 @@ applications:
     apis:
       - apiId: sample-customer-api-v1
         apiFolder: sample-customer-api
+        version: v1
