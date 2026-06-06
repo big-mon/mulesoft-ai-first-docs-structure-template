@@ -1,9 +1,11 @@
 #%RAML 1.0 Method
 (operationId): sample-customer-api-v1.customer.getById
 displayName: 顧客取得
-description: 顧客IDを指定して顧客情報を取得します。
+description: |
+  顧客IDを指定して顧客情報を取得します。
 is:
   - correlation-id
+  - client-id-required
   - common-errors
 responses:
   200:

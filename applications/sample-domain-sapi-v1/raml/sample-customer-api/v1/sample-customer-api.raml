@@ -16,6 +16,7 @@ types:
 
 traits:
   correlation-id: !include ../../common/traits/correlation-id.raml
+  client-id-required: !include ../../common/traits/client-id-required.raml
   common-errors: !include ../../common/traits/common-errors.raml
 
 /customers:
@@ -25,7 +26,7 @@ traits:
         type: string
         required: true
         example: C000001
-    get: !include resources/customer-get-by-id.raml
+    get: !include resources/get_customer-get-by-id.raml
 
   /search:
-    post: !include resources/customer-search.raml
+    post: !include resources/post_customer-search.raml
