@@ -19,7 +19,7 @@ Repository
 |---|---|---|---|
 | Repository | `design-index.yaml` | 複数Muleアプリケーションを束ねる単位 | Application一覧、アプリケーションルートへの導線 |
 | Application | `applications/{appId}/` | Muleアプリ / jar / デプロイ単位。`appId` は `sample-domain-api-v1` のようにバージョンを含める | アプリ設計、共通Flow、共通設定、外部接続、Mule実装 |
-| API | `applications/{appId}/apis/{apiFolder}/` | RAML root / API Manager / APIkit Router単位。`apiFolder` は `sample-address-api` のようにバージョンを重複させない | API契約、APIポリシー、利用者、base path |
+| API | `applications/{appId}/apis/{apiFolder}/` | RAML root / API Manager / APIkit Router単位。`apiFolder` は `sample-customer-api` のようにバージョンを重複させない | API契約、APIポリシー、利用者、base path |
 | Operation | `applications/{appId}/apis/{apiFolder}/operations/{operationFolder}/` | HTTP method + path / RAML fragment / Mule Flow単位 | 入出力、Flow設計、マッピング、エラー処理、MUnit |
 
 ## リポジトリ構成
@@ -37,10 +37,7 @@ Repository
       ├─ common/
       │  └─ raml/
       ├─ apis/
-      │  ├─ sample-customer-api/
-      │  │  ├─ raml/
-      │  │  └─ operations/
-      │  └─ sample-address-api/
+      │  └─ sample-customer-api/
       │     ├─ raml/
       │     └─ operations/
       └─ src/
@@ -114,7 +111,7 @@ full API path = api.basePath + operation.path
 1. このテンプレートリポジトリをコピーします。
 2. 新しいMuleアプリケーションごとに `applications/{appId}/` を作成します。アプリケーションをバージョン単位で管理する場合は、`sample-domain-api-v1` のようにアプリケーションフォルダへバージョンを含めます。
 3. ルートの `design-index.yaml` にApplicationを追加します。
-4. `applications/{appId}/design-index.yaml` にAPIとOperationを定義します。API IDは `sample-address-api-v1` のように契約識別子として保持し、APIフォルダは `sample-address-api` のようにバージョンなしで定義します。
+4. `applications/{appId}/design-index.yaml` にAPIとOperationを定義します。API IDは `sample-customer-api-v1` のように契約識別子として保持し、APIフォルダは `sample-customer-api` のようにバージョンなしで定義します。
 5. API契約は `applications/{appId}/apis/{apiFolder}/raml/` と `applications/{appId}/apis/{apiFolder}/operations/` に配置します。
 6. 基本設計と詳細設計は `applications/{appId}/docs/` に記載します。
 7. AI支援レビューを行う場合は `prompts/` 配下のプロンプトを利用します。

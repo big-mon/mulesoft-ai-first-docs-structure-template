@@ -96,28 +96,11 @@ APIkit Router
 
 4.1.2 と同じ構成で記載します。
 
-### 4.2 Sample Address API v1
-
-| 項目 | 値 |
-|---|---|
-| API ID | `sample-address-api-v1` |
-| Root RAML | `apis/sample-address-api/raml/sample-address-api.raml` |
-| Entry Flow | `sample-address-api-main-flow` |
-| APIkit Config | `sample-address-api-config` |
-| Autodiscovery Flow Ref | `sample-address-api-main-flow` |
-
-#### 4.2.1 Operation - Flow対応表
-
-| Operation ID | Flow | DataWeave | MUnit |
-|---|---|---|---|
-| `sample-address-api-v1.address.getByCustomerId` | `get-address-by-customer-id-flow` | `address-get-by-customer-id-response.dwl` | `address-get-by-customer-id-success-test`, `address-get-by-customer-id-not-found-test` |
-
 ## 5. Connector・Properties
 
 | Property | 例 | 備考 |
 |---|---|---|
 | `api.sampleCustomer.instanceId` | `${api.sampleCustomer.instanceId}` | 環境ごとのAPI Manager instance ID |
-| `api.sampleAddress.instanceId` | `${api.sampleAddress.instanceId}` | 環境ごとのAPI Manager instance ID |
 | `downstream.host` | `${downstream.host}` | 外部システムのhost |
 
 ## 6. DataWeave・マッピング詳細
@@ -127,7 +110,6 @@ APIkit Router
 | `sample-customer-api-v1.customer.getById` | `customer-get-by-id-response.dwl` | 接続先の顧客レスポンス | `Customer` | 接続先項目をAPI typeへマッピングする |
 | `sample-customer-api-v1.customer.search` | `customer-search-request.dwl` | API検索リクエスト | 接続先検索リクエスト | 検索条件を正規化する |
 | `sample-customer-api-v1.customer.search` | `customer-search-response.dwl` | 接続先検索レスポンス | `CustomerSearchResponse` | 一覧結果をマッピングする |
-| `sample-address-api-v1.address.getByCustomerId` | `address-get-by-customer-id-response.dwl` | 接続先住所レスポンス | `AddressList` | 一覧結果をマッピングする |
 
 ## 7. MUnitテスト設計
 
@@ -137,4 +119,3 @@ Operation単位で、正常系と主要異常系のシナリオを定義しま�
 |---|---|
 | `sample-customer-api-v1.customer.getById` | success, validation error, not found, timeout |
 | `sample-customer-api-v1.customer.search` | success, validation error, system error |
-| `sample-address-api-v1.address.getByCustomerId` | success, not found |

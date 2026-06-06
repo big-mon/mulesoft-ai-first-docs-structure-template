@@ -25,7 +25,7 @@ applications/{appId}/
 ## ルール
 
 - root RAMLはAPI契約の入口を表します。
-- APIフォルダは `sample-address-api` のようにバージョンを含めず、API契約上のバージョンはroot RAMLの `version` と `baseUri`、およびアプリケーションフォルダで表します。
+- APIフォルダは `sample-customer-api` のようにバージョンを含めず、API契約上のバージョンはroot RAMLの `version` と `baseUri`、およびアプリケーションフォルダで表します。
 - Operation RAML fragmentはmethod単位の契約を表します。
 - Request bodyを持つOperationは、Operation RAML fragment内の `body` にtypeとexampleを必ず記載します。
 - Request bodyを持たないOperationは、Operation RAML fragmentの `description` にRequest bodyを使用しないことを明記します。

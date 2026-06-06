@@ -18,7 +18,6 @@
 | API ID | API名 | Version | Layer | Root RAML | Base Path | API Manager |
 |---|---|---|---|---|---|---|
 | `sample-customer-api-v1` | Sample Customer API | v1 | Experience | `apis/sample-customer-api/raml/sample-customer-api.raml` | `/api/v1` | Managed |
-| `sample-address-api-v1` | Sample Address API | v1 | Process | `apis/sample-address-api/raml/sample-address-api.raml` | `/api/v1` | Managed |
 
 `Base Path` はRAMLの `baseUri` のパス部分を表します。Operationのパスは別に定義し、RAML上のリソースパスを重複して含めないでください。
 
@@ -34,23 +33,12 @@
 | Policy | Client ID enforcement, rate limiting |
 | エラーモデル | `ErrorResponse` |
 
-### 3.2 Sample Address API v1
-
-| 項目 | 値 |
-|---|---|
-| 責務 | 顧客住所情報の参照Operationを提供する。 |
-| 利用者 | `sample-web-frontend` |
-| 認証 | Client ID enforcement |
-| Policy | Client ID enforcement |
-| エラーモデル | `ErrorResponse` |
-
 ## 4. Operation一覧
 
 | Operation ID | Method | Path | Request Type | Response Type | RAML Fragment |
 |---|---|---|---|---|---|
 | `sample-customer-api-v1.customer.getById` | GET | `/customers/{customerId}` | - | `Customer` | `apis/sample-customer-api/operations/customer-get-by-id/customer-get-by-id.raml` |
 | `sample-customer-api-v1.customer.search` | POST | `/customers/search` | `CustomerSearchRequest` | `CustomerSearchResponse` | `apis/sample-customer-api/operations/customer-search/customer-search.raml` |
-| `sample-address-api-v1.address.getByCustomerId` | GET | `/customers/{customerId}/addresses` | - | `AddressList` | `apis/sample-address-api/operations/address-get-by-customer-id/address-get-by-customer-id.raml` |
 
 ## 5. シーケンス概要
 
@@ -71,7 +59,6 @@ RAML typeをAPI契約の正本とします。詳細な項目マッピングは�
 | `Customer` | CRM customer response | 顧客の基本情報 |
 | `CustomerSearchRequest` | API request | 検索条件 |
 | `CustomerSearchResponse` | CRM search response | 検索結果 |
-| `AddressList` | Address system response | 顧客住所一覧 |
 
 ## 7. エラー定義
 
@@ -88,7 +75,6 @@ RAML typeをAPI契約の正本とします。詳細な項目マッピングは�
 | API ID | Autodiscovery Property | Flow Ref | Policies |
 |---|---|---|---|
 | `sample-customer-api-v1` | `api.sampleCustomer.instanceId` | `sample-customer-api-main-flow` | Client ID enforcement, rate limiting |
-| `sample-address-api-v1` | `api.sampleAddress.instanceId` | `sample-address-api-main-flow` | Client ID enforcement |
 
 ## 9. アプリケーション固有制約
 
