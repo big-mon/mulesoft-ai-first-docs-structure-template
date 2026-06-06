@@ -1,10 +1,10 @@
-# Application Basic Design
+# アプリケーション基本設計
 
-This document is the basic design baseline for one Mule application.
+このドキュメントは、1つのMuleアプリケーションに対する基本設計のベースラインです。
 
-## 1. Application Overview
+## 1. アプリケーション概要
 
-| Item | Value |
+| 項目 | 値 |
 |---|---|
 | Application ID | `sample-domain-api` |
 | Mule Application | `sample-domain-api` |
@@ -13,38 +13,38 @@ This document is the basic design baseline for one Mule application.
 | Repository | `sample-domain-api` |
 | Runtime | Mule 4.x |
 
-## 2. Included APIs
+## 2. 含まれるAPI
 
-| API ID | API Name | Version | Layer | Root RAML | Base Path | API Manager |
+| API ID | API名 | Version | Layer | Root RAML | Base Path | API Manager |
 |---|---|---|---|---|---|---|
 | `sample-customer-api-v1` | Sample Customer API | v1 | Experience | `raml/sample-customer-api/v1/sample-customer-api.raml` | `/api/v1` | Managed |
 | `sample-address-api-v1` | Sample Address API | v1 | Process | `raml/sample-address-api/v1/sample-address-api.raml` | `/api/v1` | Managed |
 
-`Base Path` represents the path component of the RAML `baseUri`. Operation paths are defined separately and must not duplicate the RAML resource path.
+`Base Path` はRAMLの `baseUri` のパス部分を表します。Operationのパスは別に定義し、RAML上のリソースパスを重複して含めないでください。
 
-## 3. API Basic Design
+## 3. API別基本設計
 
 ### 3.1 Sample Customer API v1
 
-| Item | Value |
+| 項目 | 値 |
 |---|---|
-| Responsibility | Provide customer reference and search operations. |
-| Consumer | `sample-web-frontend` |
-| Authentication | Client ID enforcement |
-| Policies | Client ID enforcement, rate limiting |
-| Error Model | `ErrorResponse` |
+| 責務 | 顧客情報の参照・検索Operationを提供する。 |
+| 利用者 | `sample-web-frontend` |
+| 認証 | Client ID enforcement |
+| Policy | Client ID enforcement, rate limiting |
+| エラーモデル | `ErrorResponse` |
 
 ### 3.2 Sample Address API v1
 
-| Item | Value |
+| 項目 | 値 |
 |---|---|
-| Responsibility | Provide customer address reference operations. |
-| Consumer | `sample-web-frontend` |
-| Authentication | Client ID enforcement |
-| Policies | Client ID enforcement |
-| Error Model | `ErrorResponse` |
+| 責務 | 顧客住所情報の参照Operationを提供する。 |
+| 利用者 | `sample-web-frontend` |
+| 認証 | Client ID enforcement |
+| Policy | Client ID enforcement |
+| エラーモデル | `ErrorResponse` |
 
-## 4. Operation List
+## 4. Operation一覧
 
 | Operation ID | Method | Path | Request Type | Response Type | RAML Fragment |
 |---|---|---|---|---|---|
@@ -52,51 +52,51 @@ This document is the basic design baseline for one Mule application.
 | `sample-customer-api-v1.customer.search` | POST | `/customers/search` | `CustomerSearchRequest` | `CustomerSearchResponse` | `raml/sample-customer-api/v1/resources/customer-search.raml` |
 | `sample-address-api-v1.address.getByCustomerId` | GET | `/customers/{customerId}/addresses` | - | `AddressList` | `raml/sample-address-api/v1/resources/address-get-by-customer-id.raml` |
 
-## 5. Sequence Overview
+## 5. シーケンス概要
 
-Describe the normal and major error sequences at Operation level.
+Operation単位で、正常系と主要な異常系の処理順序を記載します。
 
-Recommended level:
+推奨する粒度:
 
 ```text
-Validate request -> call target system -> transform response -> return API response
+入力チェック -> 接続先システム呼び出し -> レスポンス変換 -> APIレスポンス返却
 ```
 
-## 6. Data Model and Mapping Overview
+## 6. データモデル・マッピング概要
 
-RAML types define the API contract. Mapping details are completed during detail design.
+RAML typeをAPI契約の正本とします。詳細な項目マッピングは詳細設計で定義します。
 
-| API Type | Source / Target | Notes |
+| API Type | Source / Target | 備考 |
 |---|---|---|
-| `Customer` | CRM customer response | Basic customer profile |
-| `CustomerSearchRequest` | API request | Search conditions |
-| `CustomerSearchResponse` | CRM search response | Search results |
-| `AddressList` | Address system response | Customer address list |
+| `Customer` | CRM customer response | 顧客の基本情報 |
+| `CustomerSearchRequest` | API request | 検索条件 |
+| `CustomerSearchResponse` | CRM search response | 検索結果 |
+| `AddressList` | Address system response | 顧客住所一覧 |
 
-## 7. Error Definition
+## 7. エラー定義
 
-| HTTP Status | Error Code | Category | Notes |
+| HTTP Status | Error Code | 区分 | 備考 |
 |---:|---|---|---|
-| 400 | `BAD_REQUEST` | Client error | Invalid input |
-| 404 | `RESOURCE_NOT_FOUND` | Business error | Requested resource was not found |
-| 500 | `INTERNAL_ERROR` | System error | Unexpected internal error |
-| 503 | `SERVICE_UNAVAILABLE` | System error | Downstream system unavailable |
-| 504 | `GATEWAY_TIMEOUT` | System error | Downstream timeout |
+| 400 | `BAD_REQUEST` | Client error | 入力値不正 |
+| 404 | `RESOURCE_NOT_FOUND` | Business error | 指定されたリソースが存在しない |
+| 500 | `INTERNAL_ERROR` | System error | 想定外の内部エラー |
+| 503 | `SERVICE_UNAVAILABLE` | System error | 接続先システムが利用不可 |
+| 504 | `GATEWAY_TIMEOUT` | System error | 接続先システムのタイムアウト |
 
-## 8. API Management Design
+## 8. API管理設計
 
 | API ID | Autodiscovery Property | Flow Ref | Policies |
 |---|---|---|---|
 | `sample-customer-api-v1` | `api.sampleCustomer.instanceId` | `sample-customer-api-main-flow` | Client ID enforcement, rate limiting |
 | `sample-address-api-v1` | `api.sampleAddress.instanceId` | `sample-address-api-main-flow` | Client ID enforcement |
 
-## 9. Application-specific Constraints
+## 9. アプリケーション固有制約
 
-Document only application-specific constraints here. Platform-wide operational standards should be referenced, not duplicated.
+ここにはアプリケーション固有の制約のみを記載します。プラットフォーム全体の運用標準は重複記載せず、必要に応じて参照してください。
 
-| Topic | Decision |
+| トピック | 方針 |
 |---|---|
-| Timeout | To be defined per connector in detail design |
-| Retry | To be defined per Operation in detail design |
-| Logging | Use team standard. Operation-specific log points are defined in detail design. |
-| Data masking | Do not log PII fields unless explicitly approved. |
+| Timeout | Connector単位で詳細設計時に定義する |
+| Retry | Operation単位で詳細設計時に定義する |
+| Logging | チーム標準に従う。Operation固有のログ出力ポイントは詳細設計で定義する |
+| Data masking | 明示的に許可されていない限り、PII項目をログ出力しない |
