@@ -1,13 +1,13 @@
 #%RAML 1.0 Method
 (operationId): sample-address-api-v1.address.getByCustomerId
-displayName: Get addresses by customer ID
-description: Get address list by customer ID.
+displayName: 顧客住所一覧取得
+description: 顧客IDを指定して住所一覧を取得します。
 is:
   - correlation-id
   - common-errors
 responses:
   200:
-    description: Address list was found.
+    description: 住所一覧が見つかりました。
     body:
       application/json:
         type: AddressList
