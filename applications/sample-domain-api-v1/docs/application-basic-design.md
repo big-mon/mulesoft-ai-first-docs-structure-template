@@ -40,6 +40,13 @@
 | `sample-customer-api-v1.customer.getById` | GET | `/customers/{customerId}` | `client_id`, `client_secret` | - | `Customer` | `apis/sample-customer-api/operations/customer-get-by-id/customer-get-by-id.raml` |
 | `sample-customer-api-v1.customer.search` | POST | `/customers/search` | - | `CustomerSearchRequest` | `CustomerSearchResponse` | `apis/sample-customer-api/operations/customer-search/customer-search.raml` |
 
+### 4.1 Request Header定義
+
+| Operation ID | Header | Required | 入力規則 |
+|---|---|---|---|
+| `sample-customer-api-v1.customer.getById` | `client_id` | true | `^[A-Za-z0-9_-]{16,64}$` |
+| `sample-customer-api-v1.customer.getById` | `client_secret` | true | 32文字以上 |
+
 ## 5. シーケンス概要
 
 Operation単位で、正常系と主要な異常系の処理順序を記載します。

@@ -58,9 +58,13 @@ apis:
           - name: client_id
             required: true
             source: Client ID enforcement
+            constraints:
+              pattern: "^[A-Za-z0-9_-]{16,64}$"
           - name: client_secret
             required: true
             source: Client ID enforcement
+            constraints:
+              minLength: 32
         responseType: Customer
         errorModel: ErrorResponse
         dataweave:

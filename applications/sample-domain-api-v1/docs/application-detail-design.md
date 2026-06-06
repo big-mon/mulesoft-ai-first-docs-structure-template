@@ -55,6 +55,13 @@
 | Request Headers | `client_id`, `client_secret` |
 | Response Type | `Customer` |
 
+##### Request Header
+
+| Header | Required | 入力規則 | 備考 |
+|---|---|---|---|
+| `client_id` | true | `^[A-Za-z0-9_-]{16,64}$` | Client ID enforcementで検証する |
+| `client_secret` | true | 32文字以上 | Client ID enforcementで検証する |
+
 ##### Flow図
 
 ```text
