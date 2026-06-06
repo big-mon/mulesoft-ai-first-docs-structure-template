@@ -60,6 +60,7 @@ apis:
           - customer-get-by-id-success-test
           - customer-get-by-id-validation-error-test
           - customer-get-by-id-not-found-test
+          - customer-get-by-id-timeout-test
         lifecycle:
           requirementStatus: draft
           basicDesignStatus: draft
