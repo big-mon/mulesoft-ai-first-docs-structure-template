@@ -2,7 +2,7 @@ schemaVersion: "1.0"
 
 application:
   appId: sample-domain-api
-  appName: Sample Domain API Application
+  appName: サンプルドメインAPIアプリケーション
   artifactName: sample-domain-api.jar
   deploymentUnit: jar
   repository: sample-domain-api
@@ -21,10 +21,10 @@ common:
 
 apis:
   - apiId: sample-customer-api-v1
-    apiName: Sample Customer API
+    apiName: サンプル顧客API
     version: v1
     apiLayer: Experience
-    description: Sample API for customer reference and search.
+    description: 顧客情報の参照・検索を提供するサンプルAPI。
     rootRaml: raml/sample-customer-api/v1/sample-customer-api.raml
     basePath: /api/v1
     entryFlow: sample-customer-api-main-flow
@@ -48,7 +48,7 @@ apis:
       - operationId: sample-customer-api-v1.customer.getById
         method: GET
         path: /customers/{customerId}
-        summary: Get a customer by customer ID.
+        summary: 顧客IDを指定して顧客情報を取得する。
         raml: raml/sample-customer-api/v1/resources/customer-get-by-id.raml
         flow: get-customer-by-id-flow
         requestType: null
@@ -69,7 +69,7 @@ apis:
       - operationId: sample-customer-api-v1.customer.search
         method: POST
         path: /customers/search
-        summary: Search customers by conditions.
+        summary: 条件を指定して顧客情報を検索する。
         raml: raml/sample-customer-api/v1/resources/customer-search.raml
         flow: search-customers-flow
         requestType: CustomerSearchRequest
@@ -88,10 +88,10 @@ apis:
           detailDesignStatus: not_started
 
   - apiId: sample-address-api-v1
-    apiName: Sample Address API
+    apiName: サンプル住所API
     version: v1
     apiLayer: Process
-    description: Sample API for customer address reference.
+    description: 顧客住所情報の参照を提供するサンプルAPI。
     rootRaml: raml/sample-address-api/v1/sample-address-api.raml
     basePath: /api/v1
     entryFlow: sample-address-api-main-flow
@@ -114,7 +114,7 @@ apis:
       - operationId: sample-address-api-v1.address.getByCustomerId
         method: GET
         path: /customers/{customerId}/addresses
-        summary: Get addresses by customer ID.
+        summary: 顧客IDを指定して住所一覧を取得する。
         raml: raml/sample-address-api/v1/resources/address-get-by-customer-id.raml
         flow: get-address-by-customer-id-flow
         requestType: null
