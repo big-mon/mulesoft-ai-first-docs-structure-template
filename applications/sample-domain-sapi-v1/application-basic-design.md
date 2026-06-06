@@ -8,8 +8,8 @@
 
 | 項目 | 値 |
 |---|---|
-| Application ID | `sample-domain-api-v1` |
-| Mule Application | `sample-domain-api-v1` |
+| Application ID | `sample-domain-sapi-v1` |
+| Mule Application | `sample-domain-sapi-v1` |
 | 責務 | 顧客ドメインに関するAPIを提供し、利用者からのリクエストを接続先システム向けに中継・変換する。 |
 | Runtime | Mule 4.9.0 |
 | Java | 17 |
@@ -18,9 +18,9 @@
 
 | 項目 | 値 |
 |---|---|
-| Artifact | `sample-domain-api-v1.jar` |
+| Artifact | `sample-domain-sapi-v1.jar` |
 | Deployment Unit | jar |
-| Repository | `sample-domain-api-v1` |
+| Repository | `sample-domain-sapi-v1` |
 | POM | `pom.xml` |
 | Design Index | `design-index.yaml` |
 
@@ -46,9 +46,9 @@
 
 ### 2.1 Customer API v1
 
-| API ID | API名 | Version | Layer | Root RAML | Base Path | API Manager |
-|---|---|---|---|---|---|---|
-| `sample-customer-api-v1` | Sample Customer API | v1 | Experience | `raml/sample-customer-api/v1/sample-customer-api.raml` | `/api/v1` | Managed |
+| API ID | API名 | Version | Root RAML | Base Path | API Manager |
+|---|---|---|---|---|---|
+| `sample-customer-api-v1` | Sample Customer API | v1 | `raml/sample-customer-api/v1/sample-customer-api.raml` | `/api/v1` | Managed |
 
 ## 3. API別基本設計
 
@@ -124,7 +124,7 @@ RAML typeをAPI契約の正本とします。詳細な項目マッピングは�
 
 | 対象 | 正本 | 関連設計 | 実装・テスト |
 |---|---|---|---|
-| Application一覧 | ルート `design-index.yaml` | `applications/sample-domain-api-v1/design-index.yaml` | `applications/sample-domain-api-v1/pom.xml` |
-| API一覧 | `applications/sample-domain-api-v1/design-index.yaml` | `raml/sample-customer-api/v1/sample-customer-api.raml` | `sample-customer-api-main-flow` |
+| Application一覧 | ルート `design-index.yaml` | `applications/sample-domain-sapi-v1/design-index.yaml` | `applications/sample-domain-sapi-v1/pom.xml` |
+| API一覧 | `applications/sample-domain-sapi-v1/design-index.yaml` | `raml/sample-customer-api/v1/sample-customer-api.raml` | `sample-customer-api-main-flow` |
 | `sample-customer-api-v1.customer.getById` | `raml/sample-customer-api/v1/resources/get_customer-get-by-id.raml` | `application-detail-design.md` | `get-customer-by-id-flow`, `customer-get-by-id-response.dwl`, `customer-get-by-id-*` MUnit |
 | `sample-customer-api-v1.customer.search` | `raml/sample-customer-api/v1/resources/post_customer-search.raml` | `application-detail-design.md` | `search-customers-flow`, `customer-search-request.dwl`, `customer-search-response.dwl`, `customer-search-*` MUnit |

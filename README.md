@@ -18,7 +18,7 @@ Repository
 | 階層 | 物理パス | 意味 | 主な責務 |
 |---|---|---|---|
 | Repository | `design-index.yaml` | 複数Muleアプリケーションを束ねる単位 | Application一覧、アプリケーションルートへの導線 |
-| Application | `applications/{appId}/` | Muleアプリ / jar / デプロイ単位。`appId` は `sample-domain-api-v1` のようにバージョンを含める | アプリ設計、共通Flow、共通設定、外部接続、Mule実装 |
+| Application | `applications/{appId}/` | Muleアプリ / jar / デプロイ単位。`appId` は `sample-domain-sapi-v1` のようにバージョンを含める | アプリ設計、共通Flow、共通設定、外部接続、Mule実装 |
 | API | `applications/{appId}/raml/{apiFolder}/{version}/` | RAML root / API Manager / APIkit Router単位。`apiFolder` は `sample-customer-api` のようにバージョンを重複させない | API契約、APIポリシー、利用者、base path |
 | Operation | `applications/{appId}/raml/{apiFolder}/{version}/resources/{operationRaml}` | HTTP method + path / RAML method fragment / Mule Flow単位。`operationRaml` は `get_customer-get-by-id.raml` のようにHTTP methodとOperation名を `_` で区切る | 入出力、Flow設計、マッピング、エラー処理、MUnit |
 
@@ -30,7 +30,7 @@ Repository
 ├─ AGENTS.md
 ├─ prompts/
 └─ applications/
-   └─ sample-domain-api-v1/
+   └─ sample-domain-sapi-v1/
       ├─ design-index.yaml
       ├─ application-basic-design.md
       ├─ application-detail-design.md
@@ -121,7 +121,7 @@ full API path = api.basePath + operation.path
 ## 使い始め方
 
 1. このテンプレートリポジトリをコピーします。
-2. 新しいMuleアプリケーションごとに `applications/{appId}/` を作成します。アプリケーションをバージョン単位で管理する場合は、`sample-domain-api-v1` のようにアプリケーションフォルダへバージョンを含めます。
+2. 新しいMuleアプリケーションごとに `applications/{appId}/` を作成します。アプリケーションをバージョン単位で管理する場合は、`sample-domain-sapi-v1` のようにアプリケーションフォルダへバージョンを含めます。
 3. ルートの `design-index.yaml` にApplicationを追加します。
 4. `applications/{appId}/design-index.yaml` にAPIとOperationを定義します。API IDは `sample-customer-api-v1` のように契約識別子として保持し、APIフォルダは `sample-customer-api` のようにバージョンなしで定義します。
 5. API契約は `applications/{appId}/raml/{apiFolder}/{version}/` に配置します。

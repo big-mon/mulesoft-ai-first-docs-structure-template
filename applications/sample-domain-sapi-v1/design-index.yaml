@@ -1,11 +1,11 @@
 schemaVersion: "1.0"
 
 application:
-  appId: sample-domain-api-v1
-  appName: サンプルドメインAPIアプリケーション
-  artifactName: sample-domain-api-v1.jar
+  appId: sample-domain-sapi-v1
+  appName: サンプルドメインSAPIアプリケーション
+  artifactName: sample-domain-sapi-v1.jar
   deploymentUnit: jar
-  repository: sample-domain-api-v1
+  repository: sample-domain-sapi-v1
   muleRuntime: "4.9.0"
   javaVersion: "17"
   ownerTeam: integration-team
@@ -31,7 +31,6 @@ apis:
     apiFolder: sample-customer-api
     apiName: サンプル顧客API
     version: v1
-    apiLayer: Experience
     description: 顧客情報の参照・検索を提供するサンプルAPI。
     rootRaml: raml/sample-customer-api/v1/sample-customer-api.raml
     basePath: /api/v1

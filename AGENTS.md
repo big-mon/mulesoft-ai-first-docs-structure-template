@@ -53,7 +53,7 @@ applications/{appId}/
 ```
 
 - アプリケーション固有の設計、RAML、Mule実装、テストは必ず `applications/{appId}/` 配下に置いてください。
-- アプリケーションをバージョン単位で管理する場合は、`appId` とアプリケーションフォルダに `sample-domain-api-v1` のようなバージョンを含めてください。
+- アプリケーションをバージョン単位で管理する場合は、`appId` とアプリケーションフォルダに `sample-domain-sapi-v1` のようなバージョンを含めてください。
 - APIフォルダは `sample-customer-api` のようにバージョンを重複させず、API契約上のIDは `apiId` として `sample-customer-api-v1` のように保持してください。
 - アプリケーション内の複数APIで再利用するRAML type、trait、exampleは `applications/{appId}/raml/common/` 配下に置いてください。
 - API固有のRAML root、Operation fragment、type、Operation固有exampleは `applications/{appId}/raml/{apiFolder}/{version}/` 配下に置いてください。

@@ -5,11 +5,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.example.mulesoft</groupId>
-  <artifactId>sample-domain-api-v1</artifactId>
+  <artifactId>sample-domain-sapi-v1</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>mule-application</packaging>
 
-  <name>sample-domain-api-v1</name>
+  <name>sample-domain-sapi-v1</name>
   <description>Template placeholder for MuleSoft AI-first documentation structure.</description>
 
   <properties>

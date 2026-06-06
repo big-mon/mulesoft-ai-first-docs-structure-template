@@ -6,8 +6,8 @@
 
 | 項目 | 値 |
 |---|---|
-| Mule Application | `sample-domain-api-v1` |
-| Artifact | `sample-domain-api-v1.jar` |
+| Mule Application | `sample-domain-sapi-v1` |
+| Artifact | `sample-domain-sapi-v1.jar` |
 | Runtime | Mule 4.9.0 |
 | Java | 17 |
 | APIkit | 使用する |
