@@ -1,20 +1,20 @@
-# AI Review Prompt: API Level
+# AIレビュー用プロンプト: API単位
 
-Use this prompt to review one API.
+1つのAPIをレビューするためのプロンプトです。
 
 ```text
-Review the API identified by {apiId}.
+apiId: {apiId} のAPIをレビューしてください。
 
-Start from design-index.yaml.
-Then read the API root RAML, all Operation RAML fragments, and related sections in the basic and detail design documents.
+最初に design-index.yaml を読んでください。
+その後、対象APIのroot RAML、すべてのOperation RAML fragment、基本設計書と詳細設計書の関連セクションを読んでください。
 
-Check whether:
-- The root RAML includes all Operations listed in design-index.yaml.
-- Operation IDs in RAML match design-index.yaml.
-- Request and response types are defined and referenced correctly.
-- Common error responses are consistently applied.
-- API Manager policies, consumers, and Autodiscovery flowRef are defined.
-- Detail design has Operation-to-Flow mapping for all Operations.
+以下を確認してください。
+- root RAMLが design-index.yaml に定義されたすべてのOperationを含んでいること。
+- RAML内のOperation IDが design-index.yaml と一致していること。
+- Request typeとResponse typeが正しく定義・参照されていること。
+- 共通エラー応答が一貫して適用されていること。
+- API ManagerのPolicy、利用者、Autodiscovery flowRefが定義されていること。
+- 詳細設計にすべてのOperationのOperation-to-Flow対応が定義されていること。
 
-Report findings grouped by Operation ID.
+指摘事項はOperation ID単位で整理して報告してください。
 ```
