@@ -1,8 +1,8 @@
 {
   "code": "BAD_REQUEST",
-  "message": "Invalid request.",
+  "message": "リクエストが不正です。",
   "correlationId": "7f0c2b5a-6b5d-4d5f-9b35-8f7b4a5c1a10",
   "details": [
-    "customerId is required."
+    "customerId は必須です。"
   ]
 }
