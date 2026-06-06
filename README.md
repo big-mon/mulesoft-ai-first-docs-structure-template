@@ -36,12 +36,15 @@ Repository
       ├─ application-detail-design.md
       ├─ pom.xml
       ├─ raml/
+      │  ├─ common/
+      │  │  ├─ types/
+      │  │  ├─ traits/
+      │  │  └─ examples/
       │  └─ sample-customer-api/
       │     └─ v1/
       │        ├─ sample-customer-api.raml
       │        ├─ resources/
       │        ├─ types/
-      │        ├─ traits/
       │        └─ examples/
       └─ src/
 ```
@@ -54,7 +57,8 @@ Repository
 | `applications/{appId}/design-index.yaml` | Application / API / Operation / RAML / Flow / DataWeave / MUnit の対応関係 |
 | `applications/{appId}/application-basic-design.md` | アプリケーション基本設計のベースライン |
 | `applications/{appId}/application-detail-design.md` | Mule実装の入力となる詳細設計 |
-| `applications/{appId}/raml/{apiFolder}/{version}/` | API root RAML、Operation fragment、type、trait、example |
+| `applications/{appId}/raml/common/` | アプリケーション内の複数APIで共有するRAML type、trait、example |
+| `applications/{appId}/raml/{apiFolder}/{version}/` | API root RAML、Operation fragment、API固有type、Operation固有example |
 | `applications/{appId}/src/main/mule/` | Mule XML実装 |
 | `applications/{appId}/src/main/resources/dwl/` | DataWeave実装 |
 | `applications/{appId}/src/test/munit/` | MUnitテスト |
@@ -96,6 +100,13 @@ full API path = api.basePath + operation.path
 - `api.basePath` はRAML rootの `baseUri` のパス部分と一致させます。
 - `operation.path` は該当OperationのRAMLリソースパスと一致させます。
 - 同じリソースセグメントを `api.basePath` と `operation.path` の両方に重複して書かないでください。
+
+## RAML共通部品の配置ルール
+
+- アプリケーション内の複数APIで再利用するtype、trait、exampleは `applications/{appId}/raml/common/` に配置します。
+- API契約に固有のドメインtypeは `applications/{appId}/raml/{apiFolder}/{version}/types/` に配置します。
+- Operation固有のrequest / response exampleは `applications/{appId}/raml/{apiFolder}/{version}/examples/` に配置します。
+- `common/` はアプリケーション境界を越えて共有しないでください。別アプリケーションで同じ部品が必要な場合も、まずは対象アプリケーション配下に明示的に配置します。
 
 ## フェーズ別の更新ルール
 

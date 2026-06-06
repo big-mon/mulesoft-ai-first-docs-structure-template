@@ -8,6 +8,7 @@ Muleアプリケーション全体の設計をレビューするためのプロ�
 
 以下を確認してください。
 - 対象Applicationの資産が applications/{appId}/ 配下にまとまっていること。
+- アプリケーション内共通のRAML部品が applications/{appId}/raml/common/ に閉じていること。
 - すべてのAPIにroot RAMLファイルが存在すること。
 - すべてのOperationにOperation RAML fragmentが存在すること。
 - すべてのOperation RAML fragmentが対象APIの resources/{operationRaml} として存在すること。

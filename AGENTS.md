@@ -39,12 +39,15 @@ applications/{appId}/
   application-basic-design.md
   application-detail-design.md
   raml/
+    common/
+      types/
+      traits/
+      examples/
     {apiFolder}/
       {version}/
         {api-root}.raml
         resources/
         types/
-        traits/
         examples/
   src/
 ```
@@ -52,7 +55,8 @@ applications/{appId}/
 - アプリケーション固有の設計、RAML、Mule実装、テストは必ず `applications/{appId}/` 配下に置いてください。
 - アプリケーションをバージョン単位で管理する場合は、`appId` とアプリケーションフォルダに `sample-domain-api-v1` のようなバージョンを含めてください。
 - APIフォルダは `sample-customer-api` のようにバージョンを重複させず、API契約上のIDは `apiId` として `sample-customer-api-v1` のように保持してください。
-- API固有のRAML root、Operation fragment、type、trait、exampleは `applications/{appId}/raml/{apiFolder}/{version}/` 配下に置いてください。
+- アプリケーション内の複数APIで再利用するRAML type、trait、exampleは `applications/{appId}/raml/common/` 配下に置いてください。
+- API固有のRAML root、Operation fragment、type、Operation固有exampleは `applications/{appId}/raml/{apiFolder}/{version}/` 配下に置いてください。
 - Operation RAML fragmentは `resources/` 配下に置き、`get_customer-get-by-id.raml` のようにHTTP methodとOperation名を `_` で区切ってください。
 - アプリケーション間で資産を混在させないでください。
 
@@ -117,6 +121,7 @@ RAMLと実装が矛盾している場合は、勝手に解決せず、矛盾と�
 - 対象アプリケーションの `design-index.yaml` にOperationが存在すること
 - Operation RAML fragmentが `resources/{operationRaml}` に存在すること
 - RAML rootからOperation fragmentが参照されていること
+- 複数APIで再利用されるRAML部品が `raml/common/` にあり、API固有部品と混在していないこと
 - `api.basePath + operation.path` がRAML契約上のルートと一致すること
 - 詳細設計でFlowが定義されていること
 - エラー応答がRAMLと整合していること

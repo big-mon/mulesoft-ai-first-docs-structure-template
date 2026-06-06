@@ -1,0 +1,14 @@
+#%RAML 1.0 Trait
+headers:
+  client_id:
+    type: string
+    required: true
+    pattern: "^[A-Za-z0-9_-]{16,64}$"
+    description: API ManagerのClient ID enforcementで検証するClient IDです。
+    example: sample-client-id-001
+  client_secret:
+    type: string
+    required: true
+    minLength: 32
+    description: API ManagerのClient ID enforcementで検証するClient Secretです。
+    example: sample-client-secret-1234567890abcdef

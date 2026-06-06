@@ -17,7 +17,7 @@
 | Flow / Subflow | 責務 | 備考 |
 |---|---|---|
 | `common-correlation-id-subflow` | Correlation IDを解決または生成する | すべてのAPI entry flowで使用する |
-| `common-error-response-subflow` | 共通エラーレスポンスを生成する | `ErrorResponse` モデルを使用する |
+| `common-error-response-subflow` | 共通エラーレスポンスを生成する | `raml/common/types/ErrorResponse.raml` を使用する |
 | `common-logging-subflow` | 標準ログを出力する | 機密情報をログ出力しない |
 
 ## 3. 共通Connector設定

@@ -7,6 +7,7 @@ repository:
 
 structure:
   applicationPathPattern: applications/{appId}
+  commonRamlPathPattern: applications/{appId}/raml/common
   apiPathPattern: applications/{appId}/raml/{apiFolder}/{version}
   operationPathPattern: applications/{appId}/raml/{apiFolder}/{version}/resources/{operationRaml}
   appDesignIndexFile: applications/{appId}/design-index.yaml

@@ -15,10 +15,16 @@ documents:
   detailDesign: application-detail-design.md
 
 common:
-  errorModel: raml/sample-customer-api/v1/types/ErrorResponse.raml
+  errorModel: raml/common/types/ErrorResponse.raml
+  commonTypes:
+    - raml/common/types/ErrorResponse.raml
+    - raml/common/types/Paging.raml
   commonTraits:
-    - raml/sample-customer-api/v1/traits/common-headers.raml
-    - raml/sample-customer-api/v1/traits/common-errors.raml
+    - raml/common/traits/correlation-id.raml
+    - raml/common/traits/client-id-required.raml
+    - raml/common/traits/common-errors.raml
+  commonExamples:
+    - raml/common/examples/error-response.json
 
 apis:
   - apiId: sample-customer-api-v1

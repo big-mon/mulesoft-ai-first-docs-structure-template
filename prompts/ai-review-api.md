@@ -13,6 +13,7 @@ appId: {appId}, apiId: {apiId}, apiFolder: {apiFolder} のAPIをレビューし�
 - root RAMLが applications/{appId}/design-index.yaml に定義されたすべてのOperationを含んでいること。
 - RAML内のOperation IDが applications/{appId}/design-index.yaml と一致していること。
 - Request typeとResponse typeが正しく定義・参照されていること。
+- アプリケーション内共通のtype、trait、exampleが applications/{appId}/raml/common/ から参照されていること。
 - 共通エラー応答が一貫して適用されていること。
 - API ManagerのPolicy、利用者、Autodiscovery flowRefが定義されていること。
 - 詳細設計にすべてのOperationのOperation-to-Flow対応が定義されていること。

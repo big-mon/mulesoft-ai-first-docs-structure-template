@@ -12,11 +12,12 @@ types:
   Customer: !include types/Customer.raml
   CustomerSearchRequest: !include types/CustomerSearchRequest.raml
   CustomerSearchResponse: !include types/CustomerSearchResponse.raml
-  ErrorResponse: !include types/ErrorResponse.raml
+  ErrorResponse: !include ../../common/types/ErrorResponse.raml
 
 traits:
-  common-headers: !include traits/common-headers.raml
-  common-errors: !include traits/common-errors.raml
+  correlation-id: !include ../../common/traits/correlation-id.raml
+  client-id-required: !include ../../common/traits/client-id-required.raml
+  common-errors: !include ../../common/traits/common-errors.raml
 
 /customers:
   /{customerId}:

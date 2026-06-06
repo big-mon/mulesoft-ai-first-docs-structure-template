@@ -12,6 +12,7 @@ appId: {appId}, apiId: {apiId}, apiFolder: {apiFolder}, version: {version}, oper
 - Operation RAML fragmentが applications/{appId}/raml/{apiFolder}/{version}/resources/{operationRaml} に存在すること。
 - operationRamlが `{method}_{operation-name}.raml` の命名になっていること。
 - Methodとpathが applications/{appId}/design-index.yaml とRAMLで一致していること。
+- 共通traitを使う場合、applications/{appId}/raml/common/ の部品を参照していること。
 - Request body、Response body、Header、Status codeが明確であること。
 - RAMLのエラー応答とError Handler設計が整合していること。
 - Flow図とProcessor明細が実装入力として十分であること。

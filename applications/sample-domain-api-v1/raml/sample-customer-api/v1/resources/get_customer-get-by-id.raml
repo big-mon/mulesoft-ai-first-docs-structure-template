@@ -4,21 +4,9 @@ displayName: 顧客取得
 description: |
   顧客IDを指定して顧客情報を取得します。
 is:
-  - common-headers
+  - correlation-id
+  - client-id-required
   - common-errors
-headers:
-  client_id:
-    type: string
-    required: true
-    pattern: "^[A-Za-z0-9_-]{16,64}$"
-    description: API ManagerのClient ID enforcementで検証するClient IDです。
-    example: sample-client-id-001
-  client_secret:
-    type: string
-    required: true
-    minLength: 32
-    description: API ManagerのClient ID enforcementで検証するClient Secretです。
-    example: sample-client-secret-1234567890abcdef
 responses:
   200:
     description: 顧客情報が見つかりました。
