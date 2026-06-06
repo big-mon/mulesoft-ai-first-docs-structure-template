@@ -8,8 +8,8 @@
 |---|---|
 | Mule Application | `sample-domain-api-v1` |
 | Artifact | `sample-domain-api-v1.jar` |
-| Runtime | Mule 4.x |
-| Java | To be defined |
+| Runtime | Mule 4.9.0 |
+| Java | 17 |
 | APIkit | 使用する |
 
 ## 2. 共通Flow設計

@@ -13,7 +13,9 @@
   <description>Template placeholder for MuleSoft AI-first documentation structure.</description>
 
   <properties>
-    <mule.maven.plugin.version>4.3.0</mule.maven.plugin.version>
+    <mule.runtime.version>4.9.0</mule.runtime.version>
+    <java.version>17</java.version>
+    <mule.maven.plugin.version>4.6.0</mule.maven.plugin.version>
   </properties>
 
   <build>
@@ -23,6 +25,9 @@
         <artifactId>mule-maven-plugin</artifactId>
         <version>${mule.maven.plugin.version}</version>
         <extensions>true</extensions>
+        <configuration>
+          <runtimeVersion>${mule.runtime.version}</runtimeVersion>
+        </configuration>
       </plugin>
     </plugins>
   </build>

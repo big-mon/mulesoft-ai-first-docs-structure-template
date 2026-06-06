@@ -11,7 +11,8 @@
 | Artifact | `sample-domain-api-v1.jar` |
 | Deployment Unit | jar |
 | Repository | `sample-domain-api-v1` |
-| Runtime | Mule 4.x |
+| Runtime | Mule 4.9.0 |
+| Java | 17 |
 
 ## 2. 含まれるAPI
 

@@ -6,7 +6,8 @@ application:
   artifactName: sample-domain-api-v1.jar
   deploymentUnit: jar
   repository: sample-domain-api-v1
-  muleRuntime: "4.x"
+  muleRuntime: "4.9.0"
+  javaVersion: "17"
   ownerTeam: integration-team
 
 documents:
