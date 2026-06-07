@@ -14,6 +14,7 @@
 | Root RAML | `raml/sample-customer-api/v1/sample-customer-api.raml` |
 | Flow | `search-customers-flow` |
 | Request Type | `CustomerSearchRequest` |
+| Request Headers | API共通: `client_id`, `client_secret`。API Managerで検証し、Flow内では手動Validationしない。 |
 | Response Type | `CustomerSearchResponse` |
 | Error Model | `ErrorResponse` |
 
@@ -22,11 +23,14 @@
 ```mermaid
 sequenceDiagram
     participant Client as API Client
+    participant Manager as API Manager policy
     participant Entry as sample-customer-api-main-flow
     participant Flow as search-customers-flow
     participant System as Customer System
 
-    Client->>Entry: POST /api/v1/customers/search
+    Client->>Manager: POST /api/v1/customers/search
+    Manager->>Manager: validate client_id/client_secret
+    Manager->>Entry: forward authenticated request
     Entry->>Entry: APIkit Router
     Entry->>Flow: route by RAML contract
     Flow->>Flow: resolve correlation ID
@@ -44,7 +48,7 @@ sequenceDiagram
 |---|---|
 | Flow | `search-customers-flow` |
 | Entry | APIkit Routerから呼び出されるOperation flow |
-| 入力 | headers, `CustomerSearchRequest` payload |
+| 入力 | `attributes.headers.X-Correlation-ID`, `CustomerSearchRequest` payload |
 | 出力 | `CustomerSearchResponse` payload |
 | 共通Subflow | `common-correlation-id-subflow`, `common-logging-subflow` |
 
@@ -52,7 +56,7 @@ sequenceDiagram
 
 | No | Processor | 目的 | 入力 | 出力 | Error |
 |---:|---|---|---|---|---|
-| 1 | Flow Reference | Correlation IDを解決する | headers | `vars.correlationId` | - |
+| 1 | Flow Reference | Correlation IDを解決する | `attributes.headers.X-Correlation-ID` | `vars.correlationId` | - |
 | 2 | Logger | 開始ログを出力する | operationId, body | log event | - |
 | 3 | Validation | request bodyを検証する | payload | - | `VALIDATION:*` |
 | 4 | Transform Message | Customer System向け検索条件を生成する | `CustomerSearchRequest` | downstream search request | `EXPRESSION` |
@@ -158,6 +162,8 @@ sequenceDiagram
 
 | Test | 入力 | Mock | Assert |
 |---|---|---|---|
-| `customer-search-success-test` | `POST /api/v1/customers/search`、payload `{ "customerName": "サンプル", "status": "ACTIVE", "limit": 20 }` | HTTP Request returns 200 with `{ "total": 1, "items": [{ "id": "C000001", "fullName": "サンプル太郎", "statusCode": "01", "dateOfBirth": "1990-01-01" }] }` | HTTP status 200。payload.totalCount=`1`。payload.customers[0].customerId=`C000001`、status=`ACTIVE`。HTTP Request body has `nameLike=サンプル`, `statusCode=01`, `limit=20` |
-| `customer-search-validation-error-test` | `POST /api/v1/customers/search`、payload `{ "status": "INVALID" }` | なし | HTTP status 400。payload.code=`BAD_REQUEST`。HTTP Requestが呼ばれない |
-| `customer-search-system-error-test` | `POST /api/v1/customers/search`、valid payload | HTTP Request raises `HTTP:CONNECTIVITY` or `HTTP:*` | `HTTP:CONNECTIVITY` の場合はstatus 503、その他の内部エラーはstatus 500。payloadは `ErrorResponse` |
+| `customer-search-success-test` | API Manager認証済みの `POST /api/v1/customers/search`、payload `{ "customerName": "サンプル", "status": "ACTIVE", "limit": 20 }` | HTTP Request returns 200 with `{ "total": 1, "items": [{ "id": "C000001", "fullName": "サンプル太郎", "statusCode": "01", "dateOfBirth": "1990-01-01" }] }` | HTTP status 200。payload.totalCount=`1`。payload.customers[0].customerId=`C000001`、status=`ACTIVE`。HTTP Request body has `nameLike=サンプル`, `statusCode=01`, `limit=20` |
+| `customer-search-validation-error-test` | API Manager認証済みの `POST /api/v1/customers/search`、payload `{ "status": "INVALID" }` | なし | HTTP status 400。payload.code=`BAD_REQUEST`。HTTP Requestが呼ばれない |
+| `customer-search-timeout-test` | API Manager認証済みの `POST /api/v1/customers/search`、valid payload | HTTP Request raises `HTTP:TIMEOUT` | HTTP status 504。payload.code=`GATEWAY_TIMEOUT`。payloadは `ErrorResponse` |
+| `customer-search-connectivity-error-test` | API Manager認証済みの `POST /api/v1/customers/search`、valid payload | HTTP Request raises `HTTP:CONNECTIVITY` | HTTP status 503。payload.code=`SERVICE_UNAVAILABLE`。payloadは `ErrorResponse` |
+| `customer-search-system-error-test` | API Manager認証済みの `POST /api/v1/customers/search`、valid payload | HTTP Request raises other `HTTP:*` or `ANY` | HTTP status 500。payload.code=`INTERNAL_ERROR`。payloadは `ErrorResponse` |

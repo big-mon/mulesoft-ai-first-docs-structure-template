@@ -13,7 +13,7 @@
 | RAML | `raml/sample-customer-api/v1/resources/get_customer-get-by-id.raml` |
 | Root RAML | `raml/sample-customer-api/v1/sample-customer-api.raml` |
 | Flow | `get-customer-by-id-flow` |
-| Request Headers | `client_id`, `client_secret` |
+| Request Headers | API共通: `client_id`, `client_secret`。API Managerで検証し、Flow内では手動Validationしない。 |
 | Response Type | `Customer` |
 | Error Model | `ErrorResponse` |
 
@@ -22,15 +22,18 @@
 ```mermaid
 sequenceDiagram
     participant Client as API Client
+    participant Manager as API Manager policy
     participant Entry as sample-customer-api-main-flow
     participant Flow as get-customer-by-id-flow
     participant System as Customer System
 
-    Client->>Entry: GET /api/v1/customers/{customerId}
+    Client->>Manager: GET /api/v1/customers/{customerId}
+    Manager->>Manager: validate client_id/client_secret
+    Manager->>Entry: forward authenticated request
     Entry->>Entry: APIkit Router
     Entry->>Flow: route by RAML contract
     Flow->>Flow: resolve correlation ID
-    Flow->>Flow: validate client_id, client_secret, customerId
+    Flow->>Flow: validate customerId
     Flow->>System: request customer by customerId
     System-->>Flow: downstream customer response
     Flow->>Flow: transform to Customer
@@ -43,7 +46,7 @@ sequenceDiagram
 |---|---|
 | Flow | `get-customer-by-id-flow` |
 | Entry | APIkit Routerから呼び出されるOperation flow |
-| 入力 | headers, uriParams.customerId |
+| 入力 | `attributes.headers.X-Correlation-ID`, `attributes.uriParams.customerId` |
 | 出力 | `Customer` payload |
 | 共通Subflow | `common-correlation-id-subflow`, `common-logging-subflow` |
 
@@ -51,13 +54,12 @@ sequenceDiagram
 
 | No | Processor | 目的 | 入力 | 出力 | Error |
 |---:|---|---|---|---|---|
-| 1 | Flow Reference | Correlation IDを解決する | headers | `vars.correlationId` | - |
-| 2 | Logger | 開始ログを出力する | operationId, headers, path params | log event | - |
-| 3 | Validation | 必須request headerを検証する | `attributes.headers.client_id`, `attributes.headers.client_secret` | - | `VALIDATION:*` |
-| 4 | Validation | `customerId` を検証する | `attributes.uriParams.customerId` | - | `VALIDATION:*` |
-| 5 | HTTP Request | Customer Systemから顧客情報を取得する | customerId | downstream response | `HTTP:*` |
-| 6 | Transform Message | APIレスポンスを生成する | downstream response | `Customer` | `EXPRESSION` |
-| 7 | Logger | 終了ログを出力する | status, elapsed time | log event | - |
+| 1 | Flow Reference | Correlation IDを解決する | `attributes.headers.X-Correlation-ID` | `vars.correlationId` | - |
+| 2 | Logger | 開始ログを出力する | operationId, path params | log event | - |
+| 3 | Validation | `customerId` を検証する | `attributes.uriParams.customerId` | - | `VALIDATION:*` |
+| 4 | HTTP Request | Customer Systemから顧客情報を取得する | customerId | downstream response | `HTTP:*` |
+| 5 | Transform Message | APIレスポンスを生成する | downstream response | `Customer` | `EXPRESSION` |
+| 6 | Logger | 終了ログを出力する | status, elapsed time | log event | - |
 
 ## 5. DataWeave項目マッピング
 
@@ -115,7 +117,6 @@ sequenceDiagram
 |---|---|---|---|
 | URI parameter | `customerId` | `attributes.uriParams.customerId` | API requestのpath parameter |
 | Header | `X-Correlation-ID` | `vars.correlationId` | 接続先追跡用 |
-| Header | `client_id`, `client_secret` | 転送しない | API Manager policy用のため接続先へ渡さない |
 
 | Downstream status / error | Mule error | API response | 備考 |
 |---|---|---|---|
@@ -129,7 +130,7 @@ sequenceDiagram
 
 | Error Type | HTTP Status | Error Code | 備考 |
 |---|---:|---|---|
-| `VALIDATION:*` | 400 | `BAD_REQUEST` | headerまたはcustomerIdの入力値不正 |
+| `VALIDATION:*` | 400 | `BAD_REQUEST` | customerIdの入力値不正 |
 | `HTTP:NOT_FOUND` | 404 | `RESOURCE_NOT_FOUND` | 接続先で対象顧客が存在しない |
 | `HTTP:TIMEOUT` | 504 | `GATEWAY_TIMEOUT` | 接続先タイムアウト |
 | `HTTP:CONNECTIVITY` | 503 | `SERVICE_UNAVAILABLE` | 接続先サービス利用不可 |
@@ -139,7 +140,7 @@ sequenceDiagram
 
 | Test | 入力 | Mock | Assert |
 |---|---|---|---|
-| `customer-get-by-id-success-test` | `GET /api/v1/customers/C000001`、valid `client_id`、valid `client_secret` | HTTP Request returns 200 with `{ "id": "C000001", "fullName": "サンプル太郎", "statusCode": "01", "dateOfBirth": "1990-01-01" }` | HTTP status 200。payload.customerId=`C000001`、customerName=`サンプル太郎`、status=`ACTIVE`、birthDate=`1990-01-01`。HTTP Requestが1回呼ばれる |
-| `customer-get-by-id-validation-error-test` | `GET /api/v1/customers/C000001`、invalid or missing `client_id` / `client_secret` | なし | HTTP status 400。payload.code=`BAD_REQUEST`。HTTP Requestが呼ばれない |
-| `customer-get-by-id-not-found-test` | `GET /api/v1/customers/C999999`、valid headers | HTTP Request raises `HTTP:NOT_FOUND` | HTTP status 404。payload.code=`RESOURCE_NOT_FOUND` |
-| `customer-get-by-id-timeout-test` | `GET /api/v1/customers/C000001`、valid headers | HTTP Request raises `HTTP:TIMEOUT` | HTTP status 504。payload.code=`GATEWAY_TIMEOUT` |
+| `customer-get-by-id-success-test` | API Manager認証済みの `GET /api/v1/customers/C000001` | HTTP Request returns 200 with `{ "id": "C000001", "fullName": "サンプル太郎", "statusCode": "01", "dateOfBirth": "1990-01-01" }` | HTTP status 200。payload.customerId=`C000001`、customerName=`サンプル太郎`、status=`ACTIVE`、birthDate=`1990-01-01`。HTTP Requestが1回呼ばれる |
+| `customer-get-by-id-validation-error-test` | API Manager認証済みの `GET /api/v1/customers/INVALID` | なし | HTTP status 400。payload.code=`BAD_REQUEST`。HTTP Requestが呼ばれない |
+| `customer-get-by-id-not-found-test` | API Manager認証済みの `GET /api/v1/customers/C999999` | HTTP Request raises `HTTP:NOT_FOUND` | HTTP status 404。payload.code=`RESOURCE_NOT_FOUND` |
+| `customer-get-by-id-timeout-test` | API Manager認証済みの `GET /api/v1/customers/C000001` | HTTP Request raises `HTTP:TIMEOUT` | HTTP status 504。payload.code=`GATEWAY_TIMEOUT` |

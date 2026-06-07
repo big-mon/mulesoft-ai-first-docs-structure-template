@@ -2,8 +2,22 @@ schemaVersion: "1.0"
 
 repository:
   repositoryId: mulesoft-ai-first-docs-structure-template
-  description: MuleSoftアプリケーション設計資産を複数アプリケーション単位で管理するテンプレート。
+  description: MuleSoftアプリケーション設計資産を複数アプリケーション単位で管理するための構造ルール。
   applicationRoot: applications
+
+applicationDiscovery:
+  mode: filesystem
+  root: applications
+  appIdSource: directoryName
+  requiredFiles:
+    - README.md
+    - design-index.yaml
+    - application-basic-design.md
+    - application-detail-design.md
+  rules:
+    - applications直下の各ディレクトリをApplicationとして扱う。
+    - appIdはApplicationディレクトリ名と一致させる。
+    - Application内のAPIとOperationの一覧はapplications/{appId}/design-index.yamlを正本とする。
 
 structure:
   applicationPathPattern: applications/{appId}
@@ -12,16 +26,3 @@ structure:
   operationPathPattern: applications/{appId}/raml/{apiFolder}/{version}/resources/{operationRaml}
   operationDetailDesignPathPattern: applications/{appId}/operations/{apiId}/{method}_{operationName}/operation-detail-design.md
   appDesignIndexFile: applications/{appId}/design-index.yaml
-
-applications:
-  - appId: sample-domain-sapi-v1
-    appName: サンプルドメインSAPIアプリケーション
-    artifactName: sample-domain-sapi-v1.jar
-    deploymentUnit: jar
-    root: applications/sample-domain-sapi-v1
-    designIndex: applications/sample-domain-sapi-v1/design-index.yaml
-    pom: applications/sample-domain-sapi-v1/pom.xml
-    apis:
-      - apiId: sample-customer-api-v1
-        apiFolder: sample-customer-api
-        version: v1

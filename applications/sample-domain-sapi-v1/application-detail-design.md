@@ -45,6 +45,12 @@ Operation別の詳細シーケンス図、Processor表、Flow詳細、DataWeave�
 | Entry Flow | `sample-customer-api-main-flow` |
 | Autodiscovery Flow Ref | `sample-customer-api-main-flow` |
 | Autodiscovery Property | `api.sampleCustomer.instanceId` |
+| API Manager Policies | Client ID enforcement, rate limiting |
+
+| Header | Required | Source | Scope |
+|---|---:|---|---|
+| `client_id` | true | Client ID enforcement | API Managerで検証し、Flow内では手動Validationしない |
+| `client_secret` | true | Client ID enforcement | API Managerで検証し、Flow内では手動Validationしない |
 
 | Flow | Processor | 目的 | 入力 | 出力 |
 |---|---|---|---|---|
@@ -57,7 +63,7 @@ Operation別の詳細シーケンス図、Processor表、Flow詳細、DataWeave�
 | Operation ID | Method / Path | Flow | DataWeave | MUnit | Operation Detail |
 |---|---|---|---|---|---|
 | `sample-customer-api-v1.customer.getById` | `GET /customers/{customerId}` | `get-customer-by-id-flow` | `customer-get-by-id-response.dwl` | `customer-get-by-id-success-test`, `customer-get-by-id-validation-error-test`, `customer-get-by-id-not-found-test`, `customer-get-by-id-timeout-test` | `operations/sample-customer-api-v1/get_customer-get-by-id/operation-detail-design.md` |
-| `sample-customer-api-v1.customer.search` | `POST /customers/search` | `search-customers-flow` | `customer-search-request.dwl`, `customer-search-response.dwl` | `customer-search-success-test`, `customer-search-validation-error-test`, `customer-search-system-error-test` | `operations/sample-customer-api-v1/post_customer-search/operation-detail-design.md` |
+| `sample-customer-api-v1.customer.search` | `POST /customers/search` | `search-customers-flow` | `customer-search-request.dwl`, `customer-search-response.dwl` | `customer-search-success-test`, `customer-search-validation-error-test`, `customer-search-timeout-test`, `customer-search-connectivity-error-test`, `customer-search-system-error-test` | `operations/sample-customer-api-v1/post_customer-search/operation-detail-design.md` |
 
 #### 4.1.3 Operation別詳細設計
 
@@ -70,7 +76,7 @@ Operation別の詳細シーケンス図、Processor表、Flow詳細、DataWeave�
 
 | Error Type | Handling | HTTP Status | Error Code | Response Model | 備考 |
 |---|---|---:|---|---|---|
-| `VALIDATION:*` | On Error Continue | 400 | `BAD_REQUEST` | `ErrorResponse` | Header、path parameter、request bodyの入力値不正 |
+| `VALIDATION:*` | On Error Continue | 400 | `BAD_REQUEST` | `ErrorResponse` | Mule Flow内で検証するpath parameter、request bodyの入力値不正 |
 | `HTTP:NOT_FOUND` | On Error Continue | 404 | `RESOURCE_NOT_FOUND` | `ErrorResponse` | 接続先で対象リソースが存在しない |
 | `HTTP:TIMEOUT` | On Error Propagate | 504 | `GATEWAY_TIMEOUT` | `ErrorResponse` | 接続先タイムアウト |
 | `HTTP:CONNECTIVITY` | On Error Propagate | 503 | `SERVICE_UNAVAILABLE` | `ErrorResponse` | 接続先サービス利用不可 |
@@ -113,4 +119,4 @@ Operation別の詳細シーケンス図、Processor表、Flow詳細、DataWeave�
 | Operation ID | 主なシナリオ | Operation Detail |
 |---|---|---|
 | `sample-customer-api-v1.customer.getById` | 正常応答、入力値不正、対象なし、接続先タイムアウト | `operations/sample-customer-api-v1/get_customer-get-by-id/operation-detail-design.md` |
-| `sample-customer-api-v1.customer.search` | 正常応答、request body不正、接続先または内部エラー | `operations/sample-customer-api-v1/post_customer-search/operation-detail-design.md` |
+| `sample-customer-api-v1.customer.search` | 正常応答、request body不正、接続先タイムアウト、接続先利用不可、内部エラー | `operations/sample-customer-api-v1/post_customer-search/operation-detail-design.md` |
