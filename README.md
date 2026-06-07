@@ -17,7 +17,7 @@ Repository
 
 | 階層 | 物理パス | 意味 | 主な責務 |
 |---|---|---|---|
-| Repository | `design-index.yaml` | 複数Muleアプリケーションを束ねる単位 | Application一覧、アプリケーションルートへの導線 |
+| Repository | `design-index.yaml` | 複数Muleアプリケーションを束ねる単位 | Application探索ルール、構造ルール、パス規約 |
 | Application | `applications/{appId}/` | Muleアプリ / jar / デプロイ単位。`appId` は `sample-domain-sapi-v1` のようにバージョンを含める | アプリ設計、共通Flow、共通設定、外部接続、Mule実装 |
 | API | `applications/{appId}/raml/{apiFolder}/{version}/` | RAML root / API Manager / APIkit Router単位。`apiFolder` は `sample-customer-api` のようにバージョンを重複させない | API契約、APIポリシー、利用者、base path |
 | Operation | `applications/{appId}/raml/{apiFolder}/{version}/resources/{operationRaml}`<br>`applications/{appId}/operations/{apiId}/{method}_{operationName}/operation-detail-design.md` | HTTP method + path / RAML method fragment / Mule Flow単位。`operationRaml` とOperation詳細設計フォルダは `get_customer-get-by-id` のようにHTTP methodとOperation名を `_` で区切る | API契約、Flow設計、Processor、詳細シーケンス、マッピング、エラー処理、MUnit |
@@ -28,6 +28,8 @@ Repository
 .
 ├─ design-index.yaml
 ├─ AGENTS.md
+├─ docs/
+│  └─ design-index-field-definition.md
 ├─ prompts/
 └─ applications/
    ├─ README.md
@@ -61,7 +63,8 @@ Repository
 |---|---|
 | `README.md` | 人間とAIエージェント向けの入口 |
 | `AGENTS.md` | AIエージェント向けの読み順、正本ルール、レビュー観点 |
-| `design-index.yaml` | リポジトリに含まれるApplication一覧 |
+| `design-index.yaml` | リポジトリ全体のApplication探索ルール、構造ルール、パス規約 |
+| `docs/design-index-field-definition.md` | ルートおよびApplication design indexのフィールド定義 |
 | `applications/README.md` | Applicationディレクトリの探索案内。仕様の正本ではない |
 | `applications/{appId}/README.md` | 対象Application内の探索案内。仕様の正本ではない |
 | `applications/{appId}/design-index.yaml` | Application / API / Operation / RAML / Flow / DataWeave / MUnit の対応関係 |
@@ -80,21 +83,23 @@ Repository
 1. `README.md`
 2. `AGENTS.md`
 3. ルートの `design-index.yaml`
-4. `applications/README.md`
-5. 対象アプリケーションの `applications/{appId}/README.md`
-6. 対象アプリケーションの `applications/{appId}/design-index.yaml`
-7. `applications/{appId}/application-basic-design.md`
-8. 関連するAPI root RAML
-9. 関連するOperation RAML fragment
-10. `applications/{appId}/application-detail-design.md`
-11. 関連するOperation詳細設計
-12. 実装が存在する場合は `applications/{appId}/src/` 配下のMule XML、DataWeave、MUnit
+4. `docs/design-index-field-definition.md`
+5. `applications/README.md`
+6. 対象アプリケーションの `applications/{appId}/README.md`
+7. 対象アプリケーションの `applications/{appId}/design-index.yaml`
+8. `applications/{appId}/application-basic-design.md`
+9. 関連するAPI root RAML
+10. 関連するOperation RAML fragment
+11. `applications/{appId}/application-detail-design.md`
+12. 関連するOperation詳細設計
+13. 実装が存在する場合は `applications/{appId}/src/` 配下のMule XML、DataWeave、MUnit
 
 ## 正本ルール
 
 | 情報 | 正本 |
 |---|---|
-| リポジトリ内のApplication一覧 | ルートの `design-index.yaml` |
+| リポジトリ内のApplication一覧 | `applications/` 直下のディレクトリ |
+| design indexのフィールド定義 | `docs/design-index-field-definition.md` |
 | Application / API / Operation の対応関係 | `applications/{appId}/design-index.yaml` |
 | APIのrequest/response契約 | RAML |
 | 基本設計上の判断 | `applications/{appId}/application-basic-design.md` |
@@ -127,7 +132,7 @@ full API path = api.basePath + operation.path
 
 | フェーズ | 主な更新対象 | 目的 |
 |---|---|---|
-| 要件定義 | ルート `design-index.yaml`, `applications/{appId}/design-index.yaml` | Application、API、Operation候補を整理する |
+| 要件定義 | ルート `design-index.yaml`, `applications/{appId}/design-index.yaml` | Application探索ルールと、API、Operation候補を整理する |
 | 基本設計 | `applications/{appId}/application-basic-design.md`, `applications/{appId}/raml/**`, `applications/{appId}/design-index.yaml` | API契約、責務、API管理、シーケンス、エラー方針を定義する |
 | 詳細設計 | `applications/{appId}/application-detail-design.md`, `applications/{appId}/operations/**/operation-detail-design.md`, `applications/{appId}/design-index.yaml` | 共通Flow、Connector、Error Handlerと、Operation別のProcessor、詳細シーケンス、DataWeave項目マッピング、Connector呼び出し詳細、MUnitテストケース詳細を定義する |
 | 実装 | `applications/{appId}/src/main/mule/**`, `applications/{appId}/src/main/resources/dwl/**`, `applications/{appId}/src/test/munit/**` | Muleアプリとテストを実装する |
@@ -137,7 +142,7 @@ full API path = api.basePath + operation.path
 
 1. このテンプレートリポジトリをコピーします。
 2. 新しいMuleアプリケーションごとに `applications/{appId}/` を作成します。アプリケーションをバージョン単位で管理する場合は、`sample-domain-sapi-v1` のようにアプリケーションフォルダへバージョンを含めます。
-3. ルートの `design-index.yaml` にApplicationを追加します。
+3. `applications/{appId}/` に `README.md`、`design-index.yaml`、`application-basic-design.md`、`application-detail-design.md` を配置します。
 4. `applications/{appId}/design-index.yaml` にAPIとOperationを定義します。API IDは `sample-customer-api-v1` のように契約識別子として保持し、APIフォルダは `sample-customer-api` のようにバージョンなしで定義します。
 5. API契約は `applications/{appId}/raml/{apiFolder}/{version}/` に配置します。
 6. 基本設計は `applications/{appId}/application-basic-design.md` に記載します。

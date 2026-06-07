@@ -18,9 +18,9 @@
 
 | 項目 | 値 |
 |---|---|
+| Application Root | `applications/sample-domain-sapi-v1` |
 | Artifact | `sample-domain-sapi-v1.jar` |
 | Deployment Unit | jar |
-| Repository | `sample-domain-sapi-v1` |
 | POM | `pom.xml` |
 | Design Index | `design-index.yaml` |
 
@@ -35,7 +35,7 @@
 | トピック | 方針 | 関連資産 |
 |---|---|---|
 | Correlation ID | リクエスト単位の追跡IDを解決または生成する。 | `raml/common/traits/correlation-id.raml` |
-| Client ID enforcement | API Manager policyで必要な認証ヘッダーを検証する。 | `raml/common/traits/client-id-required.raml` |
+| Client ID enforcement | API Manager policyでAPI単位に必要な認証ヘッダーをルーティング前に検証する。Mule Flow内では `client_id` / `client_secret` を手動Validationしない。 | `raml/common/traits/client-id-required.raml` |
 | Error response | 共通エラーモデルでレスポンスを返却する。 | `raml/common/types/ErrorResponse.raml`, `raml/common/traits/common-errors.raml` |
 | Timeout | Connector単位で詳細設計時に定義する。 | `application-detail-design.md` |
 | Retry | Operation単位で詳細設計時に定義する。 | `application-detail-design.md` |
@@ -46,8 +46,8 @@
 
 | Header | Required | 入力規則 | 適用方針 |
 |---|---|---|---|
-| `client_id` | true | `^[A-Za-z0-9_-]{16,64}$` | Client ID enforcementを適用するOperationで使用する |
-| `client_secret` | true | 32文字以上 | Client ID enforcementを適用するOperationで使用する |
+| `client_id` | true | `^[A-Za-z0-9_-]{16,64}$` | API Managerが `sample-customer-api-v1` の全Operationで検証する |
+| `client_secret` | true | 32文字以上 | API Managerが `sample-customer-api-v1` の全Operationで検証する |
 
 ## 2. API一覧
 
@@ -82,7 +82,7 @@
 | Operation ID | 概要 | 入力概念 | 出力概念 | 主な共通方針 |
 |---|---|---|---|---|
 | `sample-customer-api-v1.customer.getById` | 顧客IDを指定して顧客情報を取得する。 | 顧客ID | 顧客情報 | Correlation ID、Client ID enforcement、共通エラー |
-| `sample-customer-api-v1.customer.search` | 条件を指定して顧客情報を検索する。 | 検索条件 | 検索結果 | Correlation ID、共通エラー |
+| `sample-customer-api-v1.customer.search` | 条件を指定して顧客情報を検索する。 | 検索条件 | 検索結果 | Correlation ID、Client ID enforcement、共通エラー |
 
 ## 5. シーケンス概要
 
@@ -124,7 +124,7 @@ RAML typeをAPI契約の正本とします。詳細な項目マッピングは�
 
 | 対象 | 正本 | 関連設計 | 実装・テスト |
 |---|---|---|---|
-| Application一覧 | ルート `design-index.yaml` | `applications/sample-domain-sapi-v1/design-index.yaml` | `applications/sample-domain-sapi-v1/pom.xml` |
+| Application一覧 | `applications/` 直下のディレクトリ | `applications/sample-domain-sapi-v1/design-index.yaml` | `applications/sample-domain-sapi-v1/pom.xml` |
 | API一覧 | `applications/sample-domain-sapi-v1/design-index.yaml` | `raml/sample-customer-api/v1/sample-customer-api.raml` | `sample-customer-api-main-flow` |
 | `sample-customer-api-v1.customer.getById` | `raml/sample-customer-api/v1/resources/get_customer-get-by-id.raml` | `application-detail-design.md`, `operations/sample-customer-api-v1/get_customer-get-by-id/operation-detail-design.md` | `get-customer-by-id-flow`, `customer-get-by-id-response.dwl`, `customer-get-by-id-*` MUnit |
 | `sample-customer-api-v1.customer.search` | `raml/sample-customer-api/v1/resources/post_customer-search.raml` | `application-detail-design.md`, `operations/sample-customer-api-v1/post_customer-search/operation-detail-design.md` | `search-customers-flow`, `customer-search-request.dwl`, `customer-search-response.dwl`, `customer-search-*` MUnit |

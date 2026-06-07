@@ -3,9 +3,9 @@ schemaVersion: "1.0"
 application:
   appId: sample-domain-sapi-v1
   appName: サンプルドメインSAPIアプリケーション
+  appRoot: applications/sample-domain-sapi-v1
   artifactName: sample-domain-sapi-v1.jar
   deploymentUnit: jar
-  repository: sample-domain-sapi-v1
   muleRuntime: "4.9.0"
   javaVersion: "17"
   ownerTeam: integration-team
@@ -52,6 +52,21 @@ apis:
         - rate-limiting
       consumers:
         - sample-web-frontend
+    requestHeaders:
+      - name: client_id
+        required: true
+        source: Client ID enforcement
+        scope: api
+        validationOwner: api-manager-policy
+        constraints:
+          pattern: "^[A-Za-z0-9_-]{16,64}$"
+      - name: client_secret
+        required: true
+        source: Client ID enforcement
+        scope: api
+        validationOwner: api-manager-policy
+        constraints:
+          minLength: 32
     operations:
       - operationId: sample-customer-api-v1.customer.getById
         method: GET
@@ -62,17 +77,6 @@ apis:
         detailDesign: operations/sample-customer-api-v1/get_customer-get-by-id/operation-detail-design.md
         flow: get-customer-by-id-flow
         requestType: null
-        requestHeaders:
-          - name: client_id
-            required: true
-            source: Client ID enforcement
-            constraints:
-              pattern: "^[A-Za-z0-9_-]{16,64}$"
-          - name: client_secret
-            required: true
-            source: Client ID enforcement
-            constraints:
-              minLength: 32
         responseType: Customer
         errorModel: ErrorResponse
         dataweave:
@@ -104,6 +108,8 @@ apis:
         munit:
           - customer-search-success-test
           - customer-search-validation-error-test
+          - customer-search-timeout-test
+          - customer-search-connectivity-error-test
           - customer-search-system-error-test
         lifecycle:
           requirementStatus: draft
