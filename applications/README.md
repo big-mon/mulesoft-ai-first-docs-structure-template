@@ -2,7 +2,7 @@
 
 このディレクトリは、Muleアプリケーション単位の設計資産を格納する場所です。
 
-このREADMEは探索用の案内であり、Application、API、Operationの正本ではありません。リポジトリに存在するApplication一覧は、`applications/` 直下のディレクトリを参照してください。
+このREADMEは探索用の案内であり、Application、API、Operationの正本ではありません。AI-first管理対象Application一覧は、`applications/` 直下のディレクトリを参照してください。
 
 ## 読み方
 

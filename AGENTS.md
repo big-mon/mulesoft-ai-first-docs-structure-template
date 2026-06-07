@@ -81,7 +81,7 @@ applications/{appId}/
 
 | トピック | 正本 |
 |---|---|
-| リポジトリ内のApplication一覧 | `applications/` 直下のディレクトリ |
+| AI-first管理対象Application一覧 | `applications/` 直下のディレクトリ |
 | legacy applicationの参照可否 | ルートの `design-index.yaml` の `legacyApplications.policy` |
 | design indexのフィールド定義 | `docs/design-index-field-definition.md` |
 | Application、API、Operationの一覧 | `applications/{appId}/design-index.yaml` |

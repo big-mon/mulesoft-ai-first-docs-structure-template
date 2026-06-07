@@ -100,7 +100,7 @@ Repository
 
 | 情報 | 正本 |
 |---|---|
-| リポジトリ内のApplication一覧 | `applications/` 直下のディレクトリ |
+| AI-first管理対象Application一覧 | `applications/` 直下のディレクトリ |
 | design indexのフィールド定義 | `docs/design-index-field-definition.md` |
 | Application / API / Operation の対応関係 | `applications/{appId}/design-index.yaml` |
 | APIのrequest/response契約 | RAML |
