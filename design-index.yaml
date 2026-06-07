@@ -39,6 +39,7 @@ legacyApplications:
     - legacy applicationはAI-first管理対象外とする。
     - 通常のAIレビューではlegacy applicationを参照しない。
     - 移行作業、互換性確認、ユーザー明示時のみ参照を許可する。
+    - legacy applicationを改修対象またはAI整備対象にする場合は、Application単位でapplications/{appId}/へ移動し、requiredFilesを整備した後にAI-first管理対象とする。
 
 structure:
   applicationPathPattern: applications/{appId}

@@ -117,7 +117,9 @@ AI-first管理対象のApplicationは `applications/` 配下に存在するも�
 
 既存リポジトリから段階導入する場合、root直下に残る `*-xapi-v*`、`*-papi-v*`、`*-sapi-v*` 形式のMuleアプリケーションはlegacy applicationとして扱います。legacy applicationは通常のAI-firstレビュー対象外です。
 
-legacy applicationは、移行作業、互換性確認、またはユーザーが明示的に参照を依頼した場合のみ確認します。`deploy_files/` はJenkins用のデプロイ定義置き場であり、Applicationとして扱いません。Application移行時は `deploy_files/` 内の参照パスを確認してください。`_docs/` はlegacy docsとして扱い、AI-first設計の正本にはしません。
+legacy applicationは、移行作業、互換性確認、またはユーザーが明示的に参照を依頼した場合のみ確認します。legacy applicationを改修対象またはAI整備対象にする場合は、Application単位で `applications/{appId}/` へ移動し、`applicationDiscovery.requiredFiles` を整備した後にAI-first管理対象とします。
+
+`deploy_files/` はJenkins用のデプロイ定義置き場であり、Applicationとして扱いません。Application移行時は `deploy_files/` 内の参照パスを確認してください。`_docs/` はlegacy docsとして扱い、AI-first設計の正本にはしません。
 
 ## パス合成ルール
 

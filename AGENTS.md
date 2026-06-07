@@ -65,6 +65,7 @@ applications/{appId}/
 - `applications/` 直下の各ディレクトリをApplicationとして扱い、ディレクトリ名を `appId` と一致させてください。
 - `applications/` 配下に存在しないroot直下の既存Muleアプリケーションはlegacy applicationとして扱い、通常のAI-firstレビュー対象にしないでください。
 - legacy applicationは、移行作業、互換性確認、またはユーザーが明示した場合のみ参照してください。
+- legacy applicationを改修対象またはAI整備対象にする場合は、Application単位で `applications/{appId}/` へ移動し、`applicationDiscovery.requiredFiles` を整備した後にAI-first管理対象としてください。
 - `deploy_files/` はJenkins用のデプロイ定義置き場であり、Applicationとして扱わないでください。Application移行時は参照パスを確認してください。
 - `_docs/` はlegacy docsとして扱い、AI-first設計の正本にしないでください。
 - `applications/README.md` と `applications/{appId}/README.md` は探索案内であり、仕様の正本として扱わないでください。

@@ -29,7 +29,7 @@
 | `legacyApplications.discovery.root` | false | legacy applicationを探索する起点 | 既存アプリがroot直下にある場合は `.` とします。 |
 | `legacyApplications.discovery.include` | false | legacy application候補のinclude pattern | 例: `*-xapi-v*`、`*-papi-v*`、`*-sapi-v*`。AI-first管理対象にはしません。 |
 | `legacyApplications.discovery.exclude` | false | legacy探索から除外するroot直下のディレクトリ | `applications`、`deploy_files`、`docs`、`prompts`、`.git` などを除外します。 |
-| `legacyApplications.policy` | false | legacy applicationの参照ポリシー | 通常のAI-firstレビューでは参照せず、移行作業、互換性確認、ユーザー明示時のみ参照します。 |
+| `legacyApplications.policy` | false | legacy applicationの参照・移行ポリシー | 通常のAI-firstレビューでは参照しません。改修対象またはAI整備対象にする場合は、Application単位で `applications/{appId}/` へ移動し、`applicationDiscovery.requiredFiles` を整備した後にAI-first管理対象とします。 |
 | `structure.*PathPattern` | true | 標準パスの合成ルール | `{appId}`、`{apiId}`、`{apiFolder}`、`{version}`、`{operationRaml}` などの変数を使用します。 |
 | `deploymentAssets.jenkinsRoot` | false | Jenkins用デプロイ定義のroot | 例: `deploy_files`。Applicationとして扱いません。 |
 | `deploymentAssets.policy` | false | デプロイ資産の参照ポリシー | Application移行時は参照パスを確認します。 |
@@ -120,7 +120,7 @@
 |---|---|
 | Application directory | `application.appId` と `application.appRoot` の末尾ディレクトリ名を一致させます。 |
 | AI-first Application discovery | 通常レビュー対象は `applicationDiscovery.root` 配下のApplicationに限定します。 |
-| Legacy application | root直下のlegacy applicationは通常レビュー対象外です。移行作業、互換性確認、ユーザー明示時のみ参照します。 |
+| Legacy application | root直下のlegacy applicationは通常レビュー対象外です。移行作業、互換性確認、ユーザー明示時のみ参照します。改修対象またはAI整備対象にする場合は、Application単位で `applications/{appId}/` へ移動し、required filesを整備します。 |
 | Deployment assets | `deploy_files` などのデプロイ定義はApplicationとして扱いません。 |
 | API path | `full API path = apis[].basePath + apis[].operations[].path` として扱います。 |
 | RAML root | `apis[].rootRaml` は `raml/{apiFolder}/{version}/` 配下に置きます。 |
@@ -134,6 +134,7 @@
 - `appId` はApplication folder名と一致しているか。
 - 対象Applicationは `applications/` 配下のAI-first管理対象か。
 - root直下のlegacy applicationを通常レビュー対象に含めていないか。
+- 改修対象またはAI整備対象のlegacy applicationは、Application単位で `applications/{appId}/` へ移動し、required filesを整備しているか。
 - `deploy_files/` をApplicationとして扱っていないか。
 - `appRoot` は `applications/{appId}` と一致しているか。
 - `apiId` はversionを含み、`apiFolder` はversionを含んでいないか。
