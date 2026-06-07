@@ -2,7 +2,7 @@
 
 このディレクトリは、Muleアプリケーション単位の設計資産を格納する場所です。
 
-このREADMEは探索用の案内であり、Application、API、Operationの正本ではありません。リポジトリに存在するApplication一覧は、`applications/` 直下のディレクトリを参照してください。
+このREADMEは探索用の案内であり、Application、API、Operationの正本ではありません。AI-first管理対象Application一覧は、`applications/` 直下のディレクトリを参照してください。
 
 ## 読み方
 
@@ -15,5 +15,6 @@
 
 - Application資産は `applications/{appId}/` 配下に閉じます。
 - `applications/` 直下のディレクトリ名を `appId` として扱ってください。
+- root直下に残る既存Muleアプリケーションはlegacy applicationであり、通常のAI-firstレビュー対象ではありません。
 - Application間でRAML、設計書、実装、テスト資産を混在させないでください。
 - READMEには仕様を重複記載せず、探索順と正本への導線だけを記載します。
