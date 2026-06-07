@@ -7,7 +7,8 @@
 ## 1. 基本方針
 
 - ルート `design-index.yaml` は、リポジトリ全体のApplication探索ルール、構造ルール、パス規約を定義します。
-- Application一覧は `applications/` 直下のディレクトリを正本とします。
+- AI-first管理対象のApplication一覧は `applications/` 直下のディレクトリを正本とします。
+- `applications/` 配下に存在しないroot直下の既存Muleアプリケーションはlegacy applicationとして扱い、通常のAI-firstレビュー対象外とします。
 - `applications/{appId}/design-index.yaml` は、そのApplication内のAPI、Operation、RAML、設計資産、MUnitテスト名の対応関係を定義します。
 - READMEは探索案内であり、`design-index.yaml` のフィールド意味を上書きしません。
 - RAML request / response契約はRAMLを正本とします。`design-index.yaml` はRAML、設計書、実装、テストへの対応関係を保持します。
@@ -25,7 +26,13 @@
 | `applicationDiscovery.appIdSource` | true | `appId` の取得元 | `directoryName` の場合、Applicationディレクトリ名を `appId` とします。 |
 | `applicationDiscovery.requiredFiles` | true | Applicationとして扱うために必要なファイル | `README.md`、`design-index.yaml`、`application-basic-design.md`、`application-detail-design.md` を含めます。 |
 | `applicationDiscovery.rules` | false | Application探索時の補足ルール | 自動チェックとAIレビューで参照する短いルールを記載します。 |
+| `legacyApplications.discovery.root` | false | legacy applicationを探索する起点 | 既存アプリがroot直下にある場合は `.` とします。 |
+| `legacyApplications.discovery.include` | false | legacy application候補のinclude pattern | 例: `*-xapi-v*`、`*-papi-v*`、`*-sapi-v*`。AI-first管理対象にはしません。 |
+| `legacyApplications.discovery.exclude` | false | legacy探索から除外するroot直下のディレクトリ | `applications`、`deploy_files`、`docs`、`prompts`、`.git` などを除外します。 |
+| `legacyApplications.policy` | false | legacy applicationの参照ポリシー | 通常のAI-firstレビューでは参照せず、移行作業、互換性確認、ユーザー明示時のみ参照します。 |
 | `structure.*PathPattern` | true | 標準パスの合成ルール | `{appId}`、`{apiId}`、`{apiFolder}`、`{version}`、`{operationRaml}` などの変数を使用します。 |
+| `deploymentAssets.jenkinsRoot` | false | Jenkins用デプロイ定義のroot | 例: `deploy_files`。Applicationとして扱いません。 |
+| `deploymentAssets.policy` | false | デプロイ資産の参照ポリシー | Application移行時は参照パスを確認します。 |
 
 ## 3. Application design-index.yaml
 
@@ -112,6 +119,9 @@
 | Check | Rule |
 |---|---|
 | Application directory | `application.appId` と `application.appRoot` の末尾ディレクトリ名を一致させます。 |
+| AI-first Application discovery | 通常レビュー対象は `applicationDiscovery.root` 配下のApplicationに限定します。 |
+| Legacy application | root直下のlegacy applicationは通常レビュー対象外です。移行作業、互換性確認、ユーザー明示時のみ参照します。 |
+| Deployment assets | `deploy_files` などのデプロイ定義はApplicationとして扱いません。 |
 | API path | `full API path = apis[].basePath + apis[].operations[].path` として扱います。 |
 | RAML root | `apis[].rootRaml` は `raml/{apiFolder}/{version}/` 配下に置きます。 |
 | Operation RAML | `apis[].operations[].raml` は `raml/{apiFolder}/{version}/resources/{operationRaml}` と一致させます。 |
@@ -122,6 +132,9 @@
 ## 5. Review checklist
 
 - `appId` はApplication folder名と一致しているか。
+- 対象Applicationは `applications/` 配下のAI-first管理対象か。
+- root直下のlegacy applicationを通常レビュー対象に含めていないか。
+- `deploy_files/` をApplicationとして扱っていないか。
 - `appRoot` は `applications/{appId}` と一致しているか。
 - `apiId` はversionを含み、`apiFolder` はversionを含んでいないか。
 - `version` はRAML配下のversion folderと一致しているか。

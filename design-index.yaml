@@ -15,9 +15,30 @@ applicationDiscovery:
     - application-basic-design.md
     - application-detail-design.md
   rules:
-    - applications直下の各ディレクトリをApplicationとして扱う。
+    - applications直下の各ディレクトリをAI-first管理対象Applicationとして扱う。
     - appIdはApplicationディレクトリ名と一致させる。
     - Application内のAPIとOperationの一覧はapplications/{appId}/design-index.yamlを正本とする。
+    - applications配下に存在しないroot直下のApplicationはlegacy applicationとして扱い、通常のAI-firstレビュー対象外とする。
+
+legacyApplications:
+  discovery:
+    root: "."
+    include:
+      - "*-xapi-v*"
+      - "*-papi-v*"
+      - "*-sapi-v*"
+    exclude:
+      - applications
+      - deploy_files
+      - _docs
+      - docs
+      - prompts
+      - .git
+      - .github
+  policy:
+    - legacy applicationはAI-first管理対象外とする。
+    - 通常のAIレビューではlegacy applicationを参照しない。
+    - 移行作業、互換性確認、ユーザー明示時のみ参照を許可する。
 
 structure:
   applicationPathPattern: applications/{appId}
@@ -26,3 +47,9 @@ structure:
   operationPathPattern: applications/{appId}/raml/{apiFolder}/{version}/resources/{operationRaml}
   operationDetailDesignPathPattern: applications/{appId}/operations/{apiId}/{method}_{operationName}/operation-detail-design.md
   appDesignIndexFile: applications/{appId}/design-index.yaml
+
+deploymentAssets:
+  jenkinsRoot: deploy_files
+  policy:
+    - deploy_filesはJenkins用のデプロイ定義置き場であり、Applicationとして扱わない。
+    - Application移行時はdeploy_files内の参照パスを必ず確認する。

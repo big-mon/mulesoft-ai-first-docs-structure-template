@@ -15,5 +15,6 @@
 
 - Application資産は `applications/{appId}/` 配下に閉じます。
 - `applications/` 直下のディレクトリ名を `appId` として扱ってください。
+- root直下に残る既存Muleアプリケーションはlegacy applicationであり、通常のAI-firstレビュー対象ではありません。
 - Application間でRAML、設計書、実装、テスト資産を混在させないでください。
 - READMEには仕様を重複記載せず、探索順と正本への導線だけを記載します。

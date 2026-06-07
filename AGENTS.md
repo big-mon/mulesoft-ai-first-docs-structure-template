@@ -63,6 +63,10 @@ applications/{appId}/
 
 - アプリケーション固有の設計、RAML、Mule実装、テストは必ず `applications/{appId}/` 配下に置いてください。
 - `applications/` 直下の各ディレクトリをApplicationとして扱い、ディレクトリ名を `appId` と一致させてください。
+- `applications/` 配下に存在しないroot直下の既存Muleアプリケーションはlegacy applicationとして扱い、通常のAI-firstレビュー対象にしないでください。
+- legacy applicationは、移行作業、互換性確認、またはユーザーが明示した場合のみ参照してください。
+- `deploy_files/` はJenkins用のデプロイ定義置き場であり、Applicationとして扱わないでください。Application移行時は参照パスを確認してください。
+- `_docs/` はlegacy docsとして扱い、AI-first設計の正本にしないでください。
 - `applications/README.md` と `applications/{appId}/README.md` は探索案内であり、仕様の正本として扱わないでください。
 - アプリケーションをバージョン単位で管理する場合は、`appId` とアプリケーションフォルダに `sample-domain-sapi-v1` のようなバージョンを含めてください。
 - APIフォルダは `sample-customer-api` のようにバージョンを重複させず、API契約上のIDは `apiId` として `sample-customer-api-v1` のように保持してください。
@@ -77,6 +81,7 @@ applications/{appId}/
 | トピック | 正本 |
 |---|---|
 | リポジトリ内のApplication一覧 | `applications/` 直下のディレクトリ |
+| legacy applicationの参照可否 | ルートの `design-index.yaml` の `legacyApplications.policy` |
 | design indexのフィールド定義 | `docs/design-index-field-definition.md` |
 | Application、API、Operationの一覧 | `applications/{appId}/design-index.yaml` |
 | APIのrequest / response契約 | RAML |
@@ -184,6 +189,7 @@ RAMLと実装が矛盾している場合は、勝手に解決せず、矛盾と�
 各Operationについて、次を確認してください。
 
 - 対象アプリケーションの `design-index.yaml` にOperationが存在すること
+- 対象が `applications/` 配下のAI-first管理対象Applicationであること。legacy applicationを通常レビューに含めていないこと
 - Operation RAML fragmentが `resources/{operationRaml}` に存在すること
 - RAML rootからOperation fragmentが参照されていること
 - 複数APIで再利用されるRAML部品が `raml/common/` にあり、API固有部品と混在していないこと
